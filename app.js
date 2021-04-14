@@ -6,12 +6,92 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var page;
 
 $(document).ready(function () {
-  context = canvas.getContext("2d");
-  Start();
+	handlePages();
 });
 
+// $(document).ready(function() {
+// 	//context = canvas.getContext("2d");
+
+// 	Start();
+// });
+
+// @TODO - we need to think about Game page. 
+function handlePages() {
+	$(".pages").hide();
+    
+	$("#navigationMenu a").click(function (e) {
+        e.preventDefault();
+
+		cleanUp(page);
+
+        page = this.href.split("#")[1];
+		
+		switch(page) {
+			case "welcome":
+				handleWelcomePage();
+			  break;
+			case "signUp":
+				handleSignUpPage();
+			  break;
+			case "login":
+				handleLoginPage();
+			  break;
+			case "settings":
+				handleSettingsPage();
+			  break;
+			case "about":
+				handleAboutPage();
+			  break;
+		  }
+		
+        $(".pages:visible").slideUp(function () {
+            $("#" + page).slideDown();
+        });
+    });
+    
+	// first page
+	$("#welcome").show();
+	page = "welcome";
+}
+
+function cleanUp(oldPage) {
+	switch(oldPage) {
+		case "welcome":
+			alert(" cleanUp -> welcome");
+		  break;
+		case "signUp":
+			alert(" cleanUp -> signUp");
+		  break;
+		case "login":
+			alert(" cleanUp -> login");
+		  break;
+		case "settings":
+			alert(" cleanUp -> settings");
+		  break;
+		case "about":
+			alert(" cleanUp -> about");
+		  break;
+	  }
+}
+
+function handleWelcomePage() {
+	alert(" welcome page ");
+}
+function handleSignUpPage() {
+	alert(" signUp page ");
+}
+function handleLoginPage() {
+	alert(" login page ");
+}
+function handleSettingsPage() {
+	alert(" settings page ");
+}
+function handleAboutPage() {
+	alert(" about page ");
+}
 function Start() {
   board = new Array();
   score = 0;
