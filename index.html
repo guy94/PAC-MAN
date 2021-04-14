@@ -51,6 +51,27 @@
 			<div id="signUp" class="pages">
 				<div class="container">
 					<h2>SignUp</h2>
+          <form>
+            <label for="uname">Username:</label><br />
+            <input type="text" id="uname" name="unmae" /><br /><br />
+    
+            <label for="pword">New password:</label><br />
+            <input type="text" id="pword" name="pword" /><br /><br />
+    
+            <label for="repeatPword">Repeat password:</label><br />
+            <input type="text" id="repeatPword" name="repeatPword" /><br /><br />
+    
+            <label for="fname">Full name:</label><br />
+            <input type="text" id="fname" name="fname" /><br /><br />
+    
+            <label for="email">E-mail:</label><br />
+            <input type="text" id="email" name="email" /><br /><br />
+    
+            <label for="birthDate">Birth Date:</label><br />
+            <input type="date" id="birthDate" name="birthDate" /><br /><br />
+    
+            <input type="submit" value="Submit" onclick="validateSignUp();" />
+          </form>
 				</div>
 			</div>
 			<div id="login" class="pages">
@@ -107,7 +128,7 @@
     <div id="game">
       <canvas id="canvas" height="600" width="600"></canvas>
     </div> -->
-  </body>
+    </body>
 
   <footer
     id="footer"
