@@ -265,7 +265,7 @@ function validateSignUp() {
   let names = fullName.split(" ");
   let numOfValidations = 5;
 
-  ($("input").filter(function () {
+  ($(".signup").filter(function () {
     return $.trim($(this).val()).length == 0;
   }).length == 0 ? numOfValidations-- : null)
 
