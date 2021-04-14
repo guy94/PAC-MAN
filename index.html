@@ -2,6 +2,7 @@
 <html>
   <head>
     <script src="./jquery-3.4.1.slim.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="./app.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -9,7 +10,79 @@
   <header id="header"></header>
 
   <body>
-    <div class="wrapper">
+	<!-- temp menu  -->
+	<div id="main">
+		<ul id="navigationMenu">
+			<li> <a href="#welcome">
+					<span>welcome</span>
+				</a>
+			</li>
+			<li> <a href="#signUp">
+					<span>signUp</span>
+				</a>
+			</li>
+			<li> <a href="#login">
+					<span>login</span>
+				 </a>
+			</li>
+			<li> <a href="#Settings">
+					<span>Settings</span>
+				</a>
+	
+			</li>
+			<li> <a href="#about">
+					<span>about</span>
+				</a>
+			</li>
+			<!-- <li> <a href="#game">
+				<span>game</span>
+				</a>
+			</li> -->
+		</ul>
+	</div>
+
+	<div id="wrapper">
+		<div id="content">
+			<div id="welcome" class="pages">
+				<div class="container">
+					<h2>Welcome</h2>
+				</div>
+			</div>
+			<div id="signUp" class="pages">
+				<div class="container">
+					<h2>SignUp</h2>
+				</div>
+			</div>
+			<div id="login" class="pages">
+				<div class="container">
+					<h2>Login</h2>
+					<div class="login-form">
+					<form>
+						<input type="text" name="username" placeholder="Username" required>
+						<input type="password" name="password" placeholder="Password" required>
+						<input type="submit" value="Login">
+					</form>
+					</div>
+				</div>
+			</div>
+			<div id="settings" class="pages">
+				<div class="container">
+					<h2>Settings</h2>
+				</div>
+			</div>
+			<div id="about" class="pages">
+				<div class="container">
+					<h2>About</h2>
+				</div>
+			</div>
+			<div id="game" class="pages">
+				<div class="container">
+					<h2>Game</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- <div class="wrapper">
       <h2>Elastic Tabs</h2>
       <h6>Click on tabs to see them in action</h6>
       <nav class="tabs">
@@ -33,7 +106,7 @@
     </div>
     <div id="game">
       <canvas id="canvas" height="600" width="600"></canvas>
-    </div>
+    </div> -->
   </body>
 
   <footer
@@ -42,7 +115,6 @@
     height="300px"
     width="300px"
   >
-    dcsdcsdc
   </footer>
 
   <script src="menu.js"></script>
