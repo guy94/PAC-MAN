@@ -1,21 +1,49 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script src="./jquery-3.4.1.slim.min.js"></script>
-		<script type="text/javascript" src="./app.js"></script>
-	</head>
+  <head>
+    <script src="./jquery-3.4.1.slim.min.js"></script>
+    <script type="text/javascript" src="./app.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-	<body>
-		<div id="score">
-			<label for="lblScore">SCORE:</label>
-			<input id="lblScore" type="text" />
-		</div>
-		<div id="time">
-			<label for="lblTime">TIME:</label>
-			<input id="lblTime" type="text" />
-		</div>
-		<div id="game">
-			<canvas id="canvas" height="600" width="600"></canvas>
-		</div>
-	</body>
+  <header id="header"></header>
+
+  <body>
+    <div class="wrapper">
+      <h2>Elastic Tabs</h2>
+      <h6>Click on tabs to see them in action</h6>
+      <nav class="tabs">
+        <div class="selector"></div>
+        <a href="#" class="active"
+          ><i class="fab fa-superpowers"></i>Avengers</a
+        >
+        <a href="#"><i class="fas fa-hand-rock"></i>Hulk</a>
+        <a href="#"><i class="fas fa-bolt"></i>Thor</a>
+        <a href="#"><i class="fas fa-burn"></i>Marvel</a>
+      </nav>
+    </div>
+
+    <div id="score">
+      <label for="lblScore">SCORE:</label>
+      <input id="lblScore" type="text" />
+    </div>
+    <div id="time">
+      <label for="lblTime">TIME:</label>
+      <input id="lblTime" type="text" />
+    </div>
+    <div id="game">
+      <canvas id="canvas" height="600" width="600"></canvas>
+    </div>
+  </body>
+
+  <footer
+    id="footer"
+    style="background-color: aqua"
+    height="300px"
+    width="300px"
+  >
+    dcsdcsdc
+  </footer>
+
+  <script src="menu.js"></script>
 </html>
