@@ -14,7 +14,6 @@
 .container {
   position: relative;
   border-radius: 5px;
-
   padding: 20px 0 30px 0;
 } 
 
@@ -79,10 +78,17 @@ body {
   font-family: "Comfortaa", sans-serif;
 }
 
+.welcomeContainer 
+{
+  text-align: center;
+
+}
+
 
 
 #headline a
  {
+  text-align: center;
   position: relative;
   display: inline-block;
   font-size: 4em;
@@ -112,14 +118,22 @@ h6 {
   color: #777;
 }
 
-.wrapper {
+.wrapper,.navigationMnu {
   text-align: center;
   margin: 50px auto;
+}
+.navigationMnu
+{
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 .tabs {
   margin-top: 50px;
-  font-size: 15px;
+  font-size: 13px;
   padding: 0px;
   list-style: none;
   background: #fff;
@@ -128,6 +142,8 @@ h6 {
   border-radius: 50px;
   position: relative;
 }
+
+
 
 .tabs a {
   text-decoration: none;
@@ -158,13 +174,18 @@ h6 {
   border-radius: 50px;
   transition-duration: 0.6s;
   transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
   background: #05abe0;
-  background: -moz-linear-gradient(45deg, #05abe0 0%, #8200f4 100%);
-  background: -webkit-linear-gradient(45deg, #05abe0 0%, #8200f4 100%);
-  background: linear-gradient(45deg, #05abe0 0%, #8200f4 100%);
+  background: -moz-linear-gradient(45deg, #ffcf0d 0%, #ffcf0d 100%);
+  background: -webkit-linear-gradient(45deg, #ffcf0d 0%, #ffcf0d 100%);
+  background: linear-gradient(45deg, #ffcf0d 0%, #ffcf0d 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#05abe0', endColorstr='#8200f4',GradientType=1 );
 
+}
+
+#headContainer {
+  position: relative;
+  text-align: center;
+  color: white;
 }
 
 
@@ -172,7 +193,7 @@ h6 {
 {
   display:flex;
   flex-direction:row;
-  justify-content:space-evenly;
+  justify-content:center;
   align-items:center;
   text-align:center;
   min-height: 100vh;
@@ -181,17 +202,18 @@ h6 {
 .btn-1
 {
   width: 200px;
-  height: 100px;
+  height: 80px;
   border:3px solid black;
   color:#000000;
   background-color:white;
-  border-radius: 4px;
+  border-radius: 15px;
   transition: ease-out 0.3s;
   font-weight: 600;
   font-size:2rem;
   outline:none;
   position:relative;
   z-index: 1;
+  margin:2rem
 
 }
 
@@ -205,6 +227,7 @@ h6 {
 {
   transition: 0.5s all ease;
   position:absolute;
+  border-radius: 13px;
   top: 0;
   left:50%;
   right:50%;
