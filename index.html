@@ -2,6 +2,7 @@
 <html>
   <head>
     <script src="./jquery-3.4.1.slim.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="./app.js"></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -10,36 +11,97 @@
 
 
   <body>
-    <img src="photos/pacHead.jpg" >
-    <br>
-    <br>
-    <br>
+	<!-- temp menu  -->
 
-    <div id = "welcome">
-      <span><a href="#">Welcome To Pacman<a></a></span>
-      <span><img src="photos/pac-man.png" height = "70" width = "70"></span>
-      <div class="container">
-        <button class="btn-1"><i class="fa fa-user-plus"></i> 
-          Register
-        </button>
-        <button class="btn-1"><i class="fa fa-sign-out"></i> 
-          Login
-        </button>
-      </div>
-    </div>
+	<div id="wrapperf">
+		<div id="content">
+			<div id="welcome" class="pages">
+				<div class="container">
+          <img src="photos/pacHead.jpg" height = auto width = "100%">
 
-    <div class="wrapper">
-      <nav class="tabs">
-        <div class="selector"></div>
-        <a href="#" class="active"
-          ><i class="fab fa-superpowers"></i>Welcome</a
-        >
-        <a href="#"><i class="fas fa-hand-rock"></i>Hulk</a>
-        <a href="#"><i class="fas fa-bolt"></i>Thor</a>
-        <a href="#"><i class="fas fa-burn"></i>Marvel</a>
-      </nav>
-    </div>
-<!-- 
+          <div class="wrapper">
+            <nav class="tabs">
+              <div class="selector"></div>
+              <a href="#welcome" class="active">Welcome</a>
+              <a href="#signUp">SignUP</a>
+              <a href="#login">Login</a>
+              <a href="#Settings">Settings</a>
+              <a href="#about">About</a>
+              <a href="#game">Game</a>
+            </nav>
+          </div> 
+      
+
+
+
+          <span id="headline" ><a href="#">Welcome To PacMan<a></a></span>
+          <span><img src="photos/pac-man.png" height = "70" width = "70"></span>
+          <div class="containerbt">
+            <button class="btn-1"><i class="fa fa-user-plus"></i> 
+              Register
+            </button>
+            <button class="btn-1"><i class="fa fa-sign-out"></i> 
+              Login
+            </button>
+          </div>
+				</div>
+			</div>
+			<div id="signUp" class="pages">
+				<div class="container">
+					<h2>SignUp</h2>
+          <form>
+            <label for="uname">Username:</label><br />
+            <input type="text" id="uname" name="unmae" /><br /><br />
+    
+            <label for="pword">New password:</label><br />
+            <input type="text" id="pword" name="pword" /><br /><br />
+    
+            <label for="repeatPword">Repeat password:</label><br />
+            <input type="text" id="repeatPword" name="repeatPword" /><br /><br />
+    
+            <label for="fname">Full name:</label><br />
+            <input type="text" id="fname" name="fname" /><br /><br />
+    
+            <label for="email">E-mail:</label><br />
+            <input type="text" id="email" name="email" /><br /><br />
+    
+            <label for="birthDate">Birth Date:</label><br />
+            <input type="date" id="birthDate" name="birthDate" /><br /><br />
+    
+            <input type="submit" value="Submit" onclick="validateSignUp();" />
+          </form>
+				</div>
+			</div>
+			<div id="login" class="pages">
+				<div class="container">
+					<h2>Login</h2>
+					<div class="login-form">
+					<form>
+						<input type="text" name="username" placeholder="Username" required>
+						<input type="password" name="password" placeholder="Password" required>
+						<input type="submit" value="Login">
+					</form>
+					</div>
+				</div>
+			</div>
+			<div id="settings" class="pages">
+				<div class="container">
+					<h2>Settings</h2>
+				</div>
+			</div>
+			<div id="about" class="pages">
+				<div class="container">
+					<h2>About</h2>
+				</div>
+			</div>
+			<div id="game" class="pages">
+				<div class="container">
+					<h2>Game</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+
     <div id="score">
       <label for="lblScore">SCORE:</label>
       <input id="lblScore" type="text" />
@@ -48,10 +110,43 @@
       <label for="lblTime">TIME:</label>
       <input id="lblTime" type="text" />
     </div>
-    <div id="game">
-      <canvas id="canvas" height="600" width="600" ></canvas>
-    </div> -->
-  </body>
+    <div id="main">
+      <ul id="navigationMenu">
+        <li> <a href="#welcome">
+            <span>welcome</span>
+          </a>
+        </li>
+        <li> <a href="#signUp">
+            <span>signUp</span>
+          </a>
+        </li>
+        <li> <a href="#login">
+            <span>login</span>
+           </a>
+        </li>
+        <li> <a href="#Settings">
+            <span>Settings</span>
+          </a>
+    
+        </li>
+        <li> <a href="#about">
+            <span>about</span>
+          </a>
+        </li>
+        <!-- <li> <a href="#game">
+          <span>game</span>
+          </a>
+        </li> -->
+      </ul>
+    </div>
+    <!-- <div id="game">
+
+      <canvas id="canvas" height="600" width="600"></canvas>
+    </div> --> 
+    </body> 
+
+
+
 
   <footer
     id="footer"
@@ -59,7 +154,7 @@
     height="300px"
     width="300px"
   >
-   
+
   </footer>
   <script src="menu.js"></script>
 </html>
