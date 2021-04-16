@@ -7,13 +7,23 @@ var start_time;
 var time_elapsed;
 var interval;
 var page;
+var startAngle = 0;
+var endAngle = 0;
+var eyeX = 5;
+var eyeY = -15
+// var usersMap = {"k": "k"};
+sessionStorage.setItem("k", "k")
+var isLoggedIn = false;
 
 $(document).ready(function () {
 	handlePages();
+  
+  context = canvas.getContext("2d");
+  $("#game").hide()
 });
 
 // $(document).ready(function() {
-// 	//context = canvas.getContext("2d");
+// 	context = canvas.getContext("2d");
 
 // 	Start();
 // });
@@ -27,9 +37,13 @@ function handlePages() {
 
 		cleanUp(page);
 
-        page = this.href.split("#")[1];
-		
-		switch(page) {
+    page = this.href.split("#")[1];
+    switch(page) {
+      
+      case "game":
+				handleGamePage();
+        isLoggedIn ? Start() : null;
+			  break;
 			case "welcome":
 				handleWelcomePage();
 			  break;
@@ -74,6 +88,13 @@ function cleanUp(oldPage) {
 		case "about":
 			alert(" cleanUp -> about");
 		  break;
+    case "game":
+      window.clearInterval(interval);
+      $("#canvas").hide()      
+      lblScore.value = 0;
+      lblTime.value = 0;
+			alert(" cleanUp -> game");
+		  break;
 	  }
 }
 
@@ -92,7 +113,15 @@ function handleSettingsPage() {
 function handleAboutPage() {
 	alert(" about page ");
 }
+function handleGamePage() {
+	alert(" about page ");
+}
+
 function Start() {
+  $(".pages").hide();
+  $("#game").show()
+  $("#canvas").show()
+    
   board = new Array();
   score = 0;
   pac_color = "yellow";
@@ -129,7 +158,7 @@ function Start() {
       }
     }
   }
-  while (food_remain > 0) {
+  while (food_remain > 0 && location.href == "#game") {
     var emptyCell = findRandomEmptyCell(board);
     board[emptyCell[0]][emptyCell[1]] = 1;
     food_remain--;
@@ -188,12 +217,12 @@ function Draw() {
       center.y = j * 60 + 30;
       if (board[i][j] == 2) {
         context.beginPath();
-        context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+        context.arc(center.x, center.y, 30, 0.15 * Math.PI + startAngle, 1.85 * Math.PI + endAngle); // half circle
         context.lineTo(center.x, center.y);
         context.fillStyle = pac_color; //color
         context.fill();
         context.beginPath();
-        context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+        context.arc(center.x + eyeX, center.y + eyeY, 5, 0, 2 * Math.PI); // circle
         context.fillStyle = "black"; //color
         context.fill();
       } else if (board[i][j] == 1) {
@@ -217,21 +246,39 @@ function UpdatePosition() {
   if (x == 1) {
     if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
       shape.j--;
+      startAngle = -Math.PI / 2;
+      endAngle = -Math.PI / 2;
+      eyeX = 17;
+      eyeY = -9;
+
     }
   }
   if (x == 2) {
     if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
       shape.j++;
+      startAngle = Math.PI / 2;
+      endAngle = Math.PI / 2;
+      eyeX = -17;
+      eyeY = 9;
+      
     }
   }
   if (x == 3) {
     if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
       shape.i--;
+      startAngle = Math.PI;
+      endAngle = Math.PI;
+      eyeX = -5;
+      eyeY = -15;
     }
   }
   if (x == 4) {
     if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
       shape.i++;
+      startAngle = 0;
+      endAngle = 0;
+      eyeX = 5;
+      eyeY = -15;
     }
   }
   if (board[shape.i][shape.j] == 1) {
@@ -251,8 +298,9 @@ function UpdatePosition() {
   }
 }
 
-///////////OUR CODE DOWN HERE////////////////////////////
+//GUY
 function validateSignUp() {
+  let userName = $("#uname").val();
   let fullName = $("#fname").val();
   let email = $("#email").val();
   let password = $("#pword").val();
@@ -278,5 +326,39 @@ function validateSignUp() {
  
   if (numOfValidations != 0) {
     alert("form is not defined well.");
+  }
+
+  else{
+    location.href = "#welcome";
+    // usersMap[userName] = password;   
+    sessionStorage.setItem(userName, password); 
+  }
+}
+
+//GUY
+function loginUser(){
+  let loginUserName = $("#loginUserName").val();
+  let loginPassword = $("#loginPassword").val();
+
+  // if(loginUserName in usersMap && usersMap[loginUserName] == loginPassword){    
+  //   location.href = "#game";  
+  //   isLoggedIn = true;
+  //   page = "game";
+  //   Start()        
+  // }
+
+  if(isLoggedIn == true){
+    alert("A user is already logged in.")
+  }
+
+  else if(sessionStorage.getItem(loginUserName) === loginPassword){    
+    location.href = "#game";  
+    isLoggedIn = true;
+    page = "game";
+    Start()        
+  }
+
+  else{
+    alert("Details are wrong. Try again or register.");
   }
 }
