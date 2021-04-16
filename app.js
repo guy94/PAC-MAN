@@ -32,7 +32,7 @@ $(document).ready(function () {
 function handlePages() {
 	$(".pages").hide();
     
-	$("#navigationMenu a").click(function (e) {
+	$(".tabs a").click(function (e) {
         e.preventDefault();
 
 		cleanUp(page);
