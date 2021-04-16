@@ -1,12 +1,35 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 
+
 body {
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "Roboto", sans-serif;
+  font-family: "Comfortaa", sans-serif;
+}
+
+
+#welcome a
+ {
+  position: relative;
+  display: inline-block;
+  font-size: 4em;
+  font-weight: 800;
+  color:  rgb(248,206,27);
+  overflow: hidden;
+  background: linear-gradient(to right,  rgb(248,206,27), rgb(248,206,27) 50%, rgb(0, 0, 0) 50%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  background-position: 100%;
+  transition: background-position 275ms ease;
+}
+#welcome a:hover
+{
+  background-position: 0 100%;
 }
 
 h2 {
@@ -72,3 +95,61 @@ h6 {
   background: linear-gradient(45deg, #05abe0 0%, #8200f4 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#05abe0', endColorstr='#8200f4',GradientType=1 );
 }
+
+
+.container
+{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-evenly;
+  align-items:center;
+  text-align:center;
+  min-height: 100vh;
+}
+
+.btn-1
+{
+  width: 200px;
+  height: 100px;
+  border:3px solid black;
+  color:#000000;
+  background-color:white;
+  border-radius: 4px;
+  transition: ease-out 0.3s;
+  font-weight: 600;
+  font-size:2rem;
+  outline:none;
+  position:relative;
+  z-index: 1;
+
+}
+
+.btn-1:hover
+{
+  color:white;
+  cursor:pointer;
+}
+
+.btn-1:before
+{
+  transition: 0.5s all ease;
+  position:absolute;
+  top: 0;
+  left:50%;
+  right:50%;
+  bottom:0;
+  opacity: 0;
+  content:"";
+  background-color: rgb(248,206,27);
+}
+
+.btn-1:hover:before
+{
+  transition: 0.5s all ease;
+  left:0;
+  right:0;
+  opacity: 1;
+  z-index: -1;
+}
+
+
