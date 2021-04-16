@@ -12,7 +12,6 @@
 
   <body>
 	<!-- temp menu  -->
-
 	<div id="wrapperf">
 		<div id="content">
       <div id = "headContainer">
@@ -49,27 +48,27 @@
 			<div id="signUp" class="pages">
 				<div class="container">
 					<h2>SignUp</h2>
-          <form>
-            <label for="uname">Username:</label><br />
-            <input type="text" id="uname" name="unmae" /><br /><br />
-    
-            <label for="pword">New password:</label><br />
-            <input type="text" id="pword" name="pword" /><br /><br />
-    
-            <label for="repeatPword">Repeat password:</label><br />
-            <input type="text" id="repeatPword" name="repeatPword" /><br /><br />
-    
-            <label for="fname">Full name:</label><br />
-            <input type="text" id="fname" name="fname" /><br /><br />
-    
-            <label for="email">E-mail:</label><br />
-            <input type="text" id="email" name="email" /><br /><br />
-    
-            <label for="birthDate">Birth Date:</label><br />
-            <input type="date" id="birthDate" name="birthDate" /><br /><br />
-    
-            <input type="submit" value="Submit" onclick="validateSignUp();" />
-          </form>
+					<form>
+						<label for="uname">Username:</label><br />
+						<input class="signup" type="text" id="uname" name="unmae" /><br /><br />
+				
+						<label for="pword">New password:</label><br />
+						<input class="signup" type="password" id="pword" name="pword" /><br /><br />
+				
+						<label for="repeatPword">Repeat password:</label><br />
+						<input class="signup" type="password" id="repeatPword" name="repeatPword" /><br /><br />
+				
+						<label for="fname">Full name:</label><br />
+						<input class="signup" type="text" id="fname" name="fname" /><br /><br />
+				
+						<label for="email">E-mail:</label><br />
+						<input class="signup" type="text" id="email" name="email" /><br /><br />
+				
+						<label for="birthDate">Birth Date:</label><br />
+						<input class="signup" type="date" id="birthDate" name="birthDate" /><br /><br />
+				
+						<input type="submit" value="Submit" onclick="validateSignUp();" />
+					</form>
 				</div>
 			</div>
 			<div id="login" class="pages">
@@ -77,9 +76,9 @@
 					<h2>Login</h2>
 					<div class="login-form">
 					<form>
-						<input type="text" name="username" placeholder="Username" required>
-						<input type="password" name="password" placeholder="Password" required>
-						<input type="submit" value="Login">
+						<input id="loginUserName" type="text" name="username" placeholder="Username" required>
+						<input id="loginPassword" type="password" name="password" placeholder="Password" required>
+						<input type="submit" value="Login" onclick="loginUser()">
 					</form>
 					</div>
 				</div>
@@ -96,57 +95,20 @@
 			</div>
 			<div id="game" class="pages">
 				<div class="container">
-					<h2>Game</h2>
+				<h2>Game</h2></div>
+				<div id="score">
+					<label for="lblScore">SCORE:</label>
+					<input id="lblScore" type="text" />
 				</div>
+				<div id="time">
+					<label for="lblTime">TIME:</label>
+					<input id="lblTime" type="text" />
+				</div>
+				<canvas id="canvas" height="600" width="600"></canvas>
 			</div>
 		</div>
 	</div>
-
-    <div id="score">
-      <label for="lblScore">SCORE:</label>
-      <input id="lblScore" type="text" />
-    </div>
-    <div id="time">
-      <label for="lblTime">TIME:</label>
-      <input id="lblTime" type="text" />
-    </div>
-    <!-- <div id="main">
-      <ul id="navigationMenu">
-        <li> <a href="#welcome">
-            <span>welcome</span>
-          </a>
-        </li>
-        <li> <a href="#signUp">
-            <span>signUp</span>
-          </a>
-        </li>
-        <li> <a href="#login">
-            <span>login</span>
-           </a>
-        </li>
-        <li> <a href="#Settings">
-            <span>Settings</span>
-          </a>
-    
-        </li>
-        <li> <a href="#about">
-            <span>about</span>
-          </a>
-        </li>
-         <li> <a href="#game">
-          <span>game</span>
-          </a>
-        </li> -->
-      </ul>
-    </div> -->
-    <!-- <div id="game">
-
-      <canvas id="canvas" height="600" width="600"></canvas>
-    </div> --> 
-    </body> 
-
-
-
+    </body>
 
   <footer
     id="footer"
