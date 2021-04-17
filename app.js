@@ -11,76 +11,73 @@ var startAngle = 0;
 var endAngle = 0;
 var eyeX = 5;
 var eyeY = -15
-// var usersMap = {"k": "k"};
-sessionStorage.setItem("k", "k")
+var usersMap = {"k": "k"};
 var isLoggedIn = false;
 
 $(document).ready(function () {
-	handlePages();
-  
-  context = canvas.getContext("2d");
-  $("#game").hide()
+		handleMenuPages();
+		context = canvas.getContext("2d");
 });
+ 
+function handlePages(page, clean) {
+	
+	cleanUp(clean);
+	
+	switch(page) {
+		case "game":
+		  	isLoggedIn ? Start() : null;
+		  break;
+		case "welcome":
+			handleWelcomePage();
+		  break;
+		case "signUp":
+			handleSignUpPage();
+		  break;
+		case "login":
+			handleLoginPage();
+		  break;
+		case "settings":
+			handleSettingsPage();
+		  break;
+		case "about":
+			handleAboutPage();
+		  break;
+	}
+  
+	$(".pages:visible").slideUp(function () {
+		$("#" + page).slideDown();
+	});
 
-// $(document).ready(function() {
-// 	context = canvas.getContext("2d");
-
-// 	Start();
-// });
-
-// @TODO - we need to think about Game page. 
-function handlePages() {
+}
+function handleMenuPages() {
 	$(".pages").hide();
     
 	$(".tabs a").click(function (e) {
         e.preventDefault();
 
-		cleanUp(page);
-
-    page = this.href.split("#")[1];
-    switch(page) {
-      
-      case "game":
-				handleGamePage();
-        isLoggedIn ? Start() : null;
-			  break;
-			case "welcome":
-				handleWelcomePage();
-			  break;
-			case "signUp":
-				handleSignUpPage();
-			  break;
-			case "login":
-				handleLoginPage();
-			  break;
-			case "settings":
-				handleSettingsPage();
-			  break;
-			case "about":
-				handleAboutPage();
-			  break;
-		  }
+		var oldPage = page;
+    	page = this.href.split("#")[1];
 		
-        $(".pages:visible").slideUp(function () {
-            $("#" + page).slideDown();
-        });
+		handlePages(page, oldPage);
     });
     
 	// first page
 	$("#welcome").show();
 	page = "welcome";
+	handleWelcomePage();
 }
 
 function cleanUp(oldPage) {
 	switch(oldPage) {
 		case "welcome":
-			alert(" cleanUp -> welcome");
+			document.getElementById("welcome-reg").removeEventListener("click", signUpButton);
+			document.getElementById("welcome-log").removeEventListener("click", loginButton);
 		  break;
 		case "signUp":
-			alert(" cleanUp -> signUp");
+			// alert(" cleanUp -> signUp");
 		  break;
 		case "login":
-			alert(" cleanUp -> login");
+			document.getElementById("loginSubmit").removeEventListener("click", loginUser);
 		  break;
 		case "settings":
 			alert(" cleanUp -> settings");
@@ -88,24 +85,40 @@ function cleanUp(oldPage) {
 		case "about":
 			alert(" cleanUp -> about");
 		  break;
-    case "game":
-      window.clearInterval(interval);
-      $("#canvas").hide()      
-      lblScore.value = 0;
-      lblTime.value = 0;
+		case "game":
+			window.clearInterval(interval);
+			$("#canvas").hide()      
+			lblScore.value = 0;
+			lblTime.value = 0;
 			alert(" cleanUp -> game");
 		  break;
 	  }
 }
 
 function handleWelcomePage() {
-	alert(" welcome page ");
+	document.getElementById("welcome-reg").addEventListener("click", signUpButton);
+	document.getElementById("welcome-log").addEventListener("click", loginButton);
 }
+
+function signUpButton() {
+	page = "signUp";
+	// to trigger the menu slide
+	$('a[href=\'#signUp\']').click();
+	handlePages(page, "welcome");
+}
+
+function loginButton() {
+	page = "login";
+	// to trigger the menu slide
+	$('a[href=\'#login\']').click();
+	handlePages(page, "welcome");
+}
+
 function handleSignUpPage() {
-	alert(" signUp page ");
+	// alert(" signUp page ");
 }
 function handleLoginPage() {
-	alert(" login page ");
+	document.getElementById("loginSubmit").addEventListener("click", loginUser);
 }
 function handleSettingsPage() {
 	alert(" settings page ");
@@ -118,10 +131,12 @@ function handleGamePage() {
 }
 
 function Start() {
-  $(".pages").hide();
-  $("#game").show()
+
+  $(".pages:visible").slideUp(function () {
+	$("#game").slideDown();
+  });
   $("#canvas").show()
-    
+  
   board = new Array();
   score = 0;
   pac_color = "yellow";
@@ -164,20 +179,17 @@ function Start() {
     food_remain--;
   }
   keysDown = {};
-  addEventListener(
-    "keydown",
-    function (e) {
+  
+  addEventListener("keydown", function (e) {
       keysDown[e.keyCode] = true;
-    },
-    false
+    },false
   );
-  addEventListener(
-    "keyup",
-    function (e) {
+  
+  addEventListener("keyup", function (e) {
       keysDown[e.keyCode] = false;
-    },
-    false
+    },false
   );
+
   interval = setInterval(UpdatePosition, 250);
 }
 
@@ -207,6 +219,7 @@ function GetKeyPressed() {
 }
 
 function Draw() {
+
   canvas.width = canvas.width; //clean board
   lblScore.value = score;
   lblTime.value = time_elapsed;
@@ -241,6 +254,7 @@ function Draw() {
 }
 
 function UpdatePosition() {
+
   board[shape.i][shape.j] = 0;
   var x = GetKeyPressed();
   if (x == 1) {
@@ -300,6 +314,7 @@ function UpdatePosition() {
 
 //GUY
 function validateSignUp() {
+
   let userName = $("#uname").val();
   let fullName = $("#fname").val();
   let email = $("#email").val();
@@ -330,35 +345,26 @@ function validateSignUp() {
 
   else{
     location.href = "#welcome";
-    // usersMap[userName] = password;   
-    sessionStorage.setItem(userName, password); 
-  }
+    usersMap[userName] = password;   
+    }
 }
 
-//GUY
-function loginUser(){
+//GUY -------> i think we need to replace onclick="loginUser()" with addEvent Listener (ronit)
+function loginUser(e){
+  
+  e.preventDefault()
   let loginUserName = $("#loginUserName").val();
   let loginPassword = $("#loginPassword").val();
 
-  // if(loginUserName in usersMap && usersMap[loginUserName] == loginPassword){    
-  //   location.href = "#game";  
-  //   isLoggedIn = true;
-  //   page = "game";
-  //   Start()        
-  // }
-
   if(isLoggedIn == true){
     alert("A user is already logged in.")
-  }
-
-  else if(sessionStorage.getItem(loginUserName) === loginPassword){    
-    location.href = "#game";  
+  }    
+  else if (loginUserName in usersMap && usersMap[loginUserName] == loginPassword) {
     isLoggedIn = true;
     page = "game";
-    Start()        
+    Start();
   }
-
-  else{
+  else {
     alert("Details are wrong. Try again or register.");
   }
 }

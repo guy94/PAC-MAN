@@ -7,33 +7,28 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
- 
     <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-    
-   
   </head>
-
   <body>
-	<!-- temp menu  -->
 	<div id="wrapperf">
 		<div id="content">
-      <div id = "headContainer">
-        <img src="photos/pacHead2.jpg" height = auto width = "100%">
+			<div id = "headContainer">
+				<img src="photos/pacHead2.jpg" height = auto width = "100%">
 
-        <div class="navigationMnu">
-          <nav class="tabs">
-            <div class="selector"></div>
-            <a href="#welcome" class = "active">Welcome</a>
-            <a href="#signUp">SignUP</a>
-            <a href="#login">Login</a>
-            <a href="#Settings">Settings</a>
-            <a href="#about">About</a>
-            <a href="#game">Game</a>
-          </nav>
-        </div> 
-      </div>
-      <br>
-      <br>
+				<div class="navigationMnu">
+				<nav class="tabs">
+					<div class="selector"></div>
+					<a href="#welcome" class = "active">Welcome</a>
+					<a href="#signUp">SignUP</a>
+					<a href="#login">Login</a>
+					<a href="#Settings">Settings</a>
+					<a href="#about">About</a>
+					<a href="#game">Game</a>
+				</nav>
+				</div> 
+			</div>
+			<br>
+			<br>
 			<div id="welcome" class="pages">
 				<div class="welcomeContainer">
           <span class="headline"><a href="#">Welcome To PacMan<a></a></span>
@@ -44,41 +39,28 @@
             <h3>If Pac-Man makes contact with a ghost he will lose a life, the game ends</h3>
             <h3>  when all lives are lost</h3>
           </div>
-          <div class="containerbt">
-            <button class="btn-1"><i class="fa fa-user-plus"></i> 
-              Register
-            </button>
-            <button class="btn-1"><i class="fa fa-sign-out"></i> 
-              Login
-            </button>
-          </div>
+		  <div class="containerbt">
+			<button id= "welcome-reg" class="btn-1"><i class="fa fa-user-plus"></i> Register </button>
+			<button id= "welcome-log" class="btn-1"><i class="fa fa-sign-out"></i> Login </button>
+		</div>
 				</div>
 			</div>
 			<div id="signUp" class="pages">
         <span class="headline"><a href="#">Sign Up<a></a></span>
         <span><img src="photos/signUp.png" height = "90" width = "100"></span>
 				<div class="container">
-					<form>
-						<label for="uname">Username:</label><br />
-						<input class="signup" type="text" id="uname" name="unmae" /><br /><br />
-				
-						<label for="pword">New password:</label><br />
-						<input class="signup" type="password" id="pword" name="pword" /><br /><br />
-				
-						<label for="repeatPword">Repeat password:</label><br />
-						<input class="signup" type="password" id="repeatPword" name="repeatPword" /><br /><br />
-				
-						<label for="fname">Full name:</label><br />
-						<input class="signup" type="text" id="fname" name="fname" /><br /><br />
-				
-						<label for="email">E-mail:</label><br />
-						<input class="signup" type="text" id="email" name="email" /><br /><br />
-				
-						<label for="birthDate">Birth Date:</label><br />
-						<input class="signup" type="date" id="birthDate" name="birthDate" /><br /><br />
-				
-						<input  type="submit" value="Submit" onclick="validateSignUp();" />
-					</form>
+					<h2>SignUp</h2>
+					<div class="signUp-form">
+						<form>
+							<input class="signup" type="text" id="uname" name="unmae" placeholder="Username" required />
+							<input class="signup" type="password" id="pword" name="pword" placeholder="New password:" required />
+							<input class="signup" type="password" id="repeatPword" name="repeatPword" placeholder="Repeat password:" required />
+							<input class="signup" type="text" id="fname" name="fname" placeholder="Full name:" required />
+							<input class="signup" type="text" id="email" name="email" placeholder="E-mail:" required/>
+							<input class="signup" type="date" id="birthDate" name="birthDate" placeholder="Birth Date:" required />
+							<input type="submit" value="Submit" onclick="validateSignUp();" />
+						</form>
+					</div>
 				</div>
 			</div>
 			<div id="login" class="pages">
@@ -91,7 +73,7 @@
 					<form>
 						<input id="loginUserName" type="text" name="username" placeholder="Username" required>
 						<input id="loginPassword" type="password" name="password" placeholder="Password" required>
-						<input type="submit" value="Login" onclick="loginUser()">
+						<input id="loginSubmit" type="submit" value="Login">
 					</form>
           <br>
           <br>
@@ -125,15 +107,13 @@
 			</div>
 		</div>
 	</div>
-    </body>
-
+  </body>
   <footer
     id="footer"
     style="background-color: aqua"
     height="300px"
     width="300px"
   >
-
   </footer>
   <script src="menu.js"></script>
 </html>
