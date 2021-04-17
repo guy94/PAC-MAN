@@ -19,3 +19,15 @@ $(".tabs").on("click", "a", function (e) {
     width: activeWidth + "px",
   });
 });
+
+$(function () {
+  $( "#dialog1" ).dialog({
+    autoOpen: false,
+    height: 400,
+    width: 400
+  });
+  
+  $("#opener").click(function() {
+    $("#dialog1").dialog('open');
+  });
+});

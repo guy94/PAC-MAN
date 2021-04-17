@@ -29,6 +29,8 @@ $(document).ready(function () {
 // });
 
 // @TODO - we need to think about Game page. 
+
+
 function handlePages() {
 	$(".pages").hide();
     
@@ -65,6 +67,30 @@ function handlePages() {
             $("#" + page).slideDown();
         });
     });
+
+    $(".btn-1").click(function (e) {
+      e.preventDefault();
+
+  cleanUp(page);
+
+  page = this.innerText;
+  
+  switch(page) {
+
+    case " Register":
+      handleSignUpPage();
+      page = "signUp"
+      break;
+    case " Login":
+      handleLoginPage();
+      page = "login"
+      break;
+    }
+  
+      $(".pages:visible").slideUp(function () {
+          $("#" + page).slideDown();
+      });
+  });
     
 	// first page
 	$("#welcome").show();
