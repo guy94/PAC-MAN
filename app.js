@@ -13,6 +13,11 @@ var eyeX = 5;
 var eyeY = -15;
 var usersMap = { k: "k" };
 var isLoggedIn = false;
+var numOfMonsters = 4;
+var monstersPositions = new Object();
+var monstersInterval;
+var monstersNames;
+var livesCounter = 5;
 
 $(document).ready(function () {
   handleMenuPages();
@@ -158,7 +163,6 @@ function Start() {
     board[i] = new Array();
     //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
     for (var j = 0; j < 10; j++) {
-      console.log(food_remain)
       if (
         (i == 3 && j == 3) ||
         (i == 3 && j == 4) ||
@@ -168,12 +172,6 @@ function Start() {
       ) {
         board[i][j] = 4;
       }
-    //    else if((i == 0 && j == 0) ||
-    //   (i == 9 && j == 0) ||
-    //   (i == 0 && j == 9) ||
-    //   (i == 9 && j == 9) ){
-    //     board[i][j] = 5;
-    // }
       else {
         var randomNum = Math.random();
         if (randomNum <= (1.0 * food_remain) / cnt) {
@@ -193,7 +191,6 @@ function Start() {
   }
   // && location.href == "#game"
   while (food_remain > 0) {
-    console.log(food_remain)
     var emptyCell = findRandomEmptyCell(board);
     board[emptyCell[0]][emptyCell[1]] = 1;
     food_remain--;
@@ -217,6 +214,10 @@ function Start() {
   );
 
   interval = setInterval(UpdatePosition, 250);
+  initMonsters()
+  setTimeout(() => {
+    monstersInterval = setInterval(updateMonsters, 1000);
+  },3000);
 }
 
 function findRandomEmptyCell(board) {
@@ -282,9 +283,30 @@ function Draw() {
       }
     }
   }
+  drawMonsters()
+}
+
+function drawMonsters(){
+  for (var i = 0; i < numOfMonsters; i++) {
+    context.beginPath();
+    context.rect(monstersPositions[monstersNames[i]].x * 60 + 30, monstersPositions[monstersNames[i]].y * 60 + 30,20,20);
+    context.fillStyle = "green";
+    context.fill();
+
+    //Game Over!
+    if(monstersPositions[monstersNames[i]].x == shape.i && monstersPositions[monstersNames[i]].y == shape.j){
+      livesCounter--;
+      if(livesCounter == 0){
+        window.clearInterval(interval);
+        window.clearInterval(monstersInterval);
+        alert("You are dead!")
+      }
+    }
+  }
 }
 
 function UpdatePosition() {
+  // updateMonsters()
   board[shape.i][shape.j] = 0;
   var x = GetKeyPressed();
   if (x == 1) {
@@ -395,4 +417,114 @@ function loginUser(e) {
   } else {
     alert("Details are wrong. Try again or register.");
   }
+}
+
+//Monsters section
+function initMonsters(){
+  let availablePostitions = [[0,0],[0,9],[9,0],[9,9]];
+  monstersNames = ["a", "b", "c", "d"];
+
+  for (var i = 0; i < numOfMonsters; i++) {
+    monstersPositions[monstersNames[i]] = new Object();
+    monstersPositions[monstersNames[i]].x = availablePostitions[i][0]
+    monstersPositions[monstersNames[i]].y = availablePostitions[i][1]
+    monstersPositions[monstersNames[i]].moves = [];
+  }
+}
+
+function updateMonsters(){
+
+  for (var i = 0; i < numOfMonsters; i++) {
+    let monster = monstersPositions[monstersNames[i]];
+
+    if(monster.x == 0 ) {//left wall
+
+      if(board[monster.x + 1][monster.y] != 4){
+        monster.moves.push([monster.x + 1, monster.y]);
+      }
+      if(monster.y == 0 && board[monster.x][monster.y + 1] != 4){
+        monster.moves.push([monster.x, monster.y + 1]);
+      }
+      else if(monster.y == 9 && board[monster.x][monster.y - 1] != 4){
+        monster.moves.push([monster.x, monster.y - 1]);
+      }
+      else{
+        if(board[monster.x][monster.y - 1] != 4){
+          monster.moves.push([monster.x, monster.y - 1]);
+        }
+        if(board[monster.x][monster.y + 1] != 4){
+          monster.moves.push([monster.x, monster.y + 1]);
+        }
+      }
+    }
+
+    else if(monster.x == 9 ) {//right wall
+
+      if(board[monster.x - 1][monster.y] != 4){
+        monster.moves.push([monster.x - 1, monster.y]);
+      }
+      if(monster.y == 0 && board[monster.x][monster.y + 1] != 4){
+        monster.moves.push([monster.x, monster.y + 1]);
+      }
+      else if(monster.y == 9 && board[monster.x][monster.y - 1] != 4){
+        monster.moves.push([monster.x, monster.y - 1]);
+      }
+      else{
+        if(board[monster.x][monster.y - 1] != 4){
+          monster.moves.push([monster.x, monster.y - 1]);
+        }
+        if(board[monster.x][monster.y + 1] != 4){
+          monster.moves.push([monster.x, monster.y + 1]);
+        }
+      }
+    }
+
+    else if(0 < monster.x < 9 && monster.y == 0) {       //first Row
+      if(board[monster.x][monster.y + 1] != 4){
+        monster.moves.push([monster.x, monster.y + 1]);
+      }
+
+    }
+
+    else if(0 < monster.x < 9 && monster.y == 9) {       //last Row
+      if(board[monster.x][monster.y - 1] != 4){
+        monster.moves.push([monster.x, monster.y - 1]);
+      }
+
+    }
+
+    else // inside the board limits
+    {
+      if(board[monster.x][monster.y - 1] != 4){ // up
+        monster.moves.push([monster.x, monster.y - 1]);
+      }
+      if(board[monster.x][monster.y + 1] != 4){ // down
+        monster.moves.push([monster.x, monster.y + 1]);
+      }
+
+      if(board[monster.x + 1][monster.y] != 4){ // right
+        monster.moves.push([monster.x + 1, monster.y]);
+      }
+
+      if(board[monster.x - 1][monster.y] != 4){ //left
+        monster.moves.push([monster.x - 1, monster.y]);
+      }
+    }
+    calculateHeuristic(monster);
+  }
+}
+
+function calculateHeuristic(monster){
+  let heuristicValue = Number.MAX_SAFE_INTEGER;
+  let position = [];
+
+  for (var i = 0; i < monster.moves.length; i++) {
+    tempHeuristic = Math.abs(monster.moves[i][0] - shape.i) + Math.abs(monster.moves[i][1] - shape.j)
+    if(tempHeuristic < heuristicValue){
+      heuristicValue = tempHeuristic;
+      position = monster.moves[i];
+    }
+  }
+  monster.x = position[0];
+  monster.y = position[1];
 }
