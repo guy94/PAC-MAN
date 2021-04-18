@@ -10,118 +10,143 @@ var page;
 var startAngle = 0;
 var endAngle = 0;
 var eyeX = 5;
-var eyeY = -15
-// var usersMap = {"k": "k"};
-sessionStorage.setItem("k", "k")
+var eyeY = -15;
+var usersMap = { k: "k" };
 var isLoggedIn = false;
 
 $(document).ready(function () {
-	handlePages();
-  
+  handleMenuPages();
   context = canvas.getContext("2d");
-  $("#game").hide()
 });
 
-// $(document).ready(function() {
-// 	context = canvas.getContext("2d");
+function handlePages(page, clean) {
+  cleanUp(clean);
 
-// 	Start();
-// });
+  switch (page) {
+    case "game":
+      isLoggedIn ? Start() : null;
+      break;
+    case "welcome":
+      handleWelcomePage();
+      break;
+    case "signUp":
+      handleSignUpPage();
+      break;
+    case "login":
+      handleLoginPage();
+      break;
+    case "settings":
+      handleSettingsPage();
+      break;
+    case "about":
+      handleAboutPage();
+      break;
+  }
 
-// @TODO - we need to think about Game page. 
-function handlePages() {
-	$(".pages").hide();
-    
-	$(".tabs a").click(function (e) {
-        e.preventDefault();
+  $(".pages:visible").slideUp(function () {
+    $("#" + page).slideDown();
+  });
+}
+function handleMenuPages() {
+  $(".pages").hide();
 
-		cleanUp(page);
+  $(".tabs a").click(function (e) {
+    e.preventDefault();
 
+    var oldPage = page;
     page = this.href.split("#")[1];
-    switch(page) {
-      
-      case "game":
-				handleGamePage();
-        isLoggedIn ? Start() : null;
-			  break;
-			case "welcome":
-				handleWelcomePage();
-			  break;
-			case "signUp":
-				handleSignUpPage();
-			  break;
-			case "login":
-				handleLoginPage();
-			  break;
-			case "settings":
-				handleSettingsPage();
-			  break;
-			case "about":
-				handleAboutPage();
-			  break;
-		  }
-		
-        $(".pages:visible").slideUp(function () {
-            $("#" + page).slideDown();
-        });
-    });
-    
-	// first page
-	$("#welcome").show();
-	page = "welcome";
+
+    handlePages(page, oldPage);
+  });
+
+  // first page
+  $("#welcome").show();
+  page = "welcome";
+  handleWelcomePage();
 }
 
 function cleanUp(oldPage) {
-	switch(oldPage) {
-		case "welcome":
-			alert(" cleanUp -> welcome");
-		  break;
-		case "signUp":
-			alert(" cleanUp -> signUp");
-		  break;
-		case "login":
-			alert(" cleanUp -> login");
-		  break;
-		case "settings":
-			alert(" cleanUp -> settings");
-		  break;
-		case "about":
-			alert(" cleanUp -> about");
-		  break;
+  switch (oldPage) {
+    case "welcome":
+      document
+        .getElementById("welcome-reg")
+        .removeEventListener("click", signUpButton);
+      document
+        .getElementById("welcome-log")
+        .removeEventListener("click", loginButton);
+      break;
+    case "signUp":
+      // alert(" cleanUp -> signUp");
+      break;
+    case "login":
+      document
+        .getElementById("loginSubmit")
+        .removeEventListener("click", loginUser);
+      break;
+    case "settings":
+      alert(" cleanUp -> settings");
+      break;
+    case "about":
+      alert(" cleanUp -> about");
+      break;
     case "game":
       window.clearInterval(interval);
-      $("#canvas").hide()      
+      $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
-			alert(" cleanUp -> game");
-		  break;
-	  }
+      alert(" cleanUp -> game");
+      break;
+  }
 }
 
 function handleWelcomePage() {
-	alert(" welcome page ");
+  document
+    .getElementById("welcome-reg")
+    .addEventListener("click", signUpButton);
+  document.getElementById("welcome-log").addEventListener("click", loginButton);
 }
+
+function signUpButton() {
+  page = "signUp";
+  // to trigger the menu slide
+  $("a[href='#signUp']").click();
+  handlePages(page, "welcome");
+}
+
+function loginButton() {
+  page = "login";
+  // to trigger the menu slide
+  $("a[href='#login']").click();
+  handlePages(page, "welcome");
+}
+
 function handleSignUpPage() {
-	alert(" signUp page ");
+  // alert(" signUp page ");
 }
 function handleLoginPage() {
-	alert(" login page ");
+  document.getElementById("loginSubmit").addEventListener("click", loginUser);
 }
 function handleSettingsPage() {
-	alert(" settings page ");
+  alert(" settings page ");
 }
 function handleAboutPage() {
-	alert(" about page ");
+  alert(" about page ");
 }
 function handleGamePage() {
-	alert(" about page ");
+  alert(" about page ");
 }
 
 function Start() {
-  $(".pages").hide();
-  $("#game").show()
-  $("#canvas").show()
-    
+  window.addEventListener("keydown", function(e) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);
+  $(".pages:visible").slideUp(function () {
+    $("#game").slideDown();
+  });
+  $("#canvas").show();
+
   board = new Array();
   score = 0;
   pac_color = "yellow";
@@ -133,6 +158,7 @@ function Start() {
     board[i] = new Array();
     //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
     for (var j = 0; j < 10; j++) {
+      console.log(food_remain)
       if (
         (i == 3 && j == 3) ||
         (i == 3 && j == 4) ||
@@ -141,7 +167,14 @@ function Start() {
         (i == 6 && j == 2)
       ) {
         board[i][j] = 4;
-      } else {
+      }
+    //    else if((i == 0 && j == 0) ||
+    //   (i == 9 && j == 0) ||
+    //   (i == 0 && j == 9) ||
+    //   (i == 9 && j == 9) ){
+    //     board[i][j] = 5;
+    // }
+      else {
         var randomNum = Math.random();
         if (randomNum <= (1.0 * food_remain) / cnt) {
           food_remain--;
@@ -158,12 +191,15 @@ function Start() {
       }
     }
   }
-  while (food_remain > 0 && location.href == "#game") {
+  // && location.href == "#game"
+  while (food_remain > 0) {
+    console.log(food_remain)
     var emptyCell = findRandomEmptyCell(board);
     board[emptyCell[0]][emptyCell[1]] = 1;
     food_remain--;
   }
   keysDown = {};
+
   addEventListener(
     "keydown",
     function (e) {
@@ -171,6 +207,7 @@ function Start() {
     },
     false
   );
+
   addEventListener(
     "keyup",
     function (e) {
@@ -178,6 +215,7 @@ function Start() {
     },
     false
   );
+
   interval = setInterval(UpdatePosition, 250);
 }
 
@@ -217,7 +255,13 @@ function Draw() {
       center.y = j * 60 + 30;
       if (board[i][j] == 2) {
         context.beginPath();
-        context.arc(center.x, center.y, 30, 0.15 * Math.PI + startAngle, 1.85 * Math.PI + endAngle); // half circle
+        context.arc(
+          center.x,
+          center.y,
+          30,
+          0.15 * Math.PI + startAngle,
+          1.85 * Math.PI + endAngle
+        ); // half circle
         context.lineTo(center.x, center.y);
         context.fillStyle = pac_color; //color
         context.fill();
@@ -250,7 +294,6 @@ function UpdatePosition() {
       endAngle = -Math.PI / 2;
       eyeX = 17;
       eyeY = -9;
-
     }
   }
   if (x == 2) {
@@ -260,7 +303,6 @@ function UpdatePosition() {
       endAngle = Math.PI / 2;
       eyeX = -17;
       eyeY = 9;
-      
     }
   }
   if (x == 3) {
@@ -291,6 +333,7 @@ function UpdatePosition() {
     pac_color = "green";
   }
   if (score == 50) {
+    Draw();
     window.clearInterval(interval);
     window.alert("Game completed");
   } else {
@@ -298,6 +341,7 @@ function UpdatePosition() {
   }
 }
 
+//GUY -------> i think we need to replace onclick="loginUser()" with addEvent Listener (ronit)
 //GUY
 function validateSignUp() {
   let userName = $("#uname").val();
@@ -305,7 +349,7 @@ function validateSignUp() {
   let email = $("#email").val();
   let password = $("#pword").val();
   let repeatPassWord = $("#repeatPword").val();
-  
+
   const passwordValidation = new RegExp("(?=.*[0-9])(?=.*[a-zA-Z]).{6,}");
   const nameValidation = new RegExp("![^a-zA-Z]");
   const emailValidation = new RegExp("[S+@S+.S+]");
@@ -313,9 +357,11 @@ function validateSignUp() {
   let names = fullName.split(" ");
   let numOfValidations = 5;
 
-  ($(".signup").filter(function () {
+  $(".signup").filter(function () {
     return $.trim($(this).val()).length == 0;
-  }).length == 0 ? numOfValidations-- : null)
+  }).length == 0
+    ? numOfValidations--
+    : null;
 
   passwordValidation.test(password) ? numOfValidations-- : null;
   emailValidation.test(email) ? numOfValidations-- : null;
@@ -323,42 +369,30 @@ function validateSignUp() {
 
   const numberInName = names.filter((item) => nameValidation.test(item));
   numberInName.length == 0 ? numOfValidations-- : null;
- 
+
   if (numOfValidations != 0) {
     alert("form is not defined well.");
-  }
-
-  else{
+  } else {
     location.href = "#welcome";
-    // usersMap[userName] = password;   
-    sessionStorage.setItem(userName, password); 
+    usersMap[userName] = password;
   }
 }
 
-//GUY
-function loginUser(){
+function loginUser(e) {
+  e.preventDefault();
   let loginUserName = $("#loginUserName").val();
   let loginPassword = $("#loginPassword").val();
 
-  // if(loginUserName in usersMap && usersMap[loginUserName] == loginPassword){    
-  //   location.href = "#game";  
-  //   isLoggedIn = true;
-  //   page = "game";
-  //   Start()        
-  // }
-
-  if(isLoggedIn == true){
-    alert("A user is already logged in.")
-  }
-
-  else if(sessionStorage.getItem(loginUserName) === loginPassword){    
-    location.href = "#game";  
+  if (isLoggedIn == true) {
+    alert("A user is already logged in.");
+  } else if (
+    loginUserName in usersMap &&
+    usersMap[loginUserName] == loginPassword
+  ) {
     isLoggedIn = true;
     page = "game";
-    Start()        
-  }
-
-  else{
+    Start();
+  } else {
     alert("Details are wrong. Try again or register.");
   }
 }
