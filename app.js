@@ -49,6 +49,12 @@ function handlePages(page, clean) {
 	});
 
 
+<<<<<<< HEAD
+=======
+// @TODO - we need to think about Game page. 
+
+
+>>>>>>> b47525a1cd81d9c0f4f1e30a99527220fe514778
 function handlePages() {
 
 	$(".pages").hide();
