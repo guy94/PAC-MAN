@@ -13,11 +13,7 @@ var eyeX = 5;
 var eyeY = -15;
 var usersMap = { k: "k" };
 var isLoggedIn = false;
-var numOfMonsters = 4;
-var monstersPositions = new Object();
-var monstersInterval;
-var monstersNames;
-var livesCounter = 5;
+var prizeIsAlive = true;
 
 $(document).ready(function () {
   handleMenuPages();
@@ -284,6 +280,10 @@ function Draw() {
     }
   }
   drawMonsters()
+
+  if(prizeIsAlive){
+    drawPrizeCharacter()
+  }
 }
 
 function drawMonsters(){
@@ -296,15 +296,48 @@ function drawMonsters(){
     //Game Over!
     if(monstersPositions[monstersNames[i]].x == shape.i && monstersPositions[monstersNames[i]].y == shape.j){
       livesCounter--;
-      if(livesCounter == 0){
+      score -= 10;
+      if(livesCounter <= 0){
         window.clearInterval(interval);
         window.clearInterval(monstersInterval);
         alert("You are dead!")
+      }
+      else{
+        resetPositions()
       }
     }
   }
 }
 
+
+// after getting hit by a monster, all monsters go back to the corners.
+function resetPositions(){
+  let pacmanCell = findRandomEmptyCell(board)
+  shape.i = pacmanCell[0];
+  shape.j = pacmanCell[1];
+
+  clearInterval(monstersInterval);
+
+  initMonsters()
+  setTimeout(() => {
+    monstersInterval = setInterval(updateMonsters, 1000);
+  },3000);
+}
+
+//draws the prize. 50 points are added.
+function drawPrizeCharacter(){
+  context.beginPath();
+  context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
+  context.fillStyle = "blue";
+  context.fill();
+  
+  if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
+    score += 50;
+    prizeIsAlive = false;
+  }
+}
+
+//updates pacman position on the board.
 function UpdatePosition() {
   // updateMonsters()
   board[shape.i][shape.j] = 0;
@@ -354,12 +387,16 @@ function UpdatePosition() {
   if (score >= 20 && time_elapsed <= 10) {
     pac_color = "green";
   }
-  if (score == 50) {
+  if (score >= 90 - (10 * (5 - livesCounter))) {
     Draw();
     window.clearInterval(interval);
     window.alert("Game completed");
   } else {
     Draw();
+  }
+  if (time_elapsed >= 90){
+    window.clearInterval(interval);
+    window.alert("You Lost!!!\n You exceeded time limit");
   }
 }
 
@@ -419,112 +456,3 @@ function loginUser(e) {
   }
 }
 
-//Monsters section
-function initMonsters(){
-  let availablePostitions = [[0,0],[0,9],[9,0],[9,9]];
-  monstersNames = ["a", "b", "c", "d"];
-
-  for (var i = 0; i < numOfMonsters; i++) {
-    monstersPositions[monstersNames[i]] = new Object();
-    monstersPositions[monstersNames[i]].x = availablePostitions[i][0]
-    monstersPositions[monstersNames[i]].y = availablePostitions[i][1]
-    monstersPositions[monstersNames[i]].moves = [];
-  }
-}
-
-function updateMonsters(){
-
-  for (var i = 0; i < numOfMonsters; i++) {
-    let monster = monstersPositions[monstersNames[i]];
-
-    if(monster.x == 0 ) {//left wall
-
-      if(board[monster.x + 1][monster.y] != 4){
-        monster.moves.push([monster.x + 1, monster.y]);
-      }
-      if(monster.y == 0 && board[monster.x][monster.y + 1] != 4){
-        monster.moves.push([monster.x, monster.y + 1]);
-      }
-      else if(monster.y == 9 && board[monster.x][monster.y - 1] != 4){
-        monster.moves.push([monster.x, monster.y - 1]);
-      }
-      else{
-        if(board[monster.x][monster.y - 1] != 4){
-          monster.moves.push([monster.x, monster.y - 1]);
-        }
-        if(board[monster.x][monster.y + 1] != 4){
-          monster.moves.push([monster.x, monster.y + 1]);
-        }
-      }
-    }
-
-    else if(monster.x == 9 ) {//right wall
-
-      if(board[monster.x - 1][monster.y] != 4){
-        monster.moves.push([monster.x - 1, monster.y]);
-      }
-      if(monster.y == 0 && board[monster.x][monster.y + 1] != 4){
-        monster.moves.push([monster.x, monster.y + 1]);
-      }
-      else if(monster.y == 9 && board[monster.x][monster.y - 1] != 4){
-        monster.moves.push([monster.x, monster.y - 1]);
-      }
-      else{
-        if(board[monster.x][monster.y - 1] != 4){
-          monster.moves.push([monster.x, monster.y - 1]);
-        }
-        if(board[monster.x][monster.y + 1] != 4){
-          monster.moves.push([monster.x, monster.y + 1]);
-        }
-      }
-    }
-
-    else if(0 < monster.x < 9 && monster.y == 0) {       //first Row
-      if(board[monster.x][monster.y + 1] != 4){
-        monster.moves.push([monster.x, monster.y + 1]);
-      }
-
-    }
-
-    else if(0 < monster.x < 9 && monster.y == 9) {       //last Row
-      if(board[monster.x][monster.y - 1] != 4){
-        monster.moves.push([monster.x, monster.y - 1]);
-      }
-
-    }
-
-    else // inside the board limits
-    {
-      if(board[monster.x][monster.y - 1] != 4){ // up
-        monster.moves.push([monster.x, monster.y - 1]);
-      }
-      if(board[monster.x][monster.y + 1] != 4){ // down
-        monster.moves.push([monster.x, monster.y + 1]);
-      }
-
-      if(board[monster.x + 1][monster.y] != 4){ // right
-        monster.moves.push([monster.x + 1, monster.y]);
-      }
-
-      if(board[monster.x - 1][monster.y] != 4){ //left
-        monster.moves.push([monster.x - 1, monster.y]);
-      }
-    }
-    calculateHeuristic(monster);
-  }
-}
-
-function calculateHeuristic(monster){
-  let heuristicValue = Number.MAX_SAFE_INTEGER;
-  let position = [];
-
-  for (var i = 0; i < monster.moves.length; i++) {
-    tempHeuristic = Math.abs(monster.moves[i][0] - shape.i) + Math.abs(monster.moves[i][1] - shape.j)
-    if(tempHeuristic < heuristicValue){
-      heuristicValue = tempHeuristic;
-      position = monster.moves[i];
-    }
-  }
-  monster.x = position[0];
-  monster.y = position[1];
-}

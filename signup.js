@@ -1,33 +1,57 @@
-function validateSignUp() {
-  let fullName = $("#fname").val();
-  console.log(fullName);
-  let email = $("#email").val();
-  let passWord = $("#pword").val();
-  let numOfValidations = 3;
+// var usersMap = { k: "k" };
 
-  const passwordValidation = new RegExp(
-    "(?=.*d)((?=.*[a-z])|(?=.*[A-Z])).{6,}"
-  );
-  const nameValidation = new RegExp("[^a-zA-Z]");
-  const emailValidation = new RegExp("[S+@S+.S+]");
-  let isValid = true;
+// function validateSignUp(e) {
+//   e.preventDefault();
 
-  let names = fullName.split(" ");
+//   let userName = $("#uname").val();
+//   let fullName = $("#fname").val();
+//   let email = $("#email").val();
+//   let password = $("#pword").val();
+//   let repeatPassWord = $("#repeatPword").val();
 
-  isEmpty =
-    $("input").filter(function () {
-      return $.trim($(this).val()).length == 0;
-    }).length == 0;
+//   const passwordValidation = new RegExp("(?=.*[0-9])(?=.*[a-zA-Z]).{6,}");
+//   const nameValidation = new RegExp("![^a-zA-Z]");
+//   const emailValidation = new RegExp("[S+@S+.S+]");
 
-  if (isEmpty) {
-    isValid = passwordValidation.test(fullName) ? numOfValidations-- : null;
-    isValid = emailValidation.test(email) ? numOfValidations-- : null;
+//   let names = fullName.split(" ");
+//   let numOfValidations = 5;
 
-    const numberInName = names.filter((item) => !nameValidation.test(item));
-    isValid = numberInName.length == 0 ? numOfValidations-- : null;
-  }
+//   $(".signup").filter(function () {
+//     return $.trim($(this).val()).length == 0;
+//   }).length == 0
+//     ? numOfValidations--
+//     : null;
 
-  if (numOfValidations != 0) {
-    alert("form is not defined well.");
-  }
-}
+//   passwordValidation.test(password) ? numOfValidations-- : null;
+//   emailValidation.test(email) ? numOfValidations-- : null;
+//   password === repeatPassWord ? numOfValidations-- : null;
+
+//   const numberInName = names.filter((item) => nameValidation.test(item));
+//   numberInName.length == 0 ? numOfValidations-- : null;
+
+//   if (numOfValidations != 0) {
+//     alert("form is not defined well.");
+//   } else {
+//     location.href = "#welcome";
+//     usersMap[userName] = password;
+//   }
+// }
+
+// function loginUser(e) {
+//   e.preventDefault();
+//   let loginUserName = $("#loginUserName").val();
+//   let loginPassword = $("#loginPassword").val();
+
+//   if (isLoggedIn == true) {
+//     alert("A user is already logged in.");
+//   } else if (
+//     loginUserName in usersMap &&
+//     usersMap[loginUserName] == loginPassword
+//   ) {
+//     isLoggedIn = true;
+//     page = "game";
+//     Start();
+//   } else {
+//     alert("Details are wrong. Try again or register.");
+//   }
+// }
