@@ -1,18 +1,13 @@
-// export var monstersModule = {updateMonsters, 
-//     initMonsters, 
-//     monstersInterval, 
-//     monstersNames, 
-//     monstersPositions, 
-//     livesCounter,
-//     numOfMonsters
-//  }
 
 var monstersPositions = new Object();
 var numOfMonsters = 4;
 var monstersInterval;
 var monstersNames;
 var livesCounter = 5;
+var prizeCharacter = new Object();
 
+
+//inits monsters and prize characteristics.
 function initMonsters(){
     let availablePostitions = [[0,0],[0,9],[9,0],[9,9]];
     monstersNames = ["a", "b", "c", "d"];
@@ -23,13 +18,31 @@ function initMonsters(){
       monstersPositions[monstersNames[i]].y = availablePostitions[i][1]
       monstersPositions[monstersNames[i]].moves = [];
     }
+
+    var emptyCell = findRandomEmptyCell(board)
+    prizeCharacter.x = emptyCell[0];
+    prizeCharacter.y = emptyCell[1];
+    prizeCharacter.moves = [];
+    prizeCharacter.lastMove = [];
   }
   
+//check for valid moves for the monsters.
 function updateMonsters(){
-  
-    for (var i = 0; i < numOfMonsters; i++) {
-      let monster = monstersPositions[monstersNames[i]];
-  
+  let monster;
+    for (var i = 0; i <= numOfMonsters ; i++) {
+      if(i == numOfMonsters){
+        if(prizeIsAlive){
+          monster = prizeCharacter;
+        }
+        else{
+          break
+        }
+      }
+      else{
+        monster = monstersPositions[monstersNames[i]];
+      }
+      monster.moves = [];
+
       if(monster.x == 0 ) {//left wall
   
         if(board[monster.x + 1][monster.y] != 4){
@@ -105,8 +118,12 @@ function updateMonsters(){
       }
       calculateHeuristic(monster);
     }
+    if(prizeIsAlive){
+      chooseRandomMoove();
+    }
   }
-  
+
+//estimiates distance to the pacman.
 function calculateHeuristic(monster){
     let heuristicValue = Number.MAX_SAFE_INTEGER;
     let position = [];
@@ -121,3 +138,19 @@ function calculateHeuristic(monster){
     monster.x = position[0];
     monster.y = position[1];
   }
+
+function chooseRandomMoove(){
+  if(prizeCharacter.moves.includes(prizeCharacter.lastMove)){
+    const index = prizeCharacter.moves.indexOf(prizeCharacter.lastMove);
+    prizeCharacter.moves.splice(index, 1);
+  }
+
+  let numberOfMoves = prizeCharacter.moves.length;
+  let index = Math.floor(Math.random() * numberOfMoves);
+  let chosenMove = prizeCharacter.moves[index];
+
+  prizeCharacter.x = chosenMove[0];
+  prizeCharacter.y = chosenMove[1];
+
+  prizeCharacter.lastMove = chosenMove
+}

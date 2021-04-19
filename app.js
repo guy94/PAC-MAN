@@ -13,6 +13,7 @@ var eyeX = 5;
 var eyeY = -15;
 var usersMap = { k: "k" };
 var isLoggedIn = false;
+var prizeIsAlive = true;
 
 $(document).ready(function () {
   handleMenuPages();
@@ -76,9 +77,7 @@ function cleanUp(oldPage) {
         .removeEventListener("click", loginButton);
       break;
     case "signUp":
-      // document
-      // .getElementById("signUpSubmit")
-      // .removeEventListener("click", validateSignUp);
+      // alert(" cleanUp -> signUp");
       break;
     case "login":
       document
@@ -124,7 +123,6 @@ function loginButton() {
 
 function handleSignUpPage() {
   // alert(" signUp page ");
-  // document.getElementById("signUpSubmit").addEventListener("click", validateSignUp);
 }
 function handleLoginPage() {
   document.getElementById("loginSubmit").addEventListener("click", loginUser);
@@ -282,29 +280,64 @@ function Draw() {
     }
   }
   drawMonsters()
+
+  if(prizeIsAlive){
+    drawPrizeCharacter()
+  }
 }
 
 function drawMonsters(){
   for (var i = 0; i < numOfMonsters; i++) {
     context.beginPath();
-    context.rect(monstersPositions[monstersNames[i]].x * 60 + 30, 
-      monstersPositions[monstersNames[i]].y * 60 + 30,20,20);
+    context.rect(monstersPositions[monstersNames[i]].x * 60 + 30, monstersPositions[monstersNames[i]].y * 60 + 30,20,20);
     context.fillStyle = "green";
     context.fill();
 
     //Game Over!
-    if(monstersPositions[monstersNames[i]].x == shape.i &&
-       monstersPositions[monstersNames[i]].y == shape.j){
-        livesCounter--;
-      if(livesCounter == 0){
+    if(monstersPositions[monstersNames[i]].x == shape.i && monstersPositions[monstersNames[i]].y == shape.j){
+      livesCounter--;
+      score -= 10;
+      if(livesCounter <= 0){
         window.clearInterval(interval);
         window.clearInterval(monstersInterval);
         alert("You are dead!")
+      }
+      else{
+        resetPositions()
       }
     }
   }
 }
 
+
+// after getting hit by a monster, all monsters go back to the corners.
+function resetPositions(){
+  let pacmanCell = findRandomEmptyCell(board)
+  shape.i = pacmanCell[0];
+  shape.j = pacmanCell[1];
+
+  clearInterval(monstersInterval);
+
+  initMonsters()
+  setTimeout(() => {
+    monstersInterval = setInterval(updateMonsters, 1000);
+  },3000);
+}
+
+//draws the prize. 50 points are added.
+function drawPrizeCharacter(){
+  context.beginPath();
+  context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
+  context.fillStyle = "blue";
+  context.fill();
+  
+  if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
+    score += 50;
+    prizeIsAlive = false;
+  }
+}
+
+//updates pacman position on the board.
 function UpdatePosition() {
   // updateMonsters()
   board[shape.i][shape.j] = 0;
@@ -354,19 +387,22 @@ function UpdatePosition() {
   if (score >= 20 && time_elapsed <= 10) {
     pac_color = "green";
   }
-  if (score == 50) {
+  if (score >= 90 - (10 * (5 - livesCounter))) {
     Draw();
     window.clearInterval(interval);
     window.alert("Game completed");
   } else {
     Draw();
   }
+  if (time_elapsed >= 90){
+    window.clearInterval(interval);
+    window.alert("You Lost!!!\n You exceeded time limit");
+  }
 }
 
 //GUY -------> i think we need to replace onclick="loginUser()" with addEvent Listener (ronit)
 //GUY
-function validateSignUp(e) {
-  e.preventDefault(); 
+function validateSignUp() {
   let userName = $("#uname").val();
   let fullName = $("#fname").val();
   let email = $("#email").val();
@@ -403,7 +439,6 @@ function validateSignUp(e) {
 
 function loginUser(e) {
   e.preventDefault();
-
   let loginUserName = $("#loginUserName").val();
   let loginPassword = $("#loginPassword").val();
 
@@ -420,3 +455,4 @@ function loginUser(e) {
     alert("Details are wrong. Try again or register.");
   }
 }
+
