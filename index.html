@@ -3,6 +3,8 @@
   <head>
     <script src="./jquery-3.4.1.slim.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="./signup.js"></script> -->
+    <script type="text/javascript" src="./monsters.js"></script>
     <script type="text/javascript" src="./app.js"></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -58,7 +60,7 @@
 							<input class="signup" type="text" id="fname" name="fname" placeholder="Full name:" required />
 							<input class="signup" type="text" id="email" name="email" placeholder="E-mail:" required/>
 							<input class="signup" type="date" id="birthDate" name="birthDate" placeholder="Birth Date:" required />
-							<input type="submit" value="Submit" onclick="validateSignUp();" />
+							<input id="signUpSubmit" type="submit" value="Submit" onclick="validateSignUp();" />
 						</form>
 					</div>
 				</div>
