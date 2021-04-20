@@ -14,8 +14,8 @@ function initMonsters(){
   
     for (var i = 0; i < numOfMonsters; i++) {
       monstersPositions[monstersNames[i]] = new Object();
-      monstersPositions[monstersNames[i]].x = availablePostitions[i][0]
-      monstersPositions[monstersNames[i]].y = availablePostitions[i][1]
+      monstersPositions[monstersNames[i]].x = availablePostitions[i][0];
+      monstersPositions[monstersNames[i]].y = availablePostitions[i][1];
       monstersPositions[monstersNames[i]].moves = [];
     }
 

@@ -41,21 +41,6 @@ $(function() {
 
 });
 
-const box = document.querySelector(".box");
-
-document.addEventListener("click",function(event)
-{
-  if(event.target.closest(".box"))
-  {
-    return;
-  }
-  else
-  {
-    box.classList.add(".is-hidden");
-  }
-}
-);
-
 var slideIndex = 1;
 showSlides(slideIndex);
 

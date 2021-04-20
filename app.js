@@ -6,6 +6,7 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var monstersInterval;
 var page;
 var startAngle = 0;
 var endAngle = 0;
@@ -24,52 +25,10 @@ $(document).ready(function () {
 function handlePages(page, clean) {
   cleanUp(clean);
 
-
-function handlePages() {
-
-	$(".pages").hide();
-    
-	$(".tabs a").click(function (e) {
-        e.preventDefault();
-
-		var oldPage = page;
-    	page = this.href.split("#")[1];
-		
-		handlePages(page, oldPage);
-    });
-
-    $(".btn-1").click(function (e) {
-      e.preventDefault();
-
-  cleanUp(page);
-
-  page = this.innerText;
-  
-  switch(page) {
-
-    case " Register":
-      handleSignUpPage();
-      page = "signUp"
-      break;
-    case " Login":
-      handleLoginPage();
-      page = "login"
-      break;
-    }
-  
-      $(".pages:visible").slideUp(function () {
-          $("#" + page).slideDown();
-      });
-  });
-    
-	// first page
-	$("#welcome").show();
-	page = "welcome";
-	handleWelcomePage();
   switch (page) {
     case "game":
+      console.log("from handlePages")
       isLoggedIn ? Start() : null;
-      playBackGroundAudio()
       break;
     case "welcome":
       handleWelcomePage();
@@ -92,7 +51,6 @@ function handlePages() {
     $("#" + page).slideDown();
   });
 }
-
 function handleMenuPages() {
   $(".pages").hide();
 
@@ -110,6 +68,7 @@ function handleMenuPages() {
   page = "welcome";
   handleWelcomePage();
 }
+
 
 function cleanUp(oldPage) {
   switch (oldPage) {
@@ -137,6 +96,9 @@ function cleanUp(oldPage) {
       break;
     case "game":
       window.clearInterval(interval);
+      window.clearInterval(monstersInterval);
+      interval = null;
+      monstersInterval = null;
       $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
@@ -183,11 +145,11 @@ function handleGamePage() {
 }
 
 function Start() {
-  window.addEventListener("keydown", function(e) {
-    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
-        e.preventDefault();
-    }
-}, false);
+    window.addEventListener("keydown", function(e) {
+      if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+          e.preventDefault();
+      }}, false);
+        
   $(".pages:visible").slideUp(function () {
     $("#game").slideDown();
   });
@@ -255,10 +217,15 @@ function Start() {
   );
 
   interval = setInterval(UpdatePosition, 250);
-  initMonsters()
-  setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 2000);
-  },3000);
+  initMonsters();
+  // setTimeout(() => {
+  //   monstersInterval = setInterval(updateMonsters, 2000);
+  // },3000);
+
+  monstersInterval = setInterval(updateMonsters, 2000);
+
+  console.log("interval: " + interval);
+  console.log("monstersInterval: " + monstersInterval);
 }
 
 function findRandomEmptyCell(board) {
@@ -352,9 +319,11 @@ function drawMonsters(){
       livesCounter--;
       score -= 10;
       if(livesCounter <= 0){
+        alert("You are dead!")
         window.clearInterval(interval);
         window.clearInterval(monstersInterval);
-        alert("You are dead!")
+        interval = null;
+        monstersInterval = null;
       }
       else{
         resetPositions()
@@ -372,11 +341,13 @@ function resetPositions(){
   shape.j = pacmanCell[1];
 
   clearInterval(monstersInterval);
+  monstersInterval = null;
 
   initMonsters()
-  setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 2000);
-  },3000);
+  // setTimeout(() => {
+  //   monstersInterval = setInterval(updateMonsters, 2000);
+  // },3000);
+  monstersInterval = setInterval(updateMonsters, 2000);
 }
 
 //draws the prize. 50 points are added.
@@ -451,14 +422,20 @@ function UpdatePosition() {
   }
   if (score >= 90 - (10 * (5 - livesCounter))) {
     Draw();
-    window.clearInterval(interval);
     window.alert("Game completed");
+    window.clearInterval(interval);
+    window.clearInterval(monstersInterval);
+    interval = null;
+    monstersInterval = null;
   } else {
     Draw();
   }
   if (time_elapsed >= 90){
-    window.clearInterval(interval);
     window.alert("You Lost!!!\n You exceeded time limit");
+    window.clearInterval(interval);
+    window.clearInterval(monstersInterval);
+    interval = null;
+    monstersInterval = null;
   }
 }
 
@@ -512,6 +489,7 @@ function loginUser(e) {
   ) {
     isLoggedIn = true;
     page = "game";
+
     $("a[href='#game']").click();
     handlePages("game","login");   
   } else {
