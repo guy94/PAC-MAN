@@ -24,6 +24,48 @@ $(document).ready(function () {
 function handlePages(page, clean) {
   cleanUp(clean);
 
+
+function handlePages() {
+
+	$(".pages").hide();
+    
+	$(".tabs a").click(function (e) {
+        e.preventDefault();
+
+		var oldPage = page;
+    	page = this.href.split("#")[1];
+		
+		handlePages(page, oldPage);
+    });
+
+    $(".btn-1").click(function (e) {
+      e.preventDefault();
+
+  cleanUp(page);
+
+  page = this.innerText;
+  
+  switch(page) {
+
+    case " Register":
+      handleSignUpPage();
+      page = "signUp"
+      break;
+    case " Login":
+      handleLoginPage();
+      page = "login"
+      break;
+    }
+  
+      $(".pages:visible").slideUp(function () {
+          $("#" + page).slideDown();
+      });
+  });
+    
+	// first page
+	$("#welcome").show();
+	page = "welcome";
+	handleWelcomePage();
   switch (page) {
     case "game":
       isLoggedIn ? Start() : null;

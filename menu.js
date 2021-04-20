@@ -20,10 +20,6 @@ $(".tabs").on("click", "a", function (e) {
   });
 });
 
-
-
-
-
 $(function() {
 
   $( "#dialog-2" ).dialog({
@@ -45,7 +41,6 @@ $(function() {
 
 });
 
-
 const box = document.querySelector(".box");
 
 document.addEventListener("click",function(event)
@@ -58,11 +53,8 @@ document.addEventListener("click",function(event)
   {
     box.classList.add(".is-hidden");
   }
-
 }
 );
-
-
 
 var slideIndex = 1;
 showSlides(slideIndex);
@@ -93,19 +85,16 @@ function showSlides(n) {
   dots[slideIndex-1].className += " active";
 }
 
-
-
-
 var background = document.getElementById("backGroundGame");
 var eat = document.getElementById("Eating");
 
 function playBackGroundAudio() {
-  background.volume = 0.0;
+  background.volume = 0.2;
   background.play();
 }
 
 function playEatAudio() {
-  eat.volume = 0.0;
+  eat.volume = 0.5;
   eat.play();
 }
 function StopEatAudio() {
