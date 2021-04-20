@@ -14,6 +14,7 @@ var eyeY = -15;
 var usersMap = { k: "k" };
 var isLoggedIn = false;
 var prizeIsAlive = true;
+var isEating = false;
 
 $(document).ready(function () {
   handleMenuPages();
@@ -23,9 +24,52 @@ $(document).ready(function () {
 function handlePages(page, clean) {
   cleanUp(clean);
 
+
+function handlePages() {
+
+	$(".pages").hide();
+    
+	$(".tabs a").click(function (e) {
+        e.preventDefault();
+
+		var oldPage = page;
+    	page = this.href.split("#")[1];
+		
+		handlePages(page, oldPage);
+    });
+
+    $(".btn-1").click(function (e) {
+      e.preventDefault();
+
+  cleanUp(page);
+
+  page = this.innerText;
+  
+  switch(page) {
+
+    case " Register":
+      handleSignUpPage();
+      page = "signUp"
+      break;
+    case " Login":
+      handleLoginPage();
+      page = "login"
+      break;
+    }
+  
+      $(".pages:visible").slideUp(function () {
+          $("#" + page).slideDown();
+      });
+  });
+    
+	// first page
+	$("#welcome").show();
+	page = "welcome";
+	handleWelcomePage();
   switch (page) {
     case "game":
       isLoggedIn ? Start() : null;
+      playBackGroundAudio()
       break;
     case "welcome":
       handleWelcomePage();
@@ -213,7 +257,7 @@ function Start() {
   interval = setInterval(UpdatePosition, 250);
   initMonsters()
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 1000);
+    monstersInterval = setInterval(updateMonsters, 2000);
   },3000);
 }
 
@@ -285,6 +329,15 @@ function Draw() {
   if(prizeIsAlive){
     drawPrizeCharacter()
   }
+
+  if(isEating)
+  {
+    playEatAudio();
+  }
+  else
+  {
+    StopEatAudio();
+  }
 }
 
 function drawMonsters(){
@@ -314,6 +367,7 @@ function drawMonsters(){
 // after getting hit by a monster, all monsters go back to the corners.
 function resetPositions(){
   let pacmanCell = findRandomEmptyCell(board)
+  board[shape.i][shape.j] = 0;
   shape.i = pacmanCell[0];
   shape.j = pacmanCell[1];
 
@@ -321,7 +375,7 @@ function resetPositions(){
 
   initMonsters()
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 1000);
+    monstersInterval = setInterval(updateMonsters, 2000);
   },3000);
 }
 
@@ -380,8 +434,15 @@ function UpdatePosition() {
     }
   }
   if (board[shape.i][shape.j] == 1) {
+    isEating = true;
     score++;
   }
+
+  else if(isEating)
+  {
+    isEating = false;
+  }
+
   board[shape.i][shape.j] = 2;
   var currentTime = new Date();
   time_elapsed = (currentTime - start_time) / 1000;
@@ -451,7 +512,8 @@ function loginUser(e) {
   ) {
     isLoggedIn = true;
     page = "game";
-    Start();
+    $("a[href='#game']").click();
+    handlePages("game","login");   
   } else {
     alert("Details are wrong. Try again or register.");
   }
