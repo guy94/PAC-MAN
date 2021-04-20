@@ -27,8 +27,8 @@ function handlePages(page, clean) {
 
   switch (page) {
     case "game":
-      console.log("from handlePages")
       isLoggedIn ? Start() : null;
+      isLoggedIn ? playBackGroundAudio() : null;
       break;
     case "welcome":
       handleWelcomePage();
@@ -43,11 +43,15 @@ function handlePages(page, clean) {
       handleSettingsPage();
       break;
     case "about":
+      aboutClick = false;
       handleAboutPage();
       break;
   }
 
   $(".pages:visible").slideUp(function () {
+    if(page == "about"){
+      aboutClick = true;
+    };
     $("#" + page).slideDown();
   });
 }
@@ -89,20 +93,15 @@ function cleanUp(oldPage) {
         .removeEventListener("click", loginUser);
       break;
     case "settings":
-      alert(" cleanUp -> settings");
       break;
     case "about":
-      alert(" cleanUp -> about");
       break;
     case "game":
       window.clearInterval(interval);
       window.clearInterval(monstersInterval);
-      interval = null;
-      monstersInterval = null;
       $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
-      alert(" cleanUp -> game");
       break;
   }
 }
@@ -192,7 +191,6 @@ function Start() {
       }
     }
   }
-  // && location.href == "#game"
   while (food_remain > 0) {
     var emptyCell = findRandomEmptyCell(board);
     board[emptyCell[0]][emptyCell[1]] = 1;
@@ -216,16 +214,11 @@ function Start() {
     false
   );
 
-  interval = setInterval(UpdatePosition, 250);
   initMonsters();
-  // setTimeout(() => {
-  //   monstersInterval = setInterval(updateMonsters, 2000);
-  // },3000);
-
-  monstersInterval = setInterval(updateMonsters, 2000);
-
-  console.log("interval: " + interval);
-  console.log("monstersInterval: " + monstersInterval);
+  interval = setInterval(UpdatePosition, 250);
+  setTimeout(() => {
+    monstersInterval = setInterval(updateMonsters, 500);
+  },3000);
 }
 
 function findRandomEmptyCell(board) {
@@ -322,8 +315,6 @@ function drawMonsters(){
         alert("You are dead!")
         window.clearInterval(interval);
         window.clearInterval(monstersInterval);
-        interval = null;
-        monstersInterval = null;
       }
       else{
         resetPositions()
@@ -344,10 +335,9 @@ function resetPositions(){
   monstersInterval = null;
 
   initMonsters()
-  // setTimeout(() => {
-  //   monstersInterval = setInterval(updateMonsters, 2000);
-  // },3000);
-  monstersInterval = setInterval(updateMonsters, 2000);
+  setTimeout(() => {
+    monstersInterval = setInterval(updateMonsters, 500);
+  },3000);
 }
 
 //draws the prize. 50 points are added.
@@ -425,8 +415,7 @@ function UpdatePosition() {
     window.alert("Game completed");
     window.clearInterval(interval);
     window.clearInterval(monstersInterval);
-    interval = null;
-    monstersInterval = null;
+
   } else {
     Draw();
   }
@@ -434,8 +423,7 @@ function UpdatePosition() {
     window.alert("You Lost!!!\n You exceeded time limit");
     window.clearInterval(interval);
     window.clearInterval(monstersInterval);
-    interval = null;
-    monstersInterval = null;
+
   }
 }
 
@@ -488,10 +476,10 @@ function loginUser(e) {
     usersMap[loginUserName] == loginPassword
   ) {
     isLoggedIn = true;
-    page = "game";
 
     $("a[href='#game']").click();
-    handlePages("game","login");   
+    // handlePages("game","login");   
+
   } else {
     alert("Details are wrong. Try again or register.");
   }

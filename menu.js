@@ -1,8 +1,10 @@
 var tabs = $(".tabs");
 var selector = $(".tabs").find("a").length;
-
+var slideIndex = 1;
 var activeItem = tabs.find(".active");
 var activeWidth = activeItem.innerWidth();
+var aboutClick = false;
+
 $(".selector").css({
   left: activeItem.position.left + "px",
   width: activeWidth + "px",
@@ -21,7 +23,6 @@ $(".tabs").on("click", "a", function (e) {
 });
 
 $(function() {
-
   $( "#dialog-2" ).dialog({
      autoOpen: false, 
      buttons: {
@@ -33,15 +34,23 @@ $(function() {
         my: "center",
         at: "center"
      },
-     closeOnEscape: true
   });
   $( "#aboutbuttom" ).click(function() {
      $( "#dialog-2" ).dialog( "open" );
+     window.addEventListener("click", function(event) {
+      if(event.target != $("#dialog-2") && aboutClick){
+        $("#dialog-2").dialog("close");
+    }
+       for(var item of $("#dialog-2").children()){
+          if(event.target != item && aboutClick){
+              $("#dialog-2").dialog("close");
+          }
+      }
+     })
   });
 
 });
 
-var slideIndex = 1;
 showSlides(slideIndex);
 
 // Next/previous controls
@@ -74,12 +83,12 @@ var background = document.getElementById("backGroundGame");
 var eat = document.getElementById("Eating");
 
 function playBackGroundAudio() {
-  background.volume = 0.2;
+  background.volume = 0.4;
   background.play();
 }
 
 function playEatAudio() {
-  eat.volume = 0.5;
+  eat.volume = 0.2;
   eat.play();
 }
 function StopEatAudio() {
