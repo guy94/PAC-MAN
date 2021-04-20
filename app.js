@@ -48,6 +48,7 @@ function handlePages(page, clean) {
     $("#" + page).slideDown();
   });
 }
+
 function handleMenuPages() {
   $(".pages").hide();
 
@@ -330,7 +331,7 @@ function drawPrizeCharacter(){
   context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
   context.fillStyle = "blue";
   context.fill();
-  
+
   if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
     score += 50;
     prizeIsAlive = false;
