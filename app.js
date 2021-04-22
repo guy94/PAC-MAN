@@ -15,10 +15,16 @@ var eyeY = -15;
 var usersMap = { k: "k" };
 var isLoggedIn = false;
 var prizeIsAlive = true;
+
 var isEating = false;
 var UserName = "";
-//
 var arrowFunc = null;
+var medicine = {x:0, y:0};
+var clock = {x:0, y:0};
+var skilt = {x:0, y:0};
+var isMedicineAlive = true;
+var isClockAlive = true;
+var isSkiltAlive = true;
 var pressDownArrow = function() { changeArrow('down'); };
 var pressUpArrow = function() { changeArrow('up'); };
 var pressRightArrow = function() { changeArrow('right'); };
@@ -210,7 +216,6 @@ function changeKeyCode(arrow ,key) {
 }
 
 function Start() {
-
   window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
         e.preventDefault();
@@ -277,6 +282,7 @@ function Start() {
   );
 
   initMonsters();
+  initMedicineAndClock();
 
   interval = setInterval(UpdatePosition,250);
   setTimeout(() => {
@@ -307,6 +313,21 @@ function GetKeyPressed() {
   if (keysDown[39]) {
     return 4;
   }
+}
+
+function initMedicineAndClock(){
+  let medicineCell = findRandomEmptyCell(board);
+  board[medicineCell[0]][medicineCell[1]] = 9;
+  medicine.x = medicineCell[0];
+  medicine.y = medicineCell[1];
+
+  let clockCell = findRandomEmptyCell(board);
+  board[clockCell[0]][clockCell[1]] = 9;
+  clock.x = clockCell[0];
+  clock.y = clockCell[1];
+
+  isMedicineAlive = true;
+  isClockAlive = true;
 }
 
 function Draw() {
@@ -355,8 +376,57 @@ function Draw() {
   }
 
   prizeIsAlive ? drawPrizeCharacter() : null;
+  isMedicineAlive ? drawMedicine() : null;
+  isClockAlive ? drawClock() : null;
   isEating ? playEatAudio() : StopEatAudio();
-  drawMonsters()
+  drawMonsters();
+
+  let skiltTime = (time_elapsed % 10) - 7;
+  (skiltTime > 0) ? drawSkilt() : (isSkiltAlive = true)
+  
+  
+}
+
+function drawMedicine(){
+  context.beginPath();
+  let imageObj = new Image();
+  imageObj.src ="photos\\medicine.png";
+  context.drawImage(imageObj, medicine.x * 60, medicine.y * 60, 60, 60);
+
+  if(medicine.x == shape.i && medicine.y == shape.j){
+    livesCounter++;
+    isMedicineAlive = false;
+  }
+}
+
+function drawClock(){
+  context.beginPath();
+  let imageObj = new Image();
+  imageObj.src ="photos\\clock.png";
+  context.drawImage(imageObj, clock.x * 60, clock.y * 60, 60, 60);
+
+  if(clock.x == shape.i && clock.y == shape.j){
+    isClockAlive = false;
+  }
+}
+
+function drawSkilt(){
+
+  if(isSkiltAlive){
+    isSkiltAlive = false
+    let cell = findRandomEmptyCell(board);
+    skilt.x = cell[0];
+    skilt.y = cell[1];
+  }
+
+  context.beginPath();
+  let imageObj = new Image();
+  imageObj.src ="photos\\skilts.png";
+  context.drawImage(imageObj, skilt.x * 60, skilt.y * 60, 60, 60);
+
+  if(skilt.x == shape.i && skilt.y == shape.j){
+    score += 10;
+  }
 }
 
 function drawMonsters(){
@@ -374,8 +444,21 @@ function drawMonsters(){
 
     //Game Over!
     if(monstersPositions[monstersNames[i]].x == shape.i && monstersPositions[monstersNames[i]].y == shape.j){
-      livesCounter--;
-      score -= 10;
+      
+      //2 monsters have super strength (bonus stage).
+      if(i == 0){//monster1
+        livesCounter--;
+        score -= 20;
+      }
+      else if(i == 2) {//monster3
+        livesCounter -= 2;
+        score -= 30;
+       }
+      else{
+        livesCounter--;
+        score -= 10;
+      }
+      
       if(livesCounter <= 0){
         timeOutAlert("Loser!");
         resetGame()
@@ -418,7 +501,6 @@ function resetPositions(){
   shape.j = pacmanCell[1];
 
   clearInterval(monstersInterval);
-  console.log(monstersInterval);
   initMonsters();
   
   setTimeout(() => {
@@ -491,16 +573,11 @@ function UpdatePosition() {
   board[shape.i][shape.j] = 2;
   var currentTime = new Date();
   time_elapsed = (currentTime - start_time) / 1000;
+  isClockAlive ? null  : (time_elapsed -= 15)
+
   if (score >= 20 && time_elapsed <= 10) {
     pac_color = "green";
   }
-  // if (score >= 100 - (10 * (5 - livesCounter))) {
-  //   Draw();
-  //   timeOutAlert("Game completed");
-  //   resetGame()
-  // } else {
-  //   Draw();
-  // }
 
   Draw()
 
@@ -515,7 +592,6 @@ function UpdatePosition() {
   }
 }
 
-//GUY -------> i think we need to replace onclick="loginUser()" with addEvent Listener (ronit)
 //GUY
 function validateSignUp(e) {
   e.preventDefault();
@@ -549,7 +625,6 @@ function validateSignUp(e) {
   if (numOfValidations != 0) {
     timeOutAlert("form is not defined well.");
   } else {
-    // location.href = "#welcome";
     usersMap[userName] = password;
     $("a[href='#welcome']").click();
   }
