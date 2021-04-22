@@ -104,14 +104,12 @@ function cleanUp(oldPage) {
     case "about":
       break;
     case "game":
-      window.clearInterval(interval);
-      window.clearInterval(monstersInterval);
+      resetGame();
       $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
       lblLife.value = 0;
       lblName.value = "";
-
       stopGroundAudio();
       break;
   }
@@ -225,6 +223,7 @@ function Start() {
   );
 
   initMonsters();
+
   interval = setInterval(UpdatePosition,250);
   setTimeout(() => {
     monstersInterval = setInterval(updateMonsters, 500);
@@ -329,9 +328,8 @@ function drawMonsters(){
       score -= 10;
       if(livesCounter <= 0){
         alert("You are dead!")
-        window.clearInterval(interval);
-        window.clearInterval(monstersInterval);
-        stopGroundAudio();
+        resetGame()
+        
       }
       else{
         resetPositions()
@@ -361,31 +359,30 @@ function resetPositions(){
 function drawPrizeCharacter(){
 
   context.beginPath();
-//   let imageObj = new Image();
-//   imageObj.src = "photos\\vaccine.png";
-//   context.drawImage(imageObj,prizeCharacter.x* 60 ,prizeCharacter.y* 60,60,60);
-
-  context.drawImage(prizeCharacter.x,prizeCharacter.y,canvas.width/10,canvas.height/10);
-  context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
-  
-  context.fillStyle = "blue";
-  context.fill();
-
-  context.beginPath();
-  context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
-  context.fillStyle = "blue";
-  context.fill();
-
+  let imageObj = new Image();
+  imageObj.src = "photos\\vaccine.png";
+  context.drawImage(imageObj, prizeCharacter.x * 60 , prizeCharacter.y * 60, 60, 60);
 
   if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
     score += 50;
     prizeIsAlive = false;
   }
+  // console.log("x: " + prizeCharacter.x + ", y: " + prizeCharacter.y);
+  // console.log("last move: " + prizeCharacter.lastMove)
+  // console.log("----------------------")
+}
+
+function resetGame(){
+  livesCounter = 5;
+  prizeIsAlive = true;
+  isEating = false;
+  window.clearInterval(interval);
+  window.clearInterval(monstersInterval);
+  stopGroundAudio();
 }
 
 //updates pacman position on the board.
 function UpdatePosition() {
-  // updateMonsters()
   board[shape.i][shape.j] = 0;
   var x = GetKeyPressed();
   if (x == 1) {
@@ -440,20 +437,16 @@ function UpdatePosition() {
   if (score >= 20 && time_elapsed <= 10) {
     pac_color = "green";
   }
-  if (score >= 90 - (10 * (5 - livesCounter))) {
+  if (score >= 100 - (10 * (5 - livesCounter))) {
     Draw();
     window.alert("Game completed");
-    window.clearInterval(interval);
-    window.clearInterval(monstersInterval);
-    stopGroundAudio();
+    resetGame()
   } else {
     Draw();
   }
   if (time_elapsed >= 90){
     window.alert("You Lost!!!\n You exceeded time limit");
-    window.clearInterval(interval);
-    window.clearInterval(monstersInterval);
-    stopGroundAudio();
+    resetGame()
   }
 }
 
