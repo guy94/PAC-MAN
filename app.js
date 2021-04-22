@@ -24,6 +24,10 @@ var pressUpArrow = function() { changeArrow('up'); };
 var pressRightArrow = function() { changeArrow('right'); };
 var pressLeftArrow = function() { changeArrow('left'); };
 
+var food_remain;
+var numberOfElementsEaten;
+
+
 $(document).ready(function () {
   handleMenuPages();
   context = canvas.getContext("2d");
@@ -52,8 +56,7 @@ function handlePages(page, clean) {
 
   switch (page) {
     case "game":
-      isLoggedIn ? Start() : null;
-      isLoggedIn ? playBackGroundAudio() : null;
+      handleGamePage()
       break;
     case "welcome":
       handleWelcomePage();
@@ -117,6 +120,10 @@ function cleanUp(oldPage) {
       $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
+      document
+      .getElementById("new-game")
+      .removeEventListener("click", () => {$("a[href='#settings']").click()});
+     
       lblLife.value = 0;
       lblName.value = "";
       stopGroundAudio();
@@ -154,7 +161,6 @@ function handleLoginPage() {
 }
 
 function handleSettingsPage() {
-
   document.getElementById("up-arrow").addEventListener("click", pressUpArrow, false);
   document.getElementById("down-arrow").addEventListener("click", pressDownArrow, false);
   document.getElementById("left-arrow").addEventListener("click", pressLeftArrow, false);
@@ -166,7 +172,13 @@ function handleAboutPage() {
 }
 
 function handleGamePage() {
-  alert(" about page ");
+  // alert(" about page ");
+  isLoggedIn ? Start() : null;
+  isLoggedIn ? playBackGroundAudio() : null;
+
+  document
+  .getElementById("new-game")
+  .addEventListener("click", () => {$("a[href='#settings']").click()});
 }
 
 function changeArrow(arrow) {
@@ -214,7 +226,8 @@ function Start() {
   score = 0;
   pac_color = "yellow";
   var cnt = 100;
-  var food_remain = 50;
+  food_remain = 50;
+  numberOfElementsEaten = food_remain + 1;
   var pacman_remain = 1;
   start_time = new Date();
 
@@ -327,7 +340,7 @@ function Draw() {
       } else if (board[i][j] == 1) {
         let imageObj = new Image();
         imageObj.src = "photos\\gel.png";
-        context.drawImage(imageObj,center.x, center.y,40,40);
+        context.drawImage(imageObj,center.x - 30, center.y - 20, 40,40);
         // context.beginPath();
         // context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
         // context.fillStyle = "white"; //color
@@ -340,37 +353,33 @@ function Draw() {
       }
     }
   }
+
+  prizeIsAlive ? drawPrizeCharacter() : null;
+  isEating ? playEatAudio() : StopEatAudio();
   drawMonsters()
-
-  if(prizeIsAlive){
-    drawPrizeCharacter()
-  }
-
-  if(isEating)
-  {
-    playEatAudio();
-  }
-  else
-  {
-    StopEatAudio();
-  }
 }
 
 function drawMonsters(){
+  let names = Object.keys(monstersPositions);
   for (var i = 0; i < numOfMonsters; i++) {
-    context.beginPath();
-    context.rect(monstersPositions[monstersNames[i]].x * 60 + 30, monstersPositions[monstersNames[i]].y * 60 + 30,20,20);
-    context.fillStyle = "green";
-    context.fill();
+    // context.beginPath();
+    // context.rect(monstersPositions[monstersNames[i]].x * 60 + 30, monstersPositions[monstersNames[i]].y * 60 + 30,20,20);
+    // context.fillStyle = "green";
+    // context.fill();
+
+  context.beginPath();
+  let imageObj = new Image();
+  imageObj.src ="photos\\" + names[i] + ".png";
+  context.drawImage(imageObj, monstersPositions[monstersNames[i]].x * 60, monstersPositions[monstersNames[i]].y * 60, 60, 60);
 
     //Game Over!
     if(monstersPositions[monstersNames[i]].x == shape.i && monstersPositions[monstersNames[i]].y == shape.j){
       livesCounter--;
       score -= 10;
       if(livesCounter <= 0){
-        alert("You are dead!")
+        timeOutAlert("Loser!");
         resetGame()
-        
+        break;
       }
       else{
         resetPositions()
@@ -379,6 +388,27 @@ function drawMonsters(){
   }
 }
 
+//draws the prize. 50 points are added.
+function drawPrizeCharacter(){
+
+  context.beginPath();
+  let imageObj = new Image();
+  imageObj.src = "photos\\vaccine.png";
+  context.drawImage(imageObj, prizeCharacter.x * 60 - 10, prizeCharacter.y * 60, 60, 60);
+
+  if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
+    score += 50;
+    numberOfElementsEaten--;
+    prizeIsAlive = false;
+  }
+}
+
+//Use this message if you need to pop up an alert
+function timeOutAlert(message){
+  setTimeout(function(){
+    alert(message)
+  }, 10);        
+}
 
 // after getting hit by a monster, all monsters go back to the corners.
 function resetPositions(){
@@ -388,31 +418,15 @@ function resetPositions(){
   shape.j = pacmanCell[1];
 
   clearInterval(monstersInterval);
-  monstersInterval = null;
-
-  initMonsters()
+  console.log(monstersInterval);
+  initMonsters();
+  
   setTimeout(() => {
     monstersInterval = setInterval(updateMonsters, 500);
      },3000);
 }
 
-//draws the prize. 50 points are added.
-function drawPrizeCharacter(){
-
-  context.beginPath();
-  let imageObj = new Image();
-  imageObj.src = "photos\\vaccine.png";
-  context.drawImage(imageObj, prizeCharacter.x * 60 , prizeCharacter.y * 60, 60, 60);
-
-  if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
-    score += 50;
-    prizeIsAlive = false;
-  }
-  // console.log("x: " + prizeCharacter.x + ", y: " + prizeCharacter.y);
-  // console.log("last move: " + prizeCharacter.lastMove)
-  // console.log("----------------------")
-}
-
+//when game is stopped a reset is made to few fields
 function resetGame(){
   livesCounter = 5;
   prizeIsAlive = true;
@@ -420,6 +434,7 @@ function resetGame(){
   window.clearInterval(interval);
   window.clearInterval(monstersInterval);
   stopGroundAudio();
+  numberOfElementsEaten = food_remain + 1;
 }
 
 //updates pacman position on the board.
@@ -465,6 +480,7 @@ function UpdatePosition() {
   if (board[shape.i][shape.j] == 1) {
     isEating = true;
     score++;
+    numberOfElementsEaten--;
   }
 
   else if(isEating)
@@ -478,15 +494,23 @@ function UpdatePosition() {
   if (score >= 20 && time_elapsed <= 10) {
     pac_color = "green";
   }
-  if (score >= 100 - (10 * (5 - livesCounter))) {
-    Draw();
-    window.alert("Game completed");
+  // if (score >= 100 - (10 * (5 - livesCounter))) {
+  //   Draw();
+  //   timeOutAlert("Game completed");
+  //   resetGame()
+  // } else {
+  //   Draw();
+  // }
+
+  Draw()
+
+  if(numberOfElementsEaten == 0){
+    (score >= 100) ? timeOutAlert("Winner!") :  timeOutAlert("You are better than " + score + " points.");
     resetGame()
-  } else {
-    Draw();
   }
-  if (time_elapsed >= 90){
-    window.alert("You Lost!!!\n You exceeded time limit");
+
+  if (time_elapsed >= 120){
+    (score >= 100) ? timeOutAlert("Winner!") :  timeOutAlert("You are better than " + score + " points.");
     resetGame()
   }
 }
@@ -523,7 +547,7 @@ function validateSignUp(e) {
   numberInName.length == 0 ? numOfValidations-- : null;
 
   if (numOfValidations != 0) {
-    alert("form is not defined well.");
+    timeOutAlert("form is not defined well.");
   } else {
     // location.href = "#welcome";
     usersMap[userName] = password;
@@ -538,18 +562,15 @@ function loginUser(e) {
   let loginPassword = $("#loginPassword").val();
 
   if (isLoggedIn == true) {
-    alert("A user is already logged in.");
+    timeOutAlert("A user is already logged in.");
   } 
   else if ( loginUserName in usersMap &&
             usersMap[loginUserName] == loginPassword) {
-    
     isLoggedIn = true;
     UserName = loginUserName;
-
     $("a[href='#game']").click();
-    // handlePages("game","login");
   } 
   else {
-    alert("Details are wrong. Try again or register.");
+    timeOutAlert("Details are wrong. Try again or register.");
   }
 }
