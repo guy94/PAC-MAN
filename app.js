@@ -115,7 +115,8 @@ function cleanUp(oldPage) {
       $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
-      // stopGroundAudio();
+
+      stopGroundAudio();
       break;
   }
 }
@@ -357,21 +358,28 @@ function resetPositions(){
   initMonsters()
   setTimeout(() => {
     monstersInterval = setInterval(updateMonsters, 100);
-  },3000);
+     },3000);
 }
 
 //draws the prize. 50 points are added.
 function drawPrizeCharacter(){
-  // context.beginPath();
-  let imageObj = new Image();
-  imageObj.src = "photos\\vaccine.png";
-  context.drawImage(imageObj,prizeCharacter.x* 60 ,prizeCharacter.y* 60,60,60);
 
-  // context.drawImage(prizeCharacter.x,prizeCharacter.y,canvas.width/10,canvas.height/10);
-  // context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
+  context.beginPath();
+//   let imageObj = new Image();
+//   imageObj.src = "photos\\vaccine.png";
+//   context.drawImage(imageObj,prizeCharacter.x* 60 ,prizeCharacter.y* 60,60,60);
+
+  context.drawImage(prizeCharacter.x,prizeCharacter.y,canvas.width/10,canvas.height/10);
+  context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
   
-  // context.fillStyle = "blue";
-  // context.fill();
+  context.fillStyle = "blue";
+  context.fill();
+
+  context.beginPath();
+  context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
+  context.fillStyle = "blue";
+  context.fill();
+
 
   if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
     score += 50;
@@ -442,7 +450,6 @@ function UpdatePosition() {
     window.clearInterval(interval);
     window.clearInterval(monstersInterval);
     stopGroundAudio();
-
   } else {
     Draw();
   }
@@ -451,7 +458,6 @@ function UpdatePosition() {
     window.clearInterval(interval);
     window.clearInterval(monstersInterval);
     stopGroundAudio();
-
   }
 }
 

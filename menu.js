@@ -51,8 +51,6 @@ $(function() {
 
 });
 
-
-
 showSlides(slideIndex);
 
 // Next/previous controls
@@ -86,6 +84,7 @@ var eat = document.getElementById("Eating");
 
 function playBackGroundAudio() {
   background.volume = 0;
+
   background.play();
 }
 
@@ -95,6 +94,7 @@ function stopGroundAudio() {
 
 function playEatAudio() {
   eat.volume = 0;
+
   eat.play();
 }
 function StopEatAudio() {

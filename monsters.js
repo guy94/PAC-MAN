@@ -1,7 +1,6 @@
 
 var monstersPositions = new Object();
 var numOfMonsters = 4;
-var monstersInterval;
 var monstersNames;
 var livesCounter = 5;
 var prizeCharacter = new Object();
@@ -14,8 +13,8 @@ function initMonsters(){
   
     for (var i = 0; i < numOfMonsters; i++) {
       monstersPositions[monstersNames[i]] = new Object();
-      monstersPositions[monstersNames[i]].x = availablePostitions[i][0]
-      monstersPositions[monstersNames[i]].y = availablePostitions[i][1]
+      monstersPositions[monstersNames[i]].x = availablePostitions[i][0];
+      monstersPositions[monstersNames[i]].y = availablePostitions[i][1];
       monstersPositions[monstersNames[i]].moves = [];
     }
 
