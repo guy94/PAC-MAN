@@ -22,7 +22,7 @@ function initMonsters(){
     prizeCharacter.x = emptyCell[0];
     prizeCharacter.y = emptyCell[1];
     prizeCharacter.moves = [];
-    prizeCharacter.lastMove = [];
+    prizeCharacter.lastMove = [0,0];
   }
   
 //check for valid moves for the monsters.
@@ -84,18 +84,28 @@ function updateMonsters(){
         }
       }
   
-      else if(0 < monster.x < 9 && monster.y == 0) {       //first Row
+      else if(0 < monster.x < 9 && monster.y == 0) {       //top Row
         if(board[monster.x][monster.y + 1] != 4){
           monster.moves.push([monster.x, monster.y + 1]);
         }
-  
+        if(board[monster.x + 1][monster.y] != 4){
+          monster.moves.push([monster.x + 1, monster.y]);
+        }
+        if(board[monster.x - 1][monster.y] != 4){
+          monster.moves.push([monster.x - 1, monster.y]);
+        }
       }
   
-      else if(0 < monster.x < 9 && monster.y == 9) {       //last Row
+      else if(0 < monster.x < 9 && monster.y == 9) {       //bottom Row
         if(board[monster.x][monster.y - 1] != 4){
           monster.moves.push([monster.x, monster.y - 1]);
         }
-  
+        if(board[monster.x + 1][monster.y] != 4){
+          monster.moves.push([monster.x + 1, monster.y]);
+        }
+        if(board[monster.x - 1][monster.y] != 4){
+          monster.moves.push([monster.x - 1, monster.y]);
+        }
       }
   
       else // inside the board limits
@@ -115,7 +125,7 @@ function updateMonsters(){
           monster.moves.push([monster.x - 1, monster.y]);
         }
       }
-      calculateHeuristic(monster);
+      (i < numOfMonsters) ? calculateHeuristic(monster) : null;
     }
     if(prizeIsAlive){
       chooseRandomMoove();
@@ -126,6 +136,10 @@ function updateMonsters(){
 function calculateHeuristic(monster){
     let heuristicValue = Number.MAX_SAFE_INTEGER;
     let position = [];
+
+    if(monster.moves.length == 0){
+      x = 6
+    }
   
     for (var i = 0; i < monster.moves.length; i++) {
       tempHeuristic = Math.abs(monster.moves[i][0] - shape.i) + Math.abs(monster.moves[i][1] - shape.j)
@@ -139,17 +153,29 @@ function calculateHeuristic(monster){
   }
 
 function chooseRandomMoove(){
-  if(prizeCharacter.moves.includes(prizeCharacter.lastMove)){
-    const index = prizeCharacter.moves.indexOf(prizeCharacter.lastMove);
-    prizeCharacter.moves.splice(index, 1);
-  }
+  console.log(prizeCharacter.moves);
+
+  prizeCharacter.moves = prizeCharacter.moves.filter((item) => !(item[0] == prizeCharacter.lastMove[0] 
+  && item[1] == prizeCharacter.lastMove[1]))
+
+
+
+
+  // if(prizeCharacter.moves.includes(prizeCharacter.lastMove)){
+  //   const index = prizeCharacter.moves.indexOf(prizeCharacter.lastMove);
+  //   prizeCharacter.moves.splice(index, 1);
+  // }
+  console.log(prizeCharacter.moves);
+  console.log("---------------");
 
   let numberOfMoves = prizeCharacter.moves.length;
   let index = Math.floor(Math.random() * numberOfMoves);
   let chosenMove = prizeCharacter.moves[index];
 
+  prizeCharacter.lastMove[0] = prizeCharacter.x;
+  prizeCharacter.lastMove[1] = prizeCharacter.y;
+
   prizeCharacter.x = chosenMove[0];
   prizeCharacter.y = chosenMove[1];
-
-  prizeCharacter.lastMove = chosenMove
+  
 }
