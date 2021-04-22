@@ -6,6 +6,7 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var monstersInterval;
 var page;
 var startAngle = 0;
 var endAngle = 0;
@@ -15,61 +16,32 @@ var usersMap = { k: "k" };
 var isLoggedIn = false;
 var prizeIsAlive = true;
 var isEating = false;
+var UserName = "";
+
 
 $(document).ready(function () {
   handleMenuPages();
   context = canvas.getContext("2d");
+  $('#dialog-2').bind({
+    mouseenter: function(e) {
+    // Hover event handler
+    aboutClick = false;
+    },
+    mouseleave: function(e) {
+    // Hover event handler
+    aboutClick = true;
+    },
+   });
+
 });
 
 function handlePages(page, clean) {
   cleanUp(clean);
 
-
-function handlePages() {
-
-	$(".pages").hide();
-    
-	$(".tabs a").click(function (e) {
-        e.preventDefault();
-
-		var oldPage = page;
-    	page = this.href.split("#")[1];
-		
-		handlePages(page, oldPage);
-    });
-
-    $(".btn-1").click(function (e) {
-      e.preventDefault();
-
-  cleanUp(page);
-
-  page = this.innerText;
-  
-  switch(page) {
-
-    case " Register":
-      handleSignUpPage();
-      page = "signUp"
-      break;
-    case " Login":
-      handleLoginPage();
-      page = "login"
-      break;
-    }
-  
-      $(".pages:visible").slideUp(function () {
-          $("#" + page).slideDown();
-      });
-  });
-    
-	// first page
-	$("#welcome").show();
-	page = "welcome";
-	handleWelcomePage();
   switch (page) {
     case "game":
       isLoggedIn ? Start() : null;
-      playBackGroundAudio()
+      isLoggedIn ? playBackGroundAudio() : null;
       break;
     case "welcome":
       handleWelcomePage();
@@ -84,11 +56,15 @@ function handlePages() {
       handleSettingsPage();
       break;
     case "about":
+      aboutClick = false;
       handleAboutPage();
       break;
   }
 
   $(".pages:visible").slideUp(function () {
+    if(page == "about"){
+      aboutClick = true;
+    };
     $("#" + page).slideDown();
   });
 }
@@ -110,6 +86,7 @@ function handleMenuPages() {
   handleWelcomePage();
 }
 
+
 function cleanUp(oldPage) {
   switch (oldPage) {
     case "welcome":
@@ -129,17 +106,16 @@ function cleanUp(oldPage) {
         .removeEventListener("click", loginUser);
       break;
     case "settings":
-      alert(" cleanUp -> settings");
       break;
     case "about":
-      alert(" cleanUp -> about");
       break;
     case "game":
       window.clearInterval(interval);
+      window.clearInterval(monstersInterval);
       $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
-      alert(" cleanUp -> game");
+      // stopGroundAudio();
       break;
   }
 }
@@ -182,11 +158,11 @@ function handleGamePage() {
 }
 
 function Start() {
-  window.addEventListener("keydown", function(e) {
-    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
-        e.preventDefault();
-    }
-}, false);
+    window.addEventListener("keydown", function(e) {
+      if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+          e.preventDefault();
+      }}, false);
+        
   $(".pages:visible").slideUp(function () {
     $("#game").slideDown();
   });
@@ -229,7 +205,6 @@ function Start() {
       }
     }
   }
-  // && location.href == "#game"
   while (food_remain > 0) {
     var emptyCell = findRandomEmptyCell(board);
     board[emptyCell[0]][emptyCell[1]] = 1;
@@ -253,11 +228,13 @@ function Start() {
     false
   );
 
-  interval = setInterval(UpdatePosition, 250);
-  initMonsters()
+  initMonsters();
+  interval = setInterval(UpdatePosition,150);
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 2000);
+    monstersInterval = setInterval(updateMonsters, 250);
   },3000);
+
+  
 }
 
 function findRandomEmptyCell(board) {
@@ -311,10 +288,13 @@ function Draw() {
         context.fillStyle = "black"; //color
         context.fill();
       } else if (board[i][j] == 1) {
-        context.beginPath();
-        context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-        context.fillStyle = "black"; //color
-        context.fill();
+        let imageObj = new Image();
+        imageObj.src = "photos\\gel.png";
+        context.drawImage(imageObj,center.x, center.y,40,40);
+        // context.beginPath();
+        // context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+        // context.fillStyle = "white"; //color
+        // context.fill();
       } else if (board[i][j] == 4) {
         context.beginPath();
         context.rect(center.x - 30, center.y - 30, 60, 60);
@@ -351,9 +331,10 @@ function drawMonsters(){
       livesCounter--;
       score -= 10;
       if(livesCounter <= 0){
+        alert("You are dead!")
         window.clearInterval(interval);
         window.clearInterval(monstersInterval);
-        alert("You are dead!")
+        stopGroundAudio();
       }
       else{
         resetPositions()
@@ -371,20 +352,27 @@ function resetPositions(){
   shape.j = pacmanCell[1];
 
   clearInterval(monstersInterval);
+  monstersInterval = null;
 
   initMonsters()
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 2000);
+    monstersInterval = setInterval(updateMonsters, 100);
   },3000);
 }
 
 //draws the prize. 50 points are added.
 function drawPrizeCharacter(){
-  context.beginPath();
-  context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
-  context.fillStyle = "blue";
-  context.fill();
+  // context.beginPath();
+  let imageObj = new Image();
+  imageObj.src = "photos\\vaccine.png";
+  context.drawImage(imageObj,prizeCharacter.x* 60 ,prizeCharacter.y* 60,60,60);
+
+  // context.drawImage(prizeCharacter.x,prizeCharacter.y,canvas.width/10,canvas.height/10);
+  // context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
   
+  // context.fillStyle = "blue";
+  // context.fill();
+
   if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
     score += 50;
     prizeIsAlive = false;
@@ -450,14 +438,20 @@ function UpdatePosition() {
   }
   if (score >= 90 - (10 * (5 - livesCounter))) {
     Draw();
-    window.clearInterval(interval);
     window.alert("Game completed");
+    window.clearInterval(interval);
+    window.clearInterval(monstersInterval);
+    stopGroundAudio();
+
   } else {
     Draw();
   }
   if (time_elapsed >= 90){
-    window.clearInterval(interval);
     window.alert("You Lost!!!\n You exceeded time limit");
+    window.clearInterval(interval);
+    window.clearInterval(monstersInterval);
+    stopGroundAudio();
+
   }
 }
 
@@ -509,12 +503,13 @@ function loginUser(e) {
     loginUserName in usersMap &&
     usersMap[loginUserName] == loginPassword
   ) {
+    UserName = loginUserName;
     isLoggedIn = true;
-    page = "game";
+
     $("a[href='#game']").click();
-    handlePages("game","login");   
+    // handlePages("game","login");   
+
   } else {
     alert("Details are wrong. Try again or register.");
   }
 }
-
