@@ -3,7 +3,6 @@
   <head>
     <script src="./jquery-3.4.1.slim.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <!-- <script type="text/javascript" src="./signup.js"></script> -->
     <script type="text/javascript" src="./monsters.js"></script>
     <script type="text/javascript" src="./app.js"></script>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -34,23 +33,23 @@
 			<br>
 			<div id="welcome" class="pages">
 				<div class="welcomeContainer">
-          <span class="headline"><a href="#">Welcome To PacMan<a></a></span>
-          <span><img src="photos/pac-man.png" height = "70" width = "70"></span>
-          <div id = "text">
-            <h3>Pac-Man is a maze chase video game The objective of the game is to </h3>
-            <h3> eat all of the dots placed in the maze while avoiding four colored ghosts</h3>
-            <h3>If Pac-Man makes contact with a ghost he will lose a life, the game ends</h3>
-            <h3>  when all lives are lost</h3>
-          </div>
-		  <div class="containerbt">
-			<button id= "welcome-reg" class="btn-1"><i class="fa fa-user-plus"></i> Register </button>
-			<button id= "welcome-log" class="btn-1"><i class="fa fa-sign-out"></i> Login </button>
-		</div>
+					<span class="headline"><a href="#">Welcome To PacMan<a></a></span>
+					<span><img src="photos/pac-man.png" height = "70" width = "70"></span>
+					<div id = "text">
+						<h3>Pac-Man is a maze chase video game The objective of the game is to </h3>
+						<h3> eat all of the dots placed in the maze while avoiding four colored ghosts</h3>
+						<h3>If Pac-Man makes contact with a ghost he will lose a life, the game ends</h3>
+						<h3>  when all lives are lost</h3>
+					</div>
+					<div class="containerbt">
+						<button id= "welcome-reg" class="btn-1"><i class="fa fa-user-plus"></i> Register </button>
+						<button id= "welcome-log" class="btn-1"><i class="fa fa-sign-out"></i> Login </button>
+					</div>
 				</div>
 			</div>
 			<div id="signUp" class="pages">
-        <span class="headline"><a href="#">Sign Up<a></a></span>
-        <span><img src="photos/signUp.png" height = "90" width = "100"></span>
+				<span class="headline"><a href="#">Sign Up<a></a></span>
+				<span><img src="photos/signUp.png" height = "90" width = "100"></span>
 				<div class="container">
 					<h2>SignUp</h2>
 					<div class="signUp-form">
@@ -67,26 +66,39 @@
 				</div>
 			</div>
 			<div id="login" class="pages">
-        <span class="headline"><a href="#">Login<a></a></span>&nbsp;&nbsp;
-        <span><img src="photos/Login.jpg" height = "135" width = "250"></span>
+				<span class="headline"><a href="#">Login<a></a></span>&nbsp;&nbsp;
+				<span><img src="photos/Login.jpg" height = "135" width = "250"></span>
 				<div class="container">
-          <br>
-          <br>
+					<br>
+					<br>
 					<div class="login-form">
-					<form>
-						<input id="loginUserName" type="text" name="username" placeholder="Username" required>
-						<input id="loginPassword" type="password" name="password" placeholder="Password" required>
-						<input id="loginSubmit" type="submit" value="Login">
-					</form>
-          <br>
-          <br>
-          <br>
+						<form>
+							<input id="loginUserName" type="text" name="username" placeholder="Username" required>
+							<input id="loginPassword" type="password" name="password" placeholder="Password" required>
+							<input id="loginSubmit" type="submit" value="Login">
+						</form>
+						<br>
+						<br>
+						<br>
 					</div>
 				</div>
 			</div>
 			<div id="settings" class="pages">
 				<div class="container">
 					<h2>Settings</h2>
+					<p>Please select keys to play with.
+						Press the arrow you want to change and immediately after that press the desired key.</p>
+					<div class="grid-container">
+						<div class="grid-item"></div>
+						<button id="up-arrow" class="grid-item"><kbd id="up-arrow">↑</kbd></button>
+						<div class="grid-item"></div>
+						<button id="left-arrow" class="grid-item"><kbd id="left-arrow">←</kbd></button>
+						<div class="grid-item"></div>
+						<button id="right-arrow" class="grid-item"><kbd id="right-arrow">→</kbd></button>
+						<div class="grid-item"></div>
+						<button id="down-arrow" class="grid-item"><kbd id="down-arrow">↓</kbd></button>
+						<div class="grid-item"></div>
+					</div>
 				</div>
 			</div>
 			<div id="about" class="pages">
@@ -159,7 +171,7 @@
 						</div>
 					</div>
 					<canvas id="canvas" height="600" width="600" style="background-color: black"></canvas>
-			</div>
+				</div>
 			</div>
 		</div>
 	</div>

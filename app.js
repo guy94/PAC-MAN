@@ -17,7 +17,12 @@ var isLoggedIn = false;
 var prizeIsAlive = true;
 var isEating = false;
 var UserName = "";
-
+//
+var arrowFunc = null;
+var pressDownArrow = function() { changeArrow('down'); };
+var pressUpArrow = function() { changeArrow('up'); };
+var pressRightArrow = function() { changeArrow('right'); };
+var pressLeftArrow = function() { changeArrow('left'); };
 
 $(document).ready(function () {
   handleMenuPages();
@@ -37,6 +42,13 @@ $(document).ready(function () {
 
 function handlePages(page, clean) {
   cleanUp(clean);
+
+  $(".pages:visible").slideUp(function () {
+    if(page == "about"){
+      aboutClick = true;
+    };
+    $("#" + page).slideDown();
+  });
 
   switch (page) {
     case "game":
@@ -60,13 +72,6 @@ function handlePages(page, clean) {
       handleAboutPage();
       break;
   }
-
-  $(".pages:visible").slideUp(function () {
-    if(page == "about"){
-      aboutClick = true;
-    };
-    $("#" + page).slideDown();
-  });
 }
 
 function handleMenuPages() {
@@ -100,6 +105,10 @@ function cleanUp(oldPage) {
       document.getElementById("loginSubmit").removeEventListener("click", loginUser);
       break;
     case "settings":
+      document.getElementById("up-arrow").removeEventListener("click", pressUpArrow, false);
+      document.getElementById("down-arrow").removeEventListener("click", pressDownArrow, false);
+      document.getElementById("left-arrow").removeEventListener("click", pressLeftArrow, false);
+      document.getElementById("right-arrow").removeEventListener("click", pressRightArrow, false);
       break;
     case "about":
       break;
@@ -145,7 +154,11 @@ function handleLoginPage() {
 }
 
 function handleSettingsPage() {
-  alert(" settings page ");
+
+  document.getElementById("up-arrow").addEventListener("click", pressUpArrow, false);
+  document.getElementById("down-arrow").addEventListener("click", pressDownArrow, false);
+  document.getElementById("left-arrow").addEventListener("click", pressLeftArrow, false);
+  document.getElementById("right-arrow").addEventListener("click", pressRightArrow, false);
 }
 
 function handleAboutPage() {
@@ -154,6 +167,34 @@ function handleAboutPage() {
 
 function handleGamePage() {
   alert(" about page ");
+}
+
+function changeArrow(arrow) {
+
+  arrowFunc = function(event) {
+    key = String.fromCharCode(event.keyCode)
+    changeKeyCode(arrow ,key);
+  }
+  addEventListener("keypress", arrowFunc, true);
+}
+
+function changeKeyCode(arrow ,key) {
+  
+  switch (arrow) {
+    case "up":
+      document.getElementById("up-arrow").innerHTML = key;
+      break;
+    case "down":
+      document.getElementById("down-arrow").innerHTML = key;
+      break;
+    case "left":
+      document.getElementById("left-arrow").innerHTML = key;
+      break;
+    case "right":
+      document.getElementById("right-arrow").innerHTML = key;
+      break;
+  }
+  removeEventListener("keypress", arrowFunc, true);
 }
 
 function Start() {
