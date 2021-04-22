@@ -17,8 +17,23 @@
   margin-left: 25%;
   margin-right: 25%;
   text-align:start;
-
 } 
+
+.game-wrapper {
+  position: relative;
+  text-align:center;
+}
+.game-container {
+  position: absolute;
+  float:left;
+  margin-top: 5%;
+  margin-left: 15%;
+  text-align:center;
+}
+canvas {
+  float:right;
+  margin-right: 30%;
+}
 
 /* style inputs and link buttons */
 input,

@@ -109,6 +109,8 @@ function cleanUp(oldPage) {
       $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
+      lblLife.value = 0;
+      lblName.value = "";
 
       stopGroundAudio();
       break;
@@ -258,6 +260,9 @@ function Draw() {
   canvas.width = canvas.width; //clean board
   lblScore.value = score;
   lblTime.value = time_elapsed;
+  lblLife.value = livesCounter;
+  lblName.value = UserName;
+
   for (var i = 0; i < 10; i++) {
     for (var j = 0; j < 10; j++) {
       var center = new Object();
