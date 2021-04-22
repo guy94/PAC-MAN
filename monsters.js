@@ -1,6 +1,6 @@
 
 var monstersPositions = new Object();
-var numOfMonsters = 1;
+var numOfMonsters = 4;
 var monstersNames;
 var livesCounter = 5;
 var prizeCharacter = new Object();
@@ -9,7 +9,7 @@ var prizeCharacter = new Object();
 //inits monsters and prize characteristics.
 function initMonsters(){
     let availablePostitions = [[0,0],[0,9],[9,0],[9,9]];
-    monstersNames = ["a", "b", "c", "d"];
+    monstersNames = ["monster1", "monster2", "monster3", "monster4"];
   
     for (var i = 0; i < numOfMonsters; i++) {
       monstersPositions[monstersNames[i]] = new Object();

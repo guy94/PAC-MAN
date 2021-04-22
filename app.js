@@ -301,7 +301,7 @@ function Draw() {
       } else if (board[i][j] == 1) {
         let imageObj = new Image();
         imageObj.src = "photos\\gel.png";
-        context.drawImage(imageObj,center.x, center.y,40,40);
+        context.drawImage(imageObj,center.x - 30, center.y - 20, 40,40);
         // context.beginPath();
         // context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
         // context.fillStyle = "white"; //color
@@ -321,11 +321,17 @@ function Draw() {
 }
 
 function drawMonsters(){
+  let names = Object.keys(monstersPositions);
   for (var i = 0; i < numOfMonsters; i++) {
-    context.beginPath();
-    context.rect(monstersPositions[monstersNames[i]].x * 60 + 30, monstersPositions[monstersNames[i]].y * 60 + 30,20,20);
-    context.fillStyle = "green";
-    context.fill();
+    // context.beginPath();
+    // context.rect(monstersPositions[monstersNames[i]].x * 60 + 30, monstersPositions[monstersNames[i]].y * 60 + 30,20,20);
+    // context.fillStyle = "green";
+    // context.fill();
+
+  context.beginPath();
+  let imageObj = new Image();
+  imageObj.src ="photos\\" + names[i] + ".png";
+  context.drawImage(imageObj, monstersPositions[monstersNames[i]].x * 60, monstersPositions[monstersNames[i]].y * 60, 60, 60);
 
     //Game Over!
     if(monstersPositions[monstersNames[i]].x == shape.i && monstersPositions[monstersNames[i]].y == shape.j){
@@ -340,6 +346,21 @@ function drawMonsters(){
         resetPositions()
       }
     }
+  }
+}
+
+//draws the prize. 50 points are added.
+function drawPrizeCharacter(){
+
+  context.beginPath();
+  let imageObj = new Image();
+  imageObj.src = "photos\\vaccine.png";
+  context.drawImage(imageObj, prizeCharacter.x * 60 - 10, prizeCharacter.y * 60, 60, 60);
+
+  if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
+    score += 50;
+    numberOfElementsEaten--;
+    prizeIsAlive = false;
   }
 }
 
@@ -364,21 +385,6 @@ function resetPositions(){
   setTimeout(() => {
     monstersInterval = setInterval(updateMonsters, 500);
      },3000);
-}
-
-//draws the prize. 50 points are added.
-function drawPrizeCharacter(){
-
-  context.beginPath();
-  let imageObj = new Image();
-  imageObj.src = "photos\\vaccine.png";
-  context.drawImage(imageObj, prizeCharacter.x * 60 , prizeCharacter.y * 60, 60, 60);
-
-  if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
-    score += 50;
-    numberOfElementsEaten--;
-    prizeIsAlive = false;
-  }
 }
 
 //when game is stopped a reset is made to few fields
