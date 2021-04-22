@@ -1,6 +1,6 @@
 
 var monstersPositions = new Object();
-var numOfMonsters = 4;
+var numOfMonsters = 1;
 var monstersNames;
 var livesCounter = 5;
 var prizeCharacter = new Object();
@@ -137,10 +137,6 @@ function calculateHeuristic(monster){
     let heuristicValue = Number.MAX_SAFE_INTEGER;
     let position = [];
 
-    if(monster.moves.length == 0){
-      x = 6
-    }
-  
     for (var i = 0; i < monster.moves.length; i++) {
       tempHeuristic = Math.abs(monster.moves[i][0] - shape.i) + Math.abs(monster.moves[i][1] - shape.j)
       if(tempHeuristic < heuristicValue){
@@ -152,21 +148,10 @@ function calculateHeuristic(monster){
     monster.y = position[1];
   }
 
+//chooses random move for the prize character/ cannot go back to previous loaction
 function chooseRandomMoove(){
-  console.log(prizeCharacter.moves);
-
   prizeCharacter.moves = prizeCharacter.moves.filter((item) => !(item[0] == prizeCharacter.lastMove[0] 
   && item[1] == prizeCharacter.lastMove[1]))
-
-
-
-
-  // if(prizeCharacter.moves.includes(prizeCharacter.lastMove)){
-  //   const index = prizeCharacter.moves.indexOf(prizeCharacter.lastMove);
-  //   prizeCharacter.moves.splice(index, 1);
-  // }
-  console.log(prizeCharacter.moves);
-  console.log("---------------");
 
   let numberOfMoves = prizeCharacter.moves.length;
   let index = Math.floor(Math.random() * numberOfMoves);
@@ -177,5 +162,4 @@ function chooseRandomMoove(){
 
   prizeCharacter.x = chosenMove[0];
   prizeCharacter.y = chosenMove[1];
-  
 }
