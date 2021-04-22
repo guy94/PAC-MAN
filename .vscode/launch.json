@@ -8,7 +8,7 @@
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "file:///C:/Users/gal/AndroidStudioProjects/Pacman/assignment2-guy94/index.html",
+            "url": "file:///C:/Users/gal/AndroidStudioProjects/New folder/assignment2-guy94/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]

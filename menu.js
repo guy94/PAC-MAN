@@ -26,7 +26,7 @@ $(function() {
   $( "#dialog-2" ).dialog({
      autoOpen: false, 
      buttons: {
-        OK: function() {$(this).dialog("close");}
+        Esc: function() {$(this).dialog("close");}
      },
      hide: { effect: "explode", duration: 1000 },
      title: "Submitters",
@@ -83,12 +83,18 @@ var background = document.getElementById("backGroundGame");
 var eat = document.getElementById("Eating");
 
 function playBackGroundAudio() {
-  background.volume = 0.4;
+  background.volume = 0;
+
   background.play();
 }
 
+function stopGroundAudio() {
+  background.pause();
+}
+
 function playEatAudio() {
-  eat.volume = 0.2;
+  eat.volume = 0;
+
   eat.play();
 }
 function StopEatAudio() {
