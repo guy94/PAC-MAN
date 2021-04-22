@@ -69,6 +69,7 @@ function handlePages(page, clean) {
     $("#" + page).slideDown();
   });
 }
+
 function handleMenuPages() {
   $(".pages").hide();
 
@@ -87,24 +88,17 @@ function handleMenuPages() {
   handleWelcomePage();
 }
 
-
 function cleanUp(oldPage) {
   switch (oldPage) {
     case "welcome":
-      document
-        .getElementById("welcome-reg")
-        .removeEventListener("click", signUpButton);
-      document
-        .getElementById("welcome-log")
-        .removeEventListener("click", loginButton);
+      document.getElementById("welcome-reg").removeEventListener("click", signUpButton);
+      document.getElementById("welcome-log").removeEventListener("click", loginButton);
       break;
     case "signUp":
-      // alert(" cleanUp -> signUp");
+      document.getElementById("signupSubmit").removeEventListener("click", validateSignUp);
       break;
     case "login":
-      document
-        .getElementById("loginSubmit")
-        .removeEventListener("click", loginUser);
+      document.getElementById("loginSubmit").removeEventListener("click", loginUser);
       break;
     case "settings":
       break;
@@ -116,9 +110,12 @@ function cleanUp(oldPage) {
       lblScore.value = 0;
       lblTime.value = 0;
       document
-  .getElementById("new-game")
-  .removeEventListener("click", () => {$("a[href='#settings']").click()});
-
+      .getElementById("new-game")
+      .removeEventListener("click", () => {$("a[href='#settings']").click()});
+     
+      lblLife.value = 0;
+      lblName.value = "";
+      stopGroundAudio();
       break;
   }
 }
@@ -145,17 +142,21 @@ function loginButton() {
 }
 
 function handleSignUpPage() {
-  // alert(" signUp page ");
+  document.getElementById("signupSubmit").addEventListener("click", validateSignUp);
 }
+
 function handleLoginPage() {
   document.getElementById("loginSubmit").addEventListener("click", loginUser);
 }
+
 function handleSettingsPage() {
   // alert(" settings page ");
 }
+
 function handleAboutPage() {
   alert(" about page ");
 }
+
 function handleGamePage() {
   // alert(" about page ");
   isLoggedIn ? Start() : null;
@@ -167,14 +168,16 @@ function handleGamePage() {
 }
 
 function Start() {
-    window.addEventListener("keydown", function(e) {
-      if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
-          e.preventDefault();
-      }}, false);
+
+  window.addEventListener("keydown", function(e) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }}, false);
         
   $(".pages:visible").slideUp(function () {
     $("#game").slideDown();
   });
+
   $("#canvas").show();
 
   board = new Array();
@@ -185,36 +188,35 @@ function Start() {
   numberOfElementsEaten = food_remain + 1;
   var pacman_remain = 1;
   start_time = new Date();
+
   for (var i = 0; i < 10; i++) {
     board[i] = new Array();
     //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
     for (var j = 0; j < 10; j++) {
-      if (
-        (i == 3 && j == 3) ||
-        (i == 3 && j == 4) ||
-        (i == 3 && j == 5) ||
-        (i == 6 && j == 1) ||
-        (i == 6 && j == 2)
-      ) {
-        board[i][j] = 4;
+      if ( (i == 3 && j == 3) || (i == 3 && j == 4) || (i == 3 && j == 5) ||
+           (i == 6 && j == 1) || (i == 6 && j == 2)) {
+              board[i][j] = 4;
       }
       else {
         var randomNum = Math.random();
         if (randomNum <= (1.0 * food_remain) / cnt) {
           food_remain--;
           board[i][j] = 1;
-        } else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+        }
+        else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
           shape.i = i;
           shape.j = j;
           pacman_remain--;
           board[i][j] = 2;
-        } else {
+        }
+        else {
           board[i][j] = 0;
         }
         cnt--;
       }
     }
   }
+
   while (food_remain > 0) {
     var emptyCell = findRandomEmptyCell(board);
     board[emptyCell[0]][emptyCell[1]] = 1;
@@ -222,29 +224,22 @@ function Start() {
   }
   keysDown = {};
 
-  addEventListener(
-    "keydown",
-    function (e) {
+  addEventListener("keydown",function (e) {
       keysDown[e.keyCode] = true;
-    },
-    false
+    },false
   );
 
-  addEventListener(
-    "keyup",
-    function (e) {
+  addEventListener("keyup",function (e) {
       keysDown[e.keyCode] = false;
-    },
-    false
+    },false
   );
 
   initMonsters();
-  interval = setInterval(UpdatePosition, 250);
+
+  interval = setInterval(UpdatePosition,250);
   setTimeout(() => {
     monstersInterval = setInterval(updateMonsters, 500);
   },3000);
-
-  
 }
 
 function findRandomEmptyCell(board) {
@@ -276,6 +271,8 @@ function Draw() {
   canvas.width = canvas.width; //clean board
   lblScore.value = score;
   lblTime.value = time_elapsed;
+  lblLife.value = livesCounter;
+  lblName.value = UserName;
 
   for (var i = 0; i < 10; i++) {
     for (var j = 0; j < 10; j++) {
@@ -478,7 +475,9 @@ function UpdatePosition() {
 
 //GUY -------> i think we need to replace onclick="loginUser()" with addEvent Listener (ronit)
 //GUY
-function validateSignUp() {
+function validateSignUp(e) {
+  e.preventDefault();
+
   let userName = $("#uname").val();
   let fullName = $("#fname").val();
   let email = $("#email").val();
@@ -508,28 +507,28 @@ function validateSignUp() {
   if (numOfValidations != 0) {
     timeOutAlert("form is not defined well.");
   } else {
-    location.href = "#welcome";
+    // location.href = "#welcome";
     usersMap[userName] = password;
+    $("a[href='#welcome']").click();
   }
 }
 
 function loginUser(e) {
   e.preventDefault();
+
   let loginUserName = $("#loginUserName").val();
   let loginPassword = $("#loginPassword").val();
 
   if (isLoggedIn == true) {
     timeOutAlert("A user is already logged in.");
-  } else if (
-    loginUserName in usersMap &&
-    usersMap[loginUserName] == loginPassword
-  ) {
-    UserName = loginUserName;
+  } 
+  else if ( loginUserName in usersMap &&
+            usersMap[loginUserName] == loginPassword) {
     isLoggedIn = true;
-
+    UserName = loginUserName;
     $("a[href='#game']").click();
-
-  } else {
+  } 
+  else {
     timeOutAlert("Details are wrong. Try again or register.");
   }
 }

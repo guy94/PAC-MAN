@@ -61,7 +61,7 @@
 							<input class="signup" type="text" id="fname" name="fname" placeholder="Full name:" required />
 							<input class="signup" type="text" id="email" name="email" placeholder="E-mail:" required/>
 							<input class="signup" type="date" id="birthDate" name="birthDate" placeholder="Birth Date:" required />
-							<input type="submit" value="Submit" onclick="validateSignUp();" />
+							<input id="signupSubmit" type="submit" value="Submit"/>
 						</form>
 					</div>
 				</div>
@@ -70,17 +70,17 @@
         <span class="headline"><a href="#">Login<a></a></span>&nbsp;&nbsp;
         <span><img src="photos/Login.jpg" height = "135" width = "250"></span>
 				<div class="container">
-          <br>
-          <br>
+					<br>
+					<br>
 					<div class="login-form">
 					<form>
 						<input id="loginUserName" type="text" name="username" placeholder="Username" required>
 						<input id="loginPassword" type="password" name="password" placeholder="Password" required>
 						<input id="loginSubmit" type="submit" value="Login">
 					</form>
-          <br>
-          <br>
-          <br>
+					<br>
+					<br>
+					<br>
 					</div>
 				</div>
 			</div>
@@ -137,16 +137,30 @@
 					Your browser does not support the audio tag.
 				</audio>
 				<h2>Game</h2></div>
-				<div id="score">
-					<label for="lblScore">SCORE:</label>
-					<input id="lblScore" type="text" />
+				<br>
+				<br>
+				<div class="game-wrapper">
+					<div class="game-container">
+						<div id="name">
+							<label for="lblName">USER-NAME:</label>
+							<input id="lblName" type="text" />
+						</div>
+						<div id="score">
+							<label for="lblScore">SCORE:</label>
+							<input id="lblScore" type="text" />
+						</div>
+						<div id="time">
+							<label for="lblTime">TIME:</label>
+							<input id="lblTime" type="text" />
+						</div>
+						<div id="life">
+							<label for="lblLife">LIFE:</label>
+							<input id="lblLife" type="text" />
+						</div>
+					</div>
+					<canvas id="canvas" height="600" width="600" style="background-color: black"></canvas>
+					<button id= "new-game" class="btn-1"><i class="fa fa-sign-out"></i> New Game </button>
 				</div>
-				<div id="time">
-					<label for="lblTime">TIME:</label>
-					<input id="lblTime" type="text" />
-				</div>
-				<canvas id="canvas" height="600" width="600" style="background-color: black"></canvas>
-				<button id= "new-game" class="btn-1"><i class="fa fa-sign-out"></i> New Game </button>
 			</div>
 		</div>
 	</div>
