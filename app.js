@@ -16,10 +16,23 @@ var usersMap = { k: "k" };
 var isLoggedIn = false;
 var prizeIsAlive = true;
 var isEating = false;
+var UserName = "";
+
 
 $(document).ready(function () {
   handleMenuPages();
   context = canvas.getContext("2d");
+  $('#dialog-2').bind({
+    mouseenter: function(e) {
+    // Hover event handler
+    aboutClick = false;
+    },
+    mouseleave: function(e) {
+    // Hover event handler
+    aboutClick = true;
+    },
+   });
+
 });
 
 function handlePages(page, clean) {
@@ -102,6 +115,8 @@ function cleanUp(oldPage) {
       $("#canvas").hide();
       lblScore.value = 0;
       lblTime.value = 0;
+
+      stopGroundAudio();
       break;
   }
 }
@@ -215,10 +230,12 @@ function Start() {
   );
 
   initMonsters();
-  interval = setInterval(UpdatePosition, 250);
+  interval = setInterval(UpdatePosition,150);
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 500);
+    monstersInterval = setInterval(updateMonsters, 250);
   },3000);
+
+  
 }
 
 function findRandomEmptyCell(board) {
@@ -272,10 +289,13 @@ function Draw() {
         context.fillStyle = "black"; //color
         context.fill();
       } else if (board[i][j] == 1) {
-        context.beginPath();
-        context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-        context.fillStyle = "black"; //color
-        context.fill();
+        let imageObj = new Image();
+        imageObj.src = "photos\\gel.png";
+        context.drawImage(imageObj,center.x, center.y,40,40);
+        // context.beginPath();
+        // context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+        // context.fillStyle = "white"; //color
+        // context.fill();
       } else if (board[i][j] == 4) {
         context.beginPath();
         context.rect(center.x - 30, center.y - 30, 60, 60);
@@ -315,6 +335,7 @@ function drawMonsters(){
         alert("You are dead!")
         window.clearInterval(interval);
         window.clearInterval(monstersInterval);
+        stopGroundAudio();
       }
       else{
         resetPositions()
@@ -336,16 +357,29 @@ function resetPositions(){
 
   initMonsters()
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 500);
-  },3000);
+    monstersInterval = setInterval(updateMonsters, 100);
+     },3000);
 }
 
 //draws the prize. 50 points are added.
 function drawPrizeCharacter(){
+
+  context.beginPath();
+//   let imageObj = new Image();
+//   imageObj.src = "photos\\vaccine.png";
+//   context.drawImage(imageObj,prizeCharacter.x* 60 ,prizeCharacter.y* 60,60,60);
+
+  context.drawImage(prizeCharacter.x,prizeCharacter.y,canvas.width/10,canvas.height/10);
+  context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
+  
+  context.fillStyle = "blue";
+  context.fill();
+
   context.beginPath();
   context.rect(prizeCharacter.x * 60 + 30, prizeCharacter.y * 60 + 30,20,20);
   context.fillStyle = "blue";
   context.fill();
+
 
   if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
     score += 50;
@@ -415,7 +449,7 @@ function UpdatePosition() {
     window.alert("Game completed");
     window.clearInterval(interval);
     window.clearInterval(monstersInterval);
-
+    stopGroundAudio();
   } else {
     Draw();
   }
@@ -423,7 +457,7 @@ function UpdatePosition() {
     window.alert("You Lost!!!\n You exceeded time limit");
     window.clearInterval(interval);
     window.clearInterval(monstersInterval);
-
+    stopGroundAudio();
   }
 }
 
@@ -473,8 +507,10 @@ function loginUser(e) {
     alert("A user is already logged in.");
   } 
   else if ( loginUserName in usersMap &&
-              usersMap[loginUserName] == loginPassword) {
+            usersMap[loginUserName] == loginPassword) {
+    
     isLoggedIn = true;
+    UserName = loginUserName;
 
     $("a[href='#game']").click();
     // handlePages("game","login");
@@ -483,4 +519,3 @@ function loginUser(e) {
     alert("Details are wrong. Try again or register.");
   }
 }
-
