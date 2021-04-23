@@ -20,20 +20,16 @@
 } 
 
 .game-wrapper {
+  background-color: black;
   position: relative;
-  text-align:center;
+  border-radius: 5px;
+  margin-left: 15%;
+  margin-right: 15%;
+  text-align:start;
 }
-.game-container {
-  position: absolute;
-  float:left;
-  margin-top: 5%;
-  margin-left: 10%;
-  margin-left: 20%;
-  text-align:left;
-}
+
 canvas {
-  float:right;
-  margin-right: 10%;
+  border: 3px solid rgb(248,206,27);
   
 }
 
@@ -104,6 +100,7 @@ input:focus-visible
  
 
 body {
+  background-image: url("https://ak.picdn.net/shutterstock/videos/19114660/thumb/1.jpg?ip=x480");
   margin:0;
   display: flex;
   flex-direction: column;
@@ -140,7 +137,7 @@ body {
   font-weight: 800;
   color:  rgb(248,206,27);
   overflow: hidden;
-  background: linear-gradient(to right,  rgb(248,206,27), rgb(248,206,27) 50%, rgb(0, 0, 0) 50%);
+  background: linear-gradient(to right,  rgb(248,206,27), rgb(248,206,27) 50%, rgb(255, 255, 255) 50%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -425,3 +422,61 @@ kbd {
   padding: 2px 4px;
   white-space: nowrap;
  }
+
+ 
+ .splitLeft {
+  background-color: black;
+  height: 100%;
+  width: 30%;
+  float:left;
+  border: 3px solid rgb(247, 202, 6);
+  padding: 3px;
+}
+
+.splitRight {
+  background-color: black;
+  height: 100%;
+  width: 600;
+  float:right;
+}
+
+.splitLeft input
+{
+  border:3px solid black;
+  width: 100%;
+  padding: 12px;
+  border-radius: 15px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 20px;
+  line-height: 20px;
+  text-decoration: none; 
+  text-align: center;
+}
+
+
+.splitLeft label
+{
+  color:white
+}
+
+.splitLeft button
+{
+  width: 50%;
+  margin-left:25%;
+  margin-right:25%;
+}
+
+
+.pages.container
+{
+  background-color: black;
+
+}
+
+
+#text h3
+{
+  color:white;
+}
