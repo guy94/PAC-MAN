@@ -347,7 +347,7 @@ function Draw() {
         context.arc(
           center.x,
           center.y,
-          30,
+          22,
           0.15 * Math.PI + startAngle,
           1.85 * Math.PI + endAngle
         ); // half circle
@@ -355,17 +355,13 @@ function Draw() {
         context.fillStyle = pac_color; //color
         context.fill();
         context.beginPath();
-        context.arc(center.x + eyeX, center.y + eyeY, 5, 0, 2 * Math.PI); // circle
+        context.arc(center.x + eyeX, center.y + eyeY, 3, 0, 2 * Math.PI); // circle
         context.fillStyle = "black"; //color
         context.fill();
       } else if (board[i][j] == 1) {
         let imageObj = new Image();
         imageObj.src = "photos\\gel.png";
-        context.drawImage(imageObj,center.x - 30, center.y - 20, 40,40);
-        // context.beginPath();
-        // context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-        // context.fillStyle = "white"; //color
-        // context.fill();
+        context.drawImage(imageObj,center.x - 20, center.y - 20, 40,40);
       } else if (board[i][j] == 4) {
         context.beginPath();
         context.rect(center.x - 30, center.y - 30, 60, 60);
@@ -391,10 +387,10 @@ function drawMedicine(){
   context.beginPath();
   let imageObj = new Image();
   imageObj.src ="photos\\medicine.png";
-  context.drawImage(imageObj, medicine.x * 60, medicine.y * 60, 60, 60);
+  context.drawImage(imageObj, medicine.x * 60, medicine.y * 60, 45, 45);
 
   if(medicine.x == shape.i && medicine.y == shape.j){
-    livesCounter++;
+    livesCounter += 2;
     isMedicineAlive = false;
   }
 }
@@ -403,7 +399,7 @@ function drawClock(){
   context.beginPath();
   let imageObj = new Image();
   imageObj.src ="photos\\clock.png";
-  context.drawImage(imageObj, clock.x * 60, clock.y * 60, 60, 60);
+  context.drawImage(imageObj, clock.x * 60, clock.y * 60, 45, 45);
 
   if(clock.x == shape.i && clock.y == shape.j){
     isClockAlive = false;
@@ -422,7 +418,7 @@ function drawSkilt(){
   context.beginPath();
   let imageObj = new Image();
   imageObj.src ="photos\\skilts.png";
-  context.drawImage(imageObj, skilt.x * 60, skilt.y * 60, 60, 60);
+  context.drawImage(imageObj, skilt.x * 60, skilt.y * 60, 45, 45);
 
   if(skilt.x == shape.i && skilt.y == shape.j){
     score += 10;
@@ -432,15 +428,11 @@ function drawSkilt(){
 function drawMonsters(){
   let names = Object.keys(monstersPositions);
   for (var i = 0; i < numOfMonsters; i++) {
-    // context.beginPath();
-    // context.rect(monstersPositions[monstersNames[i]].x * 60 + 30, monstersPositions[monstersNames[i]].y * 60 + 30,20,20);
-    // context.fillStyle = "green";
-    // context.fill();
 
   context.beginPath();
   let imageObj = new Image();
   imageObj.src ="photos\\" + names[i] + ".png";
-  context.drawImage(imageObj, monstersPositions[monstersNames[i]].x * 60, monstersPositions[monstersNames[i]].y * 60, 60, 60);
+  context.drawImage(imageObj, monstersPositions[monstersNames[i]].x * 60 - 10, monstersPositions[monstersNames[i]].y * 60, 80, 80);
 
     //Game Over!
     if(monstersPositions[monstersNames[i]].x == shape.i && monstersPositions[monstersNames[i]].y == shape.j){
@@ -528,8 +520,8 @@ function UpdatePosition() {
       shape.j--;
       startAngle = -Math.PI / 2;
       endAngle = -Math.PI / 2;
-      eyeX = 17;
-      eyeY = -9;
+      eyeX = 15;
+      eyeY = -7;
     }
   }
   if (x == 2) {
@@ -537,8 +529,8 @@ function UpdatePosition() {
       shape.j++;
       startAngle = Math.PI / 2;
       endAngle = Math.PI / 2;
-      eyeX = -17;
-      eyeY = 9;
+      eyeX = -15;
+      eyeY = 7;
     }
   }
   if (x == 3) {
