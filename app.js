@@ -11,11 +11,10 @@ var page;
 var startAngle = 0;
 var endAngle = 0;
 var eyeX = 5;
-var eyeY = -15;
+var eyeY = -7;
 var usersMap = { k: "k" };
 var isLoggedIn = false;
 var prizeIsAlive = true;
-
 var isEating = false;
 var UserName = "";
 var arrowFunc = null;
@@ -25,13 +24,15 @@ var skilt = {x:0, y:0};
 var isMedicineAlive = true;
 var isClockAlive = true;
 var isSkiltAlive = true;
+var isSkiltCell = true;
 var pressDownArrow = function() { changeArrow('down'); };
 var pressUpArrow = function() { changeArrow('up'); };
 var pressRightArrow = function() { changeArrow('right'); };
 var pressLeftArrow = function() { changeArrow('left'); };
-
 var food_remain;
 var numberOfElementsEaten;
+var totalFood;
+var isDrawGel = true;
 
 
 $(document).ready(function () {
@@ -232,6 +233,7 @@ function Start() {
   pac_color = "yellow";
   var cnt = 100;
   food_remain = 50;
+  totalFood = food_remain;
   numberOfElementsEaten = food_remain + 1;
   var pacman_remain = 1;
   start_time = new Date();
@@ -333,9 +335,14 @@ function initMedicineAndClock(){
 function Draw() {
   canvas.width = canvas.width; //clean board
   lblScore.value = score;
-  lblTime.value = time_elapsed;
+  lblTime.value = 120 - Math.floor(time_elapsed);
   lblLife.value = livesCounter;
   lblName.value = UserName;
+  
+  // let gel_25 = 0.1 * totalFood;
+  // let gel_15 = 0.3 * totalFood;
+  // let gel_5 = 0.6 * totalFood;
+  let gels = [0.6 * totalFood, 0.3 * totalFood, 0.1 * totalFood]
 
   for (var i = 0; i < 10; i++) {
     for (var j = 0; j < 10; j++) {
@@ -346,27 +353,46 @@ function Draw() {
         context.beginPath();
         context.arc(
           center.x,
-          center.y,
+          center.y + 7,
           22,
           0.15 * Math.PI + startAngle,
           1.85 * Math.PI + endAngle
         ); // half circle
-        context.lineTo(center.x, center.y);
+        context.lineTo(center.x, center.y + 7);
         context.fillStyle = pac_color; //color
         context.fill();
         context.beginPath();
         context.arc(center.x + eyeX, center.y + eyeY, 3, 0, 2 * Math.PI); // circle
         context.fillStyle = "black"; //color
         context.fill();
-      } else if (board[i][j] == 1) {
-        let imageObj = new Image();
-        imageObj.src = "photos\\gel.png";
-        context.drawImage(imageObj,center.x - 20, center.y - 20, 40,40);
-      } else if (board[i][j] == 4) {
+      } else if (board[i][j] == 1 ) {
+        
+        if(gels != []){
+
+          let gelIndex = Math.floor(Math.random() * gels.length);
+          gelIndex == 0 ? board[i][j] = 5 : null;
+          gelIndex == 1 ? board[i][j] = 15 : null;
+          gelIndex == 2 ? board[i][j] = 25 : null;
+          
+          gels[gelIndex]--;
+          if(gels[gelIndex] == 0){
+            gels.splice(gelIndex, 1);
+          }
+        }
+      } 
+      else if (board[i][j] == 5) {
+        drawGel("gel1", center)
+      }else if (board[i][j] == 15) {
+        drawGel("gel2", center)
+      }else if (board[i][j] == 25) {
+        drawGel("gel3", center)
+      }
+      
+      else if (board[i][j] == 4) {
         context.beginPath();
-        context.rect(center.x - 30, center.y - 30, 60, 60);
-        context.fillStyle = "grey"; //color
-        context.fill();
+        let imageObj = new Image();
+        imageObj.src ="photos\\wall.png";
+        context.drawImage(imageObj, center.x - 27, center.y - 20, 60, 60);
       }
     }
   }
@@ -376,18 +402,31 @@ function Draw() {
   isClockAlive ? drawClock() : null;
   isEating ? playEatAudio() : StopEatAudio();
   drawMonsters();
+  isDrawGel = false;
 
   let skiltTime = (time_elapsed % 10) - 7;
-  (skiltTime > 0) ? drawSkilt() : (isSkiltAlive = true)
-  
-  
+  // (skiltTime > 0 && isSkiltAlive) ? drawSkilt() : (function() {isSkiltCell = true; isSkiltAlive = true})
+
+  if(skiltTime > 0 && isSkiltAlive){
+    drawSkilt()
+  }else{
+    isSkiltCell = true; 
+    isSkiltAlive = true;
+  }
+}
+
+function drawGel(gel, center){
+  context.beginPath();
+  let imageObj = new Image();
+  imageObj.src ="photos\\" + gel + ".png";
+  context.drawImage(imageObj,center.x - 30, center.y - 20, 60, 50);
 }
 
 function drawMedicine(){
   context.beginPath();
   let imageObj = new Image();
   imageObj.src ="photos\\medicine.png";
-  context.drawImage(imageObj, medicine.x * 60, medicine.y * 60, 45, 45);
+  context.drawImage(imageObj, medicine.x * 60 + 5, medicine.y * 60 + 17, 45, 45);
 
   if(medicine.x == shape.i && medicine.y == shape.j){
     livesCounter += 2;
@@ -408,8 +447,8 @@ function drawClock(){
 
 function drawSkilt(){
 
-  if(isSkiltAlive){
-    isSkiltAlive = false
+  if(isSkiltCell){
+    isSkiltCell = false
     let cell = findRandomEmptyCell(board);
     skilt.x = cell[0];
     skilt.y = cell[1];
@@ -418,10 +457,11 @@ function drawSkilt(){
   context.beginPath();
   let imageObj = new Image();
   imageObj.src ="photos\\skilts.png";
-  context.drawImage(imageObj, skilt.x * 60, skilt.y * 60, 45, 45);
+  context.drawImage(imageObj, skilt.x * 60 + 5, skilt.y * 60 + 10, 45, 45);
 
   if(skilt.x == shape.i && skilt.y == shape.j){
     score += 10;
+    isSkiltAlive = false;
   }
 }
 
@@ -469,7 +509,7 @@ function drawPrizeCharacter(){
   context.beginPath();
   let imageObj = new Image();
   imageObj.src = "photos\\vaccine.png";
-  context.drawImage(imageObj, prizeCharacter.x * 60 - 10, prizeCharacter.y * 60, 60, 60);
+  context.drawImage(imageObj, prizeCharacter.x * 60 - 7, prizeCharacter.y * 60, 60, 60);
 
   if(prizeCharacter.x == shape.i && prizeCharacter.y == shape.j){
     score += 50;
@@ -509,6 +549,8 @@ function resetGame(){
   window.clearInterval(monstersInterval);
   stopGroundAudio();
   numberOfElementsEaten = food_remain + 1;
+  isSkiltCell = true;
+  isSkiltAlive = true;
 }
 
 //updates pacman position on the board.
@@ -516,44 +558,54 @@ function UpdatePosition() {
   board[shape.i][shape.j] = 0;
   var x = GetKeyPressed();
   if (x == 1) {
-    if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+    if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {//up
       shape.j--;
       startAngle = -Math.PI / 2;
       endAngle = -Math.PI / 2;
-      eyeX = 15;
-      eyeY = -7;
+      eyeX = 13;
+      eyeY = -2;
     }
   }
   if (x == 2) {
-    if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
+    if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {//down
       shape.j++;
       startAngle = Math.PI / 2;
       endAngle = Math.PI / 2;
-      eyeX = -15;
+      eyeX = -13;
       eyeY = 7;
     }
   }
   if (x == 3) {
-    if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+    if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {//left
       shape.i--;
       startAngle = Math.PI;
       endAngle = Math.PI;
       eyeX = -5;
-      eyeY = -15;
+      eyeY = -7;
     }
   }
   if (x == 4) {
-    if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
+    if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {//right
       shape.i++;
       startAngle = 0;
       endAngle = 0;
       eyeX = 5;
-      eyeY = -15;
+      eyeY = -7;
     }
   }
-  if (board[shape.i][shape.j] == 1) {
+  if (board[shape.i][shape.j] == 5) {
     isEating = true;
-    score++;
+    score += 5;
+    numberOfElementsEaten--;
+  }
+  if (board[shape.i][shape.j] == 15) {
+    isEating = true;
+    score += 15;
+    numberOfElementsEaten--;
+  }
+  if (board[shape.i][shape.j] == 25) {
+    isEating = true;
+    score += 25;
     numberOfElementsEaten--;
   }
 
@@ -567,7 +619,7 @@ function UpdatePosition() {
   time_elapsed = (currentTime - start_time) / 1000;
   isClockAlive ? null  : (time_elapsed -= 15)
 
-  if (score >= 20 && time_elapsed <= 10) {
+  if (score >= 220 && time_elapsed <= 10) {
     pac_color = "green";
   }
 

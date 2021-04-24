@@ -1,6 +1,6 @@
 
 var monstersPositions = new Object();
-var numOfMonsters = 4;
+var numOfMonsters = 1;
 var monstersNames;
 var livesCounter = 5;
 var prizeCharacter = new Object();
