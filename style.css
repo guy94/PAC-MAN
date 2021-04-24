@@ -100,7 +100,7 @@ input:focus-visible
  
 
 body {
-  background-image: url("https://ak.picdn.net/shutterstock/videos/19114660/thumb/1.jpg?ip=x480");
+  background-image: url("https://www.hdwallpapers.in/download/black_stars_hd_black_aesthetic-1366x768.jpg");
   margin:0;
   display: flex;
   flex-direction: column;
@@ -458,11 +458,15 @@ kbd {
 
 .splitLeft label
 {
-  color:white
+  color:white;
+  margin-left: 45%;
+  margin-right:45%;
+  width: 10%;
 }
 
 .splitLeft button
 {
+  background-color: rgb(216, 216, 216);
   width: 50%;
   margin-left:25%;
   margin-right:25%;
@@ -480,3 +484,4 @@ kbd {
 {
   color:white;
 }
+
