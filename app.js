@@ -36,6 +36,9 @@ var numberOfElementsEaten;
 var totalFood;
 var isDrawGel = true;
 var totalGameTime = 90 //default
+var ballColor1;
+var ballColor2;
+var ballColor3;
 
 
 $(document).ready(function () {
@@ -171,11 +174,11 @@ function handleSettingsPage() {
   let slider = document.getElementById("myRange");
   let output = document.getElementById("demo");
   output.innerHTML = slider.value;
-  food_remain_settings = slider.value;
+  food_remain_settings = parseInt(slider.value);
 
   slider.oninput = function() {
     output.innerHTML = this.value;
-    food_remain_settings = slider.value;
+    food_remain_settings = parseInt(slider.value);
   }
 }
 
@@ -269,6 +272,9 @@ function Start() {
 
   $("#canvas").show();
 
+  ballColor1 = $("#favcolor1").val();
+  ballColor2 = $("#favcolor2").val();
+  ballColor3 = $("#favcolor3").val();
   board = new Array();
   score = 0;
   pac_color = "yellow";
@@ -276,7 +282,7 @@ function Start() {
   totalFood = food_remain;
   // food_remain = 50;
   food_remain = food_remain_settings;
-  numberOfElementsEaten = food_remain + 1;
+  numberOfElementsEaten = food_remain_settings + 1;
   var pacman_remain = 1;
   start_time = new Date();
 
@@ -428,11 +434,11 @@ function Draw() {
         }
       } 
       else if (board[i][j] == 5) {
-        drawGel(center, "5", "purple")
+        drawGel(center, "5", ballColor1)
       }else if (board[i][j] == 15) {
-        drawGel(center, "15", "blue")
+        drawGel(center, "15", ballColor2)
       }else if (board[i][j] == 25) {
-        drawGel(center, "25", "orange")
+        drawGel(center, "25", ballColor3)
       }
       
       else if (board[i][j] == 4) {
@@ -618,17 +624,10 @@ function resetGame(){
     monstersInterval = null;
   }
   stopGroundAudio();
-  numberOfElementsEaten = food_remain + 1;
+  numberOfElementsEaten = food_remain_settings + 1;
   isSkiltCell = true;
   isSkiltAlive = true;
 
-  $("#canvas").hide();
-  lblScore.value = 0;
-  lblTime.value = 0;
-  document
-  .getElementById("new-game")
-  .removeEventListener("click", () => {$("a[href='#settings']").click()});
-  
   lblLife.value = 0;
   lblName.value = "";
   stopGroundAudio();
@@ -713,6 +712,12 @@ function UpdatePosition() {
 
   if (time_elapsed >= 120){
     (score >= 100) ? timeOutAlert("Winner!") :  timeOutAlert("You are better than " + score + " points.");
+    $("#canvas").hide();
+    lblScore.value = 0;
+    lblTime.value = 0;
+    document
+    .getElementById("new-game")
+    .removeEventListener("click", () => {$("a[href='#settings']").click()});
     resetGame()
   }
 }

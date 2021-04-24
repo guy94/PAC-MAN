@@ -525,3 +525,7 @@ p
   background: rgb(247, 202, 6);
   cursor: pointer;
 }
+
+input.favcolor{
+  width: 200px;
+}
