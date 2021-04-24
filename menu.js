@@ -126,7 +126,7 @@ function stopGroundAudio() {
 }
 
 function playEatAudio() {
-  eat.volume = 0.5;
+  eat.volume = 0.0;
 
   eat.play();
 }

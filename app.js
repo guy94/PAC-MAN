@@ -31,9 +31,11 @@ var pressRightArrow = function() { changeArrow('right'); };
 var pressLeftArrow = function() { changeArrow('left'); };
 var keys = {left:37, up:38, right:39, down:40};
 var food_remain;
+var food_remain_settings = 70; //defualt
 var numberOfElementsEaten;
 var totalFood;
 var isDrawGel = true;
+var totalGameTime = 90 //default
 
 
 $(document).ready(function () {
@@ -49,7 +51,6 @@ $(document).ready(function () {
     aboutClick = true;
     },
    });
-
 });
 
 function handlePages(page, clean) {
@@ -166,6 +167,16 @@ function handleSettingsPage() {
   document.getElementById("down-arrow").addEventListener("click", pressDownArrow, false);
   document.getElementById("left-arrow").addEventListener("click", pressLeftArrow, false);
   document.getElementById("right-arrow").addEventListener("click", pressRightArrow, false);
+
+  let slider = document.getElementById("myRange");
+  let output = document.getElementById("demo");
+  output.innerHTML = slider.value;
+  food_remain_settings = slider.value;
+
+  slider.oninput = function() {
+    output.innerHTML = this.value;
+    food_remain_settings = slider.value;
+  }
 }
 
 function handleAboutPage() {
@@ -246,6 +257,7 @@ function changeKeyCode(arrow ,key) {
 }
 
 function Start() {
+
   window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
         e.preventDefault();
@@ -261,8 +273,9 @@ function Start() {
   score = 0;
   pac_color = "yellow";
   var cnt = 100;
-  food_remain = 50;
   totalFood = food_remain;
+  // food_remain = 50;
+  food_remain = food_remain_settings;
   numberOfElementsEaten = food_remain + 1;
   var pacman_remain = 1;
   start_time = new Date();
@@ -320,8 +333,9 @@ function Start() {
   
   interval = setInterval(UpdatePosition,250);
   setTimeout(() => {
-    
-    monstersInterval = setInterval(updateMonsters, 500);
+    if(page == "game") {
+      monstersInterval = setInterval(updateMonsters, 500);
+    }
   },3000);
 }
 
@@ -336,16 +350,16 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-  if (keysDown[38]) {
+  if (keysDown[keys["up"]]) {
     return 1;
   }
-  if (keysDown[40]) {
+  if (keysDown[keys["down"]]) {
     return 2;
   }
-  if (keysDown[37]) {
+  if (keysDown[keys["left"]]) {
     return 3;
   }
-  if (keysDown[39]) {
+  if (keysDown[keys["right"]]) {
     return 4;
   }
 }
@@ -368,7 +382,7 @@ function initMedicineAndClock(){
 function Draw() {
   canvas.width = canvas.width; //clean board
   lblScore.value = score;
-  lblTime.value = 120 - Math.floor(time_elapsed);
+  lblTime.value = totalGameTime - Math.floor(time_elapsed);
   lblLife.value = livesCounter;
   lblName.value = UserName;
   
@@ -575,12 +589,18 @@ function resetPositions(){
   shape.i = pacmanCell[0];
   shape.j = pacmanCell[1];
 
-  window.clearInterval(monstersInterval);
+  if (monstersInterval != null) {
+    clearInterval(monstersInterval);
+    monstersInterval = null;
+  }
+
   initMonsters();
   
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 500);
-     },3000);
+    if(page == "game") {
+      monstersInterval = setInterval(updateMonsters, 500);
+    } 
+  },3000);
 }
 
 //when game is stopped a reset is made to few fields
@@ -588,9 +608,15 @@ function resetGame(){
   livesCounter = 5;
   prizeIsAlive = true;
   isEating = false;
-  window.clearInterval(interval);
-  window.clearInterval(monstersInterval);
-  
+
+  if (interval != null) {
+    clearInterval(interval);
+    interval = null;
+  }
+  if (monstersInterval != null) {
+    clearInterval(monstersInterval);
+    monstersInterval = null;
+  }
   stopGroundAudio();
   numberOfElementsEaten = food_remain + 1;
   isSkiltCell = true;
@@ -691,7 +717,6 @@ function UpdatePosition() {
   }
 }
 
-//GUY
 function validateSignUp(e) {
   e.preventDefault();
 
