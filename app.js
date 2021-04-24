@@ -253,6 +253,7 @@ function changeKeyCode(arrow ,key) {
 }
 
 function Start() {
+  console.log("shittttt")
   window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
         e.preventDefault();
@@ -588,6 +589,7 @@ function resetPositions(){
 
 //when game is stopped a reset is made to few fields
 function resetGame(){
+  setTimeout("", 10)
   livesCounter = 5;
   prizeIsAlive = true;
   isEating = false;
@@ -733,7 +735,7 @@ function loginUser(e) {
             usersMap[loginUserName] == loginPassword) {
     isLoggedIn = true;
     UserName = loginUserName;
-    $("a[href='#game']").click();
+    $("a[href='#settings']").click();
   } 
   else {
     timeOutAlert("Details are wrong. Try again or register.");
