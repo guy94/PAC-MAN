@@ -71,9 +71,11 @@ function handlePages(page, clean) {
       break;
     case "signUp":
       handleSignUpPage();
+      playMenuMusic();
       break;
     case "login":
       handleLoginPage();
+      playMenuMusic();
       break;
     case "settings":
       handleSettingsPage();
@@ -98,6 +100,7 @@ function handleMenuPages() {
   });
 
   // first page
+  
   $("#welcome").show();
   page = "welcome";
   handleWelcomePage();
@@ -125,16 +128,6 @@ function cleanUp(oldPage) {
       break;
     case "game":
       resetGame();
-      $("#canvas").hide();
-      lblScore.value = 0;
-      lblTime.value = 0;
-      document
-      .getElementById("new-game")
-      .removeEventListener("click", () => {$("a[href='#settings']").click()});
-     
-      lblLife.value = 0;
-      lblName.value = "";
-      stopGroundAudio();
       break;
   }
 }
@@ -253,7 +246,6 @@ function changeKeyCode(arrow ,key) {
 }
 
 function Start() {
-  console.log("shittttt")
   window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
         e.preventDefault();
@@ -323,8 +315,12 @@ function Start() {
   initMonsters();
   initMedicineAndClock();
 
+  x = location.href
+  console.log(x);
+  
   interval = setInterval(UpdatePosition,250);
   setTimeout(() => {
+    
     monstersInterval = setInterval(updateMonsters, 500);
   },3000);
 }
@@ -579,7 +575,7 @@ function resetPositions(){
   shape.i = pacmanCell[0];
   shape.j = pacmanCell[1];
 
-  clearInterval(monstersInterval);
+  window.clearInterval(monstersInterval);
   initMonsters();
   
   setTimeout(() => {
@@ -589,16 +585,27 @@ function resetPositions(){
 
 //when game is stopped a reset is made to few fields
 function resetGame(){
-  setTimeout("", 10)
   livesCounter = 5;
   prizeIsAlive = true;
   isEating = false;
   window.clearInterval(interval);
   window.clearInterval(monstersInterval);
+  
   stopGroundAudio();
   numberOfElementsEaten = food_remain + 1;
   isSkiltCell = true;
   isSkiltAlive = true;
+
+  $("#canvas").hide();
+  lblScore.value = 0;
+  lblTime.value = 0;
+  document
+  .getElementById("new-game")
+  .removeEventListener("click", () => {$("a[href='#settings']").click()});
+  
+  lblLife.value = 0;
+  lblName.value = "";
+  stopGroundAudio();
 }
 
 //updates pacman position on the board.
@@ -646,18 +653,18 @@ function UpdatePosition() {
     score += 5;
     numberOfElementsEaten--;
   }
-  if (board[shape.i][shape.j] == 15) {
+  else if (board[shape.i][shape.j] == 15) {
     isEating = true;
     score += 15;
     numberOfElementsEaten--;
   }
-  if (board[shape.i][shape.j] == 25) {
+  else if (board[shape.i][shape.j] == 25) {
     isEating = true;
     score += 25;
     numberOfElementsEaten--;
   }
 
-  else if(isEating)
+  else
   {
     isEating = false;
   }

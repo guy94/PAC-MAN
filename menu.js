@@ -81,19 +81,52 @@ function showSlides(n) {
 
 var background = document.getElementById("backGroundGame");
 var eat = document.getElementById("Eating");
+var menuMusic = document.getElementById("menuMusic");
+
+function aud_fade_out(tag) {
+  var myAudio = document.getElementById(tag);
+  if (myAudio.volume > 0) {
+      myAudio.volume = Math.max(0, myAudio.volume - 0.05);
+      timer = setTimeout(aud_fade_out(tag), 1000);
+  }
+}
+
+function aud_fade_in(tag) {
+  var myAudio = document.getElementById(tag);
+  if (myAudio.volume < 0.0) {
+      myAudio.volume += 0.05;
+      timer = setTimeout(aud_fade_in(tag), 1000);
+  }
+}
+
+function playMenuMusic(){
+  // menuMusic.volume = 0.2;
+  // document.getElementById('menuMusic').menuMusic = false;
+  menuMusic.volume = 0.0;
+  menuMusic.play();
+  aud_fade_in('menuMusic');
+}
+
+function stopMenuMusic(){
+  // menuMusic.pause();
+  aud_fade_out('menuMusic')
+}
 
 function playBackGroundAudio() {
-  background.volume = 0;
-
+  stopMenuMusic()
+  background.volume = 0.0;
+  aud_fade_in('backGroundGame');
   background.play();
 }
 
 function stopGroundAudio() {
-  background.pause();
+  // background.pause();
+  playMenuMusic();
+  aud_fade_out('backGroundGame');
 }
 
 function playEatAudio() {
-  eat.volume = 0;
+  eat.volume = 0.5;
 
   eat.play();
 }
