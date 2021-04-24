@@ -128,6 +128,13 @@ function cleanUp(oldPage) {
     case "about":
       break;
     case "game":
+      $("#canvas").hide();
+        lblScore.value = 0;
+        lblTime.value = 0;
+        document
+        .getElementById("new-game")
+        .removeEventListener("click", () => {$("a[href='#settings']").click()});
+
       resetGame();
       break;
   }
@@ -355,11 +362,14 @@ function Start() {
   console.log(x);
   
   interval = setInterval(UpdatePosition,250);
-  setTimeout(() => {
-    if(page == "game") {
-      monstersInterval = setInterval(updateMonsters, 500);
-    }
-  },3000);
+
+  // monstersInterval = setInterval(updateMonsters, 700);
+
+  // setTimeout(() => {
+  //   if(page == "game") {
+  //     monstersInterval = setInterval(updateMonsters, 500);
+  //   }
+  // },3000);
 }
 
 function findRandomEmptyCell(board) {
@@ -618,12 +628,13 @@ function resetPositions(){
   }
 
   initMonsters();
-  
-  setTimeout(() => {
-    if(page == "game") {
-      monstersInterval = setInterval(updateMonsters, 500);
-    } 
-  },3000);
+
+  // monstersInterval = setInterval(updateMonsters, 700);
+  // setTimeout(() => {
+  //   if(page == "game") {
+  //     monstersInterval = setInterval(updateMonsters, 500);
+  //   } 
+  // },3000);
 }
 
 //when game is stopped a reset is made to few fields
@@ -644,13 +655,6 @@ function resetGame(){
   numberOfElementsEaten = food_remain + 1;
   isSkiltCell = true;
   isSkiltAlive = true;
-
-  $("#canvas").hide();
-  lblScore.value = 0;
-  lblTime.value = 0;
-  document
-  .getElementById("new-game")
-  .removeEventListener("click", () => {$("a[href='#settings']").click()});
   
   lblLife.value = 0;
   lblName.value = "";
@@ -661,6 +665,8 @@ function resetGame(){
 function UpdatePosition() {
   board[shape.i][shape.j] = 0;
   var x = GetKeyPressed();
+  var moved = false;
+
   if (x == 1) {
     if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {//up
       shape.j--;
@@ -668,6 +674,8 @@ function UpdatePosition() {
       endAngle = -Math.PI / 2;
       eyeX = 13;
       eyeY = -2;
+
+      moved = true;
     }
   }
   if (x == 2) {
@@ -677,6 +685,8 @@ function UpdatePosition() {
       endAngle = Math.PI / 2;
       eyeX = -13;
       eyeY = 7;
+
+      moved = true;
     }
   }
   if (x == 3) {
@@ -686,6 +696,8 @@ function UpdatePosition() {
       endAngle = Math.PI;
       eyeX = -5;
       eyeY = -7;
+
+      moved = true;
     }
   }
   if (x == 4) {
@@ -695,6 +707,8 @@ function UpdatePosition() {
       endAngle = 0;
       eyeX = 5;
       eyeY = -7;
+
+      moved = true;
     }
   }
   if (board[shape.i][shape.j] == 5) {
@@ -725,6 +739,11 @@ function UpdatePosition() {
 
   if (score >= 220 && time_elapsed <= 10) {
     pac_color = "green";
+  }
+
+  // add monsters interval after one step
+  if (moved && monstersInterval == null) {
+    monstersInterval = setInterval(updateMonsters, 700);
   }
 
   Draw()
