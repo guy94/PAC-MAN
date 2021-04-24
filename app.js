@@ -262,6 +262,7 @@ function changeKeyCode(arrow ,key) {
 }
 
 function Start() {
+
   window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
         e.preventDefault();
@@ -333,7 +334,9 @@ function Start() {
 
   interval = setInterval(UpdatePosition,250);
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 500);
+    if(page == "game") {
+      monstersInterval = setInterval(updateMonsters, 500);
+    }
   },3000);
 }
 
@@ -547,12 +550,18 @@ function resetPositions(){
   shape.i = pacmanCell[0];
   shape.j = pacmanCell[1];
 
-  window.clearInterval(monstersInterval);
+  if (monstersInterval != null) {
+    clearInterval(monstersInterval);
+    monstersInterval = null;
+  }
+
   initMonsters();
   
   setTimeout(() => {
-    monstersInterval = setInterval(updateMonsters, 500);
-     },3000);
+    if(page == "game") {
+      monstersInterval = setInterval(updateMonsters, 500);
+    } 
+  },3000);
 }
 
 //when game is stopped a reset is made to few fields
@@ -560,8 +569,15 @@ function resetGame(){
   livesCounter = 5;
   prizeIsAlive = true;
   isEating = false;
-  window.clearInterval(interval);
-  window.clearInterval(monstersInterval);
+
+  if (interval != null) {
+    clearInterval(interval);
+    interval = null;
+  }
+  if (monstersInterval != null) {
+    clearInterval(monstersInterval);
+    monstersInterval = null;
+  }
   stopGroundAudio();
   numberOfElementsEaten = food_remain + 1;
 }
