@@ -348,7 +348,6 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-  //if (keysDown[38]) {
   if (keysDown[keys["up"]]) {
     return 1;
   }
@@ -548,7 +547,7 @@ function resetPositions(){
   shape.i = pacmanCell[0];
   shape.j = pacmanCell[1];
 
-  clearInterval(monstersInterval);
+  window.clearInterval(monstersInterval);
   initMonsters();
   
   setTimeout(() => {
