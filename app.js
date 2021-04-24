@@ -29,6 +29,7 @@ var pressDownArrow = function() { changeArrow('down'); };
 var pressUpArrow = function() { changeArrow('up'); };
 var pressRightArrow = function() { changeArrow('right'); };
 var pressLeftArrow = function() { changeArrow('left'); };
+var keys = {left:37, up:38, right:39, down:40};
 var food_remain;
 var numberOfElementsEaten;
 var totalFood;
@@ -191,29 +192,64 @@ function handleGamePage() {
 function changeArrow(arrow) {
 
   arrowFunc = function(event) {
-    key = String.fromCharCode(event.keyCode)
-    changeKeyCode(arrow ,key);
+    event.preventDefault();
+    
+    if (!checkIfKeyExist(event.keyCode)) {
+      switch (event.keyCode) {
+        case 37:
+          key = "←";
+          break;
+        case 38:
+          key = "↑";;
+          break;
+        case 39:
+          key = "→";
+          break;
+        case 40:
+          key = "↓";
+          break;
+        default:
+          key = String.fromCharCode(event.keyCode);
+      }
+
+      keys[arrow] = event.keyCode;
+      changeKeyCode(arrow ,key);
+    }
+    else {
+      removeEventListener("keydown", arrowFunc, true);
+    }
   }
-  addEventListener("keypress", arrowFunc, true);
+
+  addEventListener("keydown", arrowFunc, true);
+}
+
+function checkIfKeyExist(keyCode) {
+  let result = false;
+  for (let [key, value] of Object.entries(keys)) {
+    if (keyCode == value) {
+      result = true;
+    }
+  }
+  return result;
 }
 
 function changeKeyCode(arrow ,key) {
   
   switch (arrow) {
     case "up":
-      document.getElementById("up-arrow").innerHTML = key;
+      document.getElementById("kbd-up").innerHTML = key;
       break;
     case "down":
-      document.getElementById("down-arrow").innerHTML = key;
+      document.getElementById("kbd-down").innerHTML = key;
       break;
     case "left":
-      document.getElementById("left-arrow").innerHTML = key;
+      document.getElementById("kbd-left").innerHTML = key;
       break;
     case "right":
-      document.getElementById("right-arrow").innerHTML = key;
+      document.getElementById("kbd-right").innerHTML = key;
       break;
   }
-  removeEventListener("keypress", arrowFunc, true);
+  removeEventListener("keydown", arrowFunc, true);
 }
 
 function Start() {
@@ -381,11 +417,11 @@ function Draw() {
         }
       } 
       else if (board[i][j] == 5) {
-        drawGel("gel1", center)
+        drawGel(center, "5", "purple")
       }else if (board[i][j] == 15) {
-        drawGel("gel2", center)
+        drawGel(center, "15", "blue")
       }else if (board[i][j] == 25) {
-        drawGel("gel3", center)
+        drawGel(center, "25", "orange")
       }
       
       else if (board[i][j] == 4) {
@@ -415,11 +451,21 @@ function Draw() {
   }
 }
 
-function drawGel(gel, center){
+function drawGel(center, text, color){
+  // context.beginPath();
+  // let imageObj = new Image();
+  // imageObj.src ="photos\\" + gel + ".png";
+  // context.drawImage(imageObj,center.x - 30, center.y - 20, 60, 50);
   context.beginPath();
-  let imageObj = new Image();
-  imageObj.src ="photos\\" + gel + ".png";
-  context.drawImage(imageObj,center.x - 30, center.y - 20, 60, 50);
+  context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+  context.fillStyle = color; //color
+  context.fill();
+
+  context.font = '8pt Calibri';
+  context.fillStyle = 'white';
+  context.textAlign = 'center';
+  context.fillText(text, center.x, center.y+3);
+
 }
 
 function drawMedicine(){
