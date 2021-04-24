@@ -48,7 +48,6 @@ $(document).ready(function () {
     aboutClick = true;
     },
    });
-
 });
 
 function handlePages(page, clean) {
@@ -337,16 +336,17 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-  if (keysDown[38]) {
+  //if (keysDown[38]) {
+  if (keysDown[keys["up"]]) {
     return 1;
   }
-  if (keysDown[40]) {
+  if (keysDown[keys["down"]]) {
     return 2;
   }
-  if (keysDown[37]) {
+  if (keysDown[keys["left"]]) {
     return 3;
   }
-  if (keysDown[39]) {
+  if (keysDown[keys["right"]]) {
     return 4;
   }
 }
@@ -628,7 +628,6 @@ function UpdatePosition() {
   }
 }
 
-//GUY
 function validateSignUp(e) {
   e.preventDefault();
 
