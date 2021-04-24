@@ -31,7 +31,8 @@ var pressRightArrow = function() { changeArrow('right'); };
 var pressLeftArrow = function() { changeArrow('left'); };
 var keys = {left:37, up:38, right:39, down:40};
 
-var food_remain = 70; //defualt
+var food_remain;
+food_remain_settings = 70; //defualt
 var numberOfElementsEaten;
 
 
@@ -175,11 +176,11 @@ function handleSettingsPage() {
   let slider = document.getElementById("myRange");
   let output = document.getElementById("demo");
   output.innerHTML = slider.value;
-  food_remain = slider.value;
+  food_remain_settings = slider.value;
 
   slider.oninput = function() {
     output.innerHTML = this.value;
-    food_remain = slider.value;
+    food_remain_settings = slider.value;
   }
 }
 
@@ -277,6 +278,7 @@ function Start() {
   pac_color = "yellow";
   var cnt = 100;
   // food_remain = 50;
+  food_remain = food_remain_settings;
   numberOfElementsEaten = food_remain + 1;
   var pacman_remain = 1;
   start_time = new Date();
