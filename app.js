@@ -168,15 +168,38 @@ function handleSettingsPage() {
   document.getElementById("left-arrow").addEventListener("click", pressLeftArrow, false);
   document.getElementById("right-arrow").addEventListener("click", pressRightArrow, false);
 
-  let slider = document.getElementById("myRange");
-  let output = document.getElementById("demo");
-  output.innerHTML = slider.value;
-  food_remain_settings = slider.value;
+  // balls
+  let Bslider = document.getElementById("ballsRange");
+  let Boutput = document.getElementById("ballsValue");
+  Boutput.innerHTML = Bslider.value;
+  food_remain_settings = Bslider.value;
 
-  slider.oninput = function() {
-    output.innerHTML = this.value;
-    food_remain_settings = slider.value;
+  Bslider.oninput = function() {
+    Boutput.innerHTML = this.value;
+    food_remain_settings = Bslider.value;
   }
+
+  // monsters
+  let Mslider = document.getElementById("monstersRange");
+  let Moutput = document.getElementById("monstersValue");
+  Moutput.innerHTML = Mslider.value;
+  numOfMonsters = Mslider.value;
+
+  Mslider.oninput = function() {
+    Moutput.innerHTML = this.value;
+    numOfMonsters = Mslider.value;
+  }
+
+  // time
+    let Tslider = document.getElementById("timeRange");
+    let Toutput = document.getElementById("timeValue");
+    Toutput.innerHTML = Tslider.value;
+    totalGameTime = Tslider.value;
+  
+    Tslider.oninput = function() {
+      Toutput.innerHTML = this.value;
+      totalGameTime = Tslider.value;
+    }
 }
 
 function handleAboutPage() {
