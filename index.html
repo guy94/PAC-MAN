@@ -4,6 +4,7 @@
       <script src="./jquery-3.4.1.slim.min.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script type="text/javascript" src="./monsters.js"></script>
+      <script type="text/javascript" src="./signup.js"></script>
       <script type="text/javascript" src="./app.js"></script>
       <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
       <link rel="stylesheet" href="style.css" />
@@ -110,10 +111,11 @@
                   <p>Choose the number of balls in the game.</p>
                   <br>
                   <div class="slidecontainer">
-                     <input type="range" min="50" max="90" value="70" class="slider" id="myRange">
-                     <p>Value: <span id="demo"></span></p>
+                     <input type="range" min="50" max="90" value="70" class="slider" id="ballsRange">
+                     <p>Value: <span id="ballsValue"></span></p>
                    </div>
 
+                   <br>
                    <br>
                    <label for="favcolor" style="color: white;text-align: center;" >Select ball number 1 color:</label>
                    <input type="color" id="favcolor1" class="favcolor" name="favcolor" value="#EE9633">
@@ -123,7 +125,31 @@
                    <br>
                    <label for="favcolor" style="color: white;text-align: center;">Select ball number 3 color:</label>
                    <input type="color" id="favcolor3" class="favcolor" name="favcolor" value="#33E3EE">
+                   <br>
+                   <br>
+
+                  <p>Choose the number of monsters in the game.</p>
+                  <br>
+                  <div class="slidecontainer">
+                     <input type="range" min="1" max="4" value="4" class="slider" id="monstersRange">
+                     <p>Value: <span id="monstersValue"></span></p>
+                  </div>
+                  <br>
+                  <br>
+                  <p>Choose the desired play time.</p>
+                  <br>
+                  <div class="slidecontainer">
+                     <input type="range" min="60" max="180" value="90" class="slider" id="timeRange">
+                     <p>Value: <span id="timeValue"></span></p>
+                  </div>
+                  <br>
+                  <br>
+                  <p>Generate random game settings: </p>
+                  <button id= "random-game" class="btn-1"><i class="fa fa-sign-out"></i> Go Random! </button> 
+                  <br>
+                  <button id= "play-game-from-settings" class="btn-1"><i class="fa fa-sign-out"></i> Play! </button>                  
                   
+                  <br>
                </div>
             </div>
             <div id="about" class="pages">

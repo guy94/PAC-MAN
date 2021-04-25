@@ -131,6 +131,16 @@ function cleanUp(oldPage) {
     case "about":
       break;
     case "game":
+      $("#canvas").hide();
+        lblScore.value = 0;
+        lblTime.value = 0;
+        document
+        .getElementById("new-game")
+        .removeEventListener("click", () => {$("a[href='#settings']").click()});
+
+        document.getElementById("random-game").removeEventListener("click", generateRandomGame)
+        document.getElementById("play-game-from-settings").removeEventListener("click", handleGamePage)
+
       resetGame();
       break;
   }
@@ -171,15 +181,44 @@ function handleSettingsPage() {
   document.getElementById("left-arrow").addEventListener("click", pressLeftArrow, false);
   document.getElementById("right-arrow").addEventListener("click", pressRightArrow, false);
 
-  let slider = document.getElementById("myRange");
-  let output = document.getElementById("demo");
-  output.innerHTML = slider.value;
-  food_remain_settings = parseInt(slider.value);
+  // balls
+  let Bslider = document.getElementById("ballsRange");
+  let Boutput = document.getElementById("ballsValue");
+  Boutput.innerHTML = Bslider.value;
+  food_remain_settings = parseInt(Bslider.value);
 
-  slider.oninput = function() {
-    output.innerHTML = this.value;
-    food_remain_settings = parseInt(slider.value);
+  Bslider.oninput = function() {
+    Boutput.innerHTML = this.value;
+    food_remain_settings = parseInt(Bslider.value);
   }
+
+  // monsters
+  let Mslider = document.getElementById("monstersRange");
+  let Moutput = document.getElementById("monstersValue");
+  Moutput.innerHTML = Mslider.value;
+  numOfMonsters = parseInt(Mslider.value);
+
+  Mslider.oninput = function() {
+    Moutput.innerHTML = this.value;
+    numOfMonsters = parseInt(Mslider.value);
+  }
+
+  // time
+    let Tslider = document.getElementById("timeRange");
+    let Toutput = document.getElementById("timeValue");
+    Toutput.innerHTML = Tslider.value;
+    totalGameTime = parseInt(Tslider.value);
+  
+    Tslider.oninput = function() {
+      Toutput.innerHTML = this.value;
+      totalGameTime = parseInt(Tslider.value);
+    }
+
+  //random settings
+  document.getElementById("random-game").addEventListener("click", generateRandomGame, false)
+
+  //play game
+  document.getElementById("play-game-from-settings").addEventListener("click", function(){$("a[href='#game']").click()}, false)
 }
 
 function handleAboutPage() {
@@ -333,16 +372,40 @@ function Start() {
 
   initMonsters();
   initMedicineAndClock();
-
-  x = location.href
-  console.log(x);
-  
   interval = setInterval(UpdatePosition,250);
-  setTimeout(() => {
-    if(page == "game") {
-      monstersInterval = setInterval(updateMonsters, 500);
-    }
-  },3000);
+}
+
+function generateRandomGame(){
+  //monsters, balls amount, balls color, time.
+
+  let Bslider = document.getElementById("ballsRange");
+  let Boutput = document.getElementById("ballsValue");
+  Bslider.value = Math.floor(Math.random() * 41) + 50;
+  Boutput.innerHTML = Bslider.value;
+
+  let Mslider = document.getElementById("monstersRange");
+  let Moutput = document.getElementById("monstersValue");
+  Mslider.value = Math.floor(Math.random() * 4) + 1;
+  Moutput.innerHTML = Mslider.value;
+
+  let Tslider = document.getElementById("timeRange");
+  let Toutput = document.getElementById("timeValue");
+  Tslider.value = Math.floor(Math.random() * 121) + 60
+  Toutput.innerHTML = Tslider.value;
+
+  document.getElementById("favcolor1").value = randomColorPicker()
+  document.getElementById("favcolor2").value = randomColorPicker()
+  document.getElementById("favcolor3").value = randomColorPicker()
+
+}
+
+function randomColorPicker(){
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
 
 function findRandomEmptyCell(board) {
@@ -601,12 +664,13 @@ function resetPositions(){
   }
 
   initMonsters();
-  
-  setTimeout(() => {
-    if(page == "game") {
-      monstersInterval = setInterval(updateMonsters, 500);
-    } 
-  },3000);
+
+  // monstersInterval = setInterval(updateMonsters, 700);
+  // setTimeout(() => {
+  //   if(page == "game") {
+  //     monstersInterval = setInterval(updateMonsters, 500);
+  //   } 
+  // },3000);
 }
 
 //when game is stopped a reset is made to few fields
@@ -627,7 +691,6 @@ function resetGame(){
   numberOfElementsEaten = food_remain_settings + 1;
   isSkiltCell = true;
   isSkiltAlive = true;
-
   lblLife.value = 0;
   lblName.value = "";
   stopGroundAudio();
@@ -637,6 +700,8 @@ function resetGame(){
 function UpdatePosition() {
   board[shape.i][shape.j] = 0;
   var x = GetKeyPressed();
+  var moved = false;
+
   if (x == 1) {
     if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {//up
       shape.j--;
@@ -644,6 +709,8 @@ function UpdatePosition() {
       endAngle = -Math.PI / 2;
       eyeX = 13;
       eyeY = -2;
+
+      moved = true;
     }
   }
   if (x == 2) {
@@ -653,6 +720,8 @@ function UpdatePosition() {
       endAngle = Math.PI / 2;
       eyeX = -13;
       eyeY = 7;
+
+      moved = true;
     }
   }
   if (x == 3) {
@@ -662,6 +731,8 @@ function UpdatePosition() {
       endAngle = Math.PI;
       eyeX = -5;
       eyeY = -7;
+
+      moved = true;
     }
   }
   if (x == 4) {
@@ -671,6 +742,8 @@ function UpdatePosition() {
       endAngle = 0;
       eyeX = 5;
       eyeY = -7;
+
+      moved = true;
     }
   }
   if (board[shape.i][shape.j] == 5) {
@@ -703,6 +776,11 @@ function UpdatePosition() {
     pac_color = "green";
   }
 
+  // add monsters interval after one step
+  if (moved && monstersInterval == null) {
+    monstersInterval = setInterval(updateMonsters, 700);
+  }
+
   Draw()
 
   if(numberOfElementsEaten == 0){
@@ -722,59 +800,59 @@ function UpdatePosition() {
   }
 }
 
-function validateSignUp(e) {
-  e.preventDefault();
+// function validateSignUp(e) {
+//   e.preventDefault();
 
-  let userName = $("#uname").val();
-  let fullName = $("#fname").val();
-  let email = $("#email").val();
-  let password = $("#pword").val();
-  let repeatPassWord = $("#repeatPword").val();
+//   let userName = $("#uname").val();
+//   let fullName = $("#fname").val();
+//   let email = $("#email").val();
+//   let password = $("#pword").val();
+//   let repeatPassWord = $("#repeatPword").val();
 
-  const passwordValidation = new RegExp("(?=.*[0-9])(?=.*[a-zA-Z]).{6,}");
-  const nameValidation = new RegExp("![^a-zA-Z]");
-  const emailValidation = new RegExp("[S+@S+.S+]");
+//   const passwordValidation = new RegExp("(?=.*[0-9])(?=.*[a-zA-Z]).{6,}");
+//   const nameValidation = new RegExp("![^a-zA-Z]");
+//   const emailValidation = new RegExp("[S+@S+.S+]");
 
-  let names = fullName.split(" ");
-  let numOfValidations = 5;
+//   let names = fullName.split(" ");
+//   let numOfValidations = 5;
 
-  $(".signup").filter(function () {
-    return $.trim($(this).val()).length == 0;
-  }).length == 0
-    ? numOfValidations--
-    : null;
+//   $(".signup").filter(function () {
+//     return $.trim($(this).val()).length == 0;
+//   }).length == 0
+//     ? numOfValidations--
+//     : null;
 
-  passwordValidation.test(password) ? numOfValidations-- : null;
-  emailValidation.test(email) ? numOfValidations-- : null;
-  password === repeatPassWord ? numOfValidations-- : null;
+//   passwordValidation.test(password) ? numOfValidations-- : null;
+//   emailValidation.test(email) ? numOfValidations-- : null;
+//   password === repeatPassWord ? numOfValidations-- : null;
 
-  const numberInName = names.filter((item) => nameValidation.test(item));
-  numberInName.length == 0 ? numOfValidations-- : null;
+//   const numberInName = names.filter((item) => nameValidation.test(item));
+//   numberInName.length == 0 ? numOfValidations-- : null;
 
-  if (numOfValidations != 0) {
-    timeOutAlert("form is not defined well.");
-  } else {
-    usersMap[userName] = password;
-    $("a[href='#welcome']").click();
-  }
-}
+//   if (numOfValidations != 0) {
+//     timeOutAlert("form is not defined well.");
+//   } else {
+//     usersMap[userName] = password;
+//     $("a[href='#welcome']").click();
+//   }
+// }
 
-function loginUser(e) {
-  e.preventDefault();
+// function loginUser(e) {
+//   e.preventDefault();
 
-  let loginUserName = $("#loginUserName").val();
-  let loginPassword = $("#loginPassword").val();
+//   let loginUserName = $("#loginUserName").val();
+//   let loginPassword = $("#loginPassword").val();
 
-  if (isLoggedIn == true) {
-    timeOutAlert("A user is already logged in.");
-  } 
-  else if ( loginUserName in usersMap &&
-            usersMap[loginUserName] == loginPassword) {
-    isLoggedIn = true;
-    UserName = loginUserName;
-    $("a[href='#settings']").click();
-  } 
-  else {
-    timeOutAlert("Details are wrong. Try again or register.");
-  }
-}
+//   if (isLoggedIn == true) {
+//     timeOutAlert("A user is already logged in.");
+//   } 
+//   else if ( loginUserName in usersMap &&
+//             usersMap[loginUserName] == loginPassword) {
+//     isLoggedIn = true;
+//     UserName = loginUserName;
+//     $("a[href='#settings']").click();
+//   } 
+//   else {
+//     timeOutAlert("Details are wrong. Try again or register.");
+//   }
+// }
