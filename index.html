@@ -11,6 +11,7 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
    </head>
    <body>
       <div id="wrapperf">
@@ -36,9 +37,9 @@
                   <span class="headline"><a href="#">Welcome To PacMan<a></a></span>
                   <span><img src="photos/pac-man.png" height = "70" width = "70"></span>
                   <div id = "text">
-                     <h3>Pac-Man is a maze chase video game The objective of the game is to </h3>
-                     <h3> eat all of the dots placed in the maze while avoiding four colored ghosts</h3>
-                     <h3>If Pac-Man makes contact with a ghost he will lose a life, the game ends</h3>
+                     <h3>Pac-Man is a maze chase video game. The objective of the game is to </h3>
+                     <h3> eat all of the dots placed in the maze while avoiding colored ghosts.</h3>
+                     <h3>If Pac-Man makes contact with a ghost he will lose a life. The game ends</h3>
                      <h3>  when all lives are lost</h3>
                   </div>
                   <div class="containerbt">
@@ -53,6 +54,8 @@
                <div class="container">
                   <h2>SignUp</h2>
                   <div class="signUp-form">
+                     <h3 style="color: white;text-align: center;">Password must include 1 letter, 1 digit and 6 characters at least.<br>
+                     Full name contains letters only.</h3>
                      <form>
                         <input class="signup" type="text" id="uname" name="unmae" placeholder="Username" required />
                         <input class="signup" type="password" id="pword" name="pword" placeholder="New password:" required />
@@ -89,66 +92,74 @@
                <div class="container">
                   <br>
                   <br>
-                  <h3 style="color: white; text-align: center;">Please select keys to play with.
-                     Press the arrow you want
-                  </h3>
-                  <h3 style="color: white;text-align: center;">
-                     to change  immediately after that press the desired key.
-                  </h3>
-                  <div class="grid-container">
-                     <div class="grid-item"></div>
-                     <button id="up-arrow" class="grid-item"><kbd id="kbd-up">↑</kbd></button>
-                     <div class="grid-item"></div>
-                     <button id="left-arrow" class="grid-item"><kbd id="kbd-left">←</kbd></button>
-                     <div class="grid-item"></div>
-                     <button id="right-arrow" class="grid-item"><kbd id="kbd-right">→</kbd></button>
-                     <div class="grid-item"></div>
-                     <button id="down-arrow" class="grid-item"><kbd id="kbd-down">↓</kbd></button>
-                     <div class="grid-item"></div>
+                  <div style="border: 3px solid rgb(248,206,27)">
+                     <h3 style="color: white; text-align: center;">Please select keys to play with.
+                        Press the arrow you want
+                     </h3>
+                     <h3 style="color: white;text-align: center;">
+                        to change, and than press the desired key.
+                     </h3>
+                     <div class="grid-container">
+                        <div class="grid-item"></div>
+                        <button id="up-arrow" class="grid-item"><kbd id="kbd-up">↑</kbd></button>
+                        <div class="grid-item"></div>
+                        <button id="left-arrow" class="grid-item"><kbd id="kbd-left">←</kbd></button>
+                        <div class="grid-item"></div>
+                        <button id="right-arrow" class="grid-item"><kbd id="kbd-right">→</kbd></button>
+                        <div class="grid-item"></div>
+                        <button id="down-arrow" class="grid-item"><kbd id="kbd-down">↓</kbd></button>
+                        <div class="grid-item"></div>
+                     </div>
                   </div>
                   <br>
                   <br>
-                  <p>Choose the number of balls in the game.</p>
-                  <br>
-                  <div class="slidecontainer">
-                     <input type="range" min="50" max="90" value="70" class="slider" id="ballsRange">
-                     <p>Value: <span id="ballsValue"></span></p>
-                   </div>
-
+                  <div style="border: 3px solid rgb(248,206,27)">
+                     <h3 style="color: white;text-align: center;">Choose the number of balls in the game.</h3>
+                     <br>
+                     <div class="slidecontainer">
+                        <input type="range" min="50" max="90" value="70" class="slider" id="ballsRange">
+                        <h3 style="color: white;text-align: center;">Value: <span id="ballsValue"></span></h3>
+                     </div>
+                  </div>
                    <br>
                    <br>
-                   <label for="favcolor" style="color: white;text-align: center;" >Select ball number 1 color:</label>
-                   <input type="color" id="favcolor1" class="favcolor" name="favcolor" value="#EE9633">
+                   <div class="ball-colors" style="border: 3px solid rgb(248,206,27)">
+                     <label for="favcolor" style="color: white;text-align: center;" ><h3>Select ball number 1 color:</h3></label>
+                     <input type="color" id="favcolor1" class="favcolor" name="favcolor" value="#EE9633">
+                     <br>
+                     <label for="favcolor" style="color: white;text-align: center;" ><h3>Select ball number 2 color:</h3></label>
+                     <input type="color" id="favcolor2" class="favcolor" name="favcolor" value="#6F33EE">
+                     <br>
+                     <label for="favcolor" style="color: white;text-align: center;"><h3>Select ball number 3 color:</h3></label>
+                     <input type="color" id="favcolor3" class="favcolor" name="favcolor" value="#33E3EE">
+                  </div>
                    <br>
-                   <label for="favcolor" style="color: white;text-align: center;" >Select ball number 2 color:</label>
-                   <input type="color" id="favcolor2" class="favcolor" name="favcolor" value="#6F33EE">
                    <br>
-                   <label for="favcolor" style="color: white;text-align: center;">Select ball number 3 color:</label>
-                   <input type="color" id="favcolor3" class="favcolor" name="favcolor" value="#33E3EE">
-                   <br>
-                   <br>
-
-                  <p>Choose the number of monsters in the game.</p>
-                  <br>
-                  <div class="slidecontainer">
-                     <input type="range" min="1" max="4" value="4" class="slider" id="monstersRange">
-                     <p>Value: <span id="monstersValue"></span></p>
+                   <div style="border: 3px solid rgb(248,206,27)">
+                     <h3 style="color: white;text-align: center;">Choose the number of monsters in the game.</p>
+                     <br>
+                     <div class="slidecontainer">
+                        <input type="range" min="1" max="4" value="4" class="slider" id="monstersRange">
+                        <h3 style="color: white;text-align: center;">Value: <span id="monstersValue"></span></p>
+                     </div>
                   </div>
                   <br>
                   <br>
-                  <p>Choose the desired play time.</p>
-                  <br>
-                  <div class="slidecontainer">
-                     <input type="range" min="60" max="180" value="90" class="slider" id="timeRange">
-                     <p>Value: <span id="timeValue"></span></p>
+                  <div style="border: 3px solid rgb(248,206,27)">
+                     <h3 style="color: white;text-align: center;">Choose the desired play time.</h3>
+                     <br>
+                     <div class="slidecontainer">
+                        <input type="range" min="60" max="180" value="90" class="slider" id="timeRange">
+                        <h3 style="color: white;text-align: center;">Value: <span id="timeValue"></span></h3>
+                     </div>
                   </div>
                   <br>
                   <br>
-                  <p>Generate random game settings: </p>
-                  <button id= "random-game" class="btn-1"><i class="fa fa-sign-out"></i> Go Random! </button> 
-                  <br>
-                  <button id= "play-game-from-settings" class="btn-1"><i class="fa fa-sign-out"></i> Play! </button>                  
-                  
+                  <div class="containerbt">
+                     <button id= "random-game" class="btn-1"><i class="fa fa-sign-out"></i> Go Random! </button> 
+                     <br>
+                     <button id= "play-game-from-settings" class="btn-1"><i class="fa fa-sign-out"></i> Play! </button>                  
+                  </div>
                   <br>
                </div>
             </div>

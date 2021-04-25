@@ -222,12 +222,11 @@ function handleSettingsPage() {
 }
 
 function handleAboutPage() {
-  alert(" about page ");
+  // alert(" about page ");
 }
 
 function handleGamePage() {
-  // alert(" about page ");
-  isLoggedIn ? Start() : null;
+  isLoggedIn ? Start() : timeOutAlert("Please login first. Signup if you dont have a user!");
   isLoggedIn ? playBackGroundAudio() : null;
 
   document
@@ -376,7 +375,7 @@ function Start() {
 }
 
 function generateRandomGame(){
-  //monsters, balls amount, balls color, time.
+  //monsters, balls amount, balls color, time, keyBoard.
 
   let Bslider = document.getElementById("ballsRange");
   let Boutput = document.getElementById("ballsValue");
@@ -397,6 +396,10 @@ function generateRandomGame(){
   document.getElementById("favcolor2").value = randomColorPicker()
   document.getElementById("favcolor3").value = randomColorPicker()
 
+  document.getElementById("kbd-up").innerHTML = "↑";
+  document.getElementById("kbd-down").innerHTML = "↓";
+  document.getElementById("kbd-left").innerHTML = "←";;
+  document.getElementById("kbd-right").innerHTML = "→";
 }
 
 function randomColorPicker(){
@@ -788,14 +791,9 @@ function UpdatePosition() {
     resetGame()
   }
 
-  if (time_elapsed >= 120){
+  if (time_elapsed >= totalGameTime){
     (score >= 100) ? timeOutAlert("Winner!") :  timeOutAlert("You are better than " + score + " points.");
     $("#canvas").hide();
-    lblScore.value = 0;
-    lblTime.value = 0;
-    document
-    .getElementById("new-game")
-    .removeEventListener("click", () => {$("a[href='#settings']").click()});
     resetGame()
   }
 }
