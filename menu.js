@@ -102,7 +102,7 @@ function aud_fade_in(tag) {
 function playMenuMusic(){
   // menuMusic.volume = 0.2;
   // document.getElementById('menuMusic').menuMusic = false;
-  menuMusic.volume = 0.2;
+  menuMusic.volume = 0.0;
   menuMusic.play();
   // aud_fade_in('menuMusic');
 }
@@ -114,7 +114,7 @@ function stopMenuMusic(){
 
 function playBackGroundAudio() {
   stopMenuMusic()
-  background.volume = 0.2;
+  background.volume = 0.0;
   // aud_fade_in('backGroundGame');
   background.play();
 }
@@ -126,7 +126,7 @@ function stopGroundAudio() {
 }
 
 function playEatAudio() {
-  eat.volume = 0.5;
+  eat.volume = 0.0;
 
   eat.play();
 }

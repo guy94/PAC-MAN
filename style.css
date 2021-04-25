@@ -300,6 +300,12 @@ h6 {
   font-weight: bold;
 }
 
+#footer-text{
+  color: rgb(248,206,27);
+  text-align: center;
+  opacity: 0.7;
+  
+}
 
 
 .is-hidden
