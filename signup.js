@@ -8,7 +8,7 @@ function validateSignUp(e) {
     let repeatPassWord = $("#repeatPword").val();
   
     const passwordValidation = new RegExp("(?=.*[0-9])(?=.*[a-zA-Z]).{6,}");
-    const nameValidation = new RegExp("![^a-zA-Z]");
+    const nameValidation = new RegExp("[^a-zA-Z]");
     const emailValidation = new RegExp("[S+@S+.S+]");
   
     let names = fullName.split(" ");

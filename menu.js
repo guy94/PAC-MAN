@@ -82,6 +82,7 @@ function showSlides(n) {
 var background = document.getElementById("backGroundGame");
 var eat = document.getElementById("Eating");
 var menuMusic = document.getElementById("menuMusic");
+var hitMusic = document.getElementById("hitMusic");
 
 function aud_fade_out(tag) {
   var myAudio = document.getElementById(tag);
@@ -102,7 +103,7 @@ function aud_fade_in(tag) {
 function playMenuMusic(){
   // menuMusic.volume = 0.2;
   // document.getElementById('menuMusic').menuMusic = false;
-  menuMusic.volume = 0.0;
+  menuMusic.volume = 0.2;
   menuMusic.play();
   // aud_fade_in('menuMusic');
 }
@@ -114,7 +115,7 @@ function stopMenuMusic(){
 
 function playBackGroundAudio() {
   stopMenuMusic()
-  background.volume = 0.0;
+  background.volume = 0.1;
   // aud_fade_in('backGroundGame');
   background.play();
 }
@@ -126,10 +127,19 @@ function stopGroundAudio() {
 }
 
 function playEatAudio() {
-  eat.volume = 0.0;
+  eat.volume = 0.5;
 
   eat.play();
 }
 function StopEatAudio() {
   eat.pause();
+}
+
+function playHitAudio() {
+  hitMusic.volume = 0.5;
+
+  hitMusic.play();
+}
+function StopHitAudio() {
+  hitMusic.pause();
 }

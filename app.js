@@ -313,6 +313,7 @@ function Start() {
   ballColor1 = $("#favcolor1").val();
   ballColor2 = $("#favcolor2").val();
   ballColor3 = $("#favcolor3").val();
+
   board = new Array();
   score = 0;
   pac_color = "yellow";
@@ -371,7 +372,7 @@ function Start() {
 
   initMonsters();
   initMedicineAndClock();
-  interval = setInterval(UpdatePosition,250);
+  interval = setInterval(UpdatePosition,200);
 }
 
 function generateRandomGame(){
@@ -403,7 +404,7 @@ function generateRandomGame(){
   keys = {left:37, up:38, right:39, down:40};
   document.getElementById("kbd-up").innerHTML = "↑";
   document.getElementById("kbd-down").innerHTML = "↓";
-  document.getElementById("kbd-left").innerHTML = "←";;
+  document.getElementById("kbd-left").innerHTML = "←";
   document.getElementById("kbd-right").innerHTML = "→";
 }
 
@@ -631,14 +632,17 @@ function drawMonsters(){
       //2 monsters have super strength (bonus stage).
       if(i == 0){//monster1
         livesCounter--;
+        playHitAudio()
         score -= 20;
       }
       else if(i == 2) {//monster3
         livesCounter -= 2;
+        playHitAudio()
         score -= 30;
        }
       else{
         livesCounter--;
+        playHitAudio()
         score -= 10;
       }
       
@@ -716,8 +720,8 @@ function resetGame(){
   numberOfElementsEaten = food_remain_settings + 1;
   isSkiltCell = true;
   isSkiltAlive = true;
-  lblLife.value = 0;
-  lblName.value = "";
+  // lblLife.value = 0;
+  // lblName.value = "";
   stopGroundAudio();
 }
 
@@ -803,7 +807,7 @@ function UpdatePosition() {
 
   // add monsters interval after one step
   if (moved && monstersInterval == null) {
-    monstersInterval = setInterval(updateMonsters, 700);
+    monstersInterval = setInterval(updateMonsters, 400);
   }
 
   Draw()
@@ -815,7 +819,7 @@ function UpdatePosition() {
 
   if (time_elapsed >= totalGameTime){
     (score >= 100) ? timeOutAlert("Winner!") :  timeOutAlert("You are better than " + score + " points.");
-    $("#canvas").hide();
+    // $("#canvas").hide();
     resetGame()
   }
 }
