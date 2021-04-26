@@ -8,7 +8,7 @@ function validateSignUp(e) {
     let repeatPassWord = $("#repeatPword").val();
   
     const passwordValidation = new RegExp("(?=.*[0-9])(?=.*[a-zA-Z]).{6,}");
-    const nameValidation = new RegExp("[^a-zA-Z]");
+    // const nameValidation = new RegExp("\d");
     const emailValidation = new RegExp("[S+@S+.S+]");
   
     let names = fullName.split(" ");
@@ -24,7 +24,7 @@ function validateSignUp(e) {
     emailValidation.test(email) ? numOfValidations-- : null;
     password === repeatPassWord ? numOfValidations-- : null;
   
-    const numberInName = names.filter((item) => nameValidation.test(item));
+    const numberInName = names.filter((item) => /\d/.test(item));
     numberInName.length == 0 ? numOfValidations-- : null;
   
     if (numOfValidations != 0) {
