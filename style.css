@@ -437,6 +437,7 @@ kbd {
   float:left;
   border: 3px solid rgb(247, 202, 6);
   padding: 3px;
+  text-align: center;
 }
 
 .splitRight {

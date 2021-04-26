@@ -381,16 +381,20 @@ function generateRandomGame(){
   let Boutput = document.getElementById("ballsValue");
   Bslider.value = Math.floor(Math.random() * 41) + 50;
   Boutput.innerHTML = Bslider.value;
+  food_remain_settings = parseInt(Bslider.value);
 
   let Mslider = document.getElementById("monstersRange");
   let Moutput = document.getElementById("monstersValue");
   Mslider.value = Math.floor(Math.random() * 4) + 1;
   Moutput.innerHTML = Mslider.value;
+  numOfMonsters = parseInt(Mslider.value);
 
   let Tslider = document.getElementById("timeRange");
   let Toutput = document.getElementById("timeValue");
   Tslider.value = Math.floor(Math.random() * 121) + 60
   Toutput.innerHTML = Tslider.value;
+  totalGameTime = Tslider.value
+  lblTime.value = totalGameTime - totalGameTime
 
   document.getElementById("favcolor1").value = randomColorPicker()
   document.getElementById("favcolor2").value = randomColorPicker()
@@ -452,12 +456,29 @@ function initMedicineAndClock(){
   isClockAlive = true;
 }
 
+function getKeysFromCode(){
+  keysChars = []
+  for (const [key, value] of Object.entries(keys)) {
+    if(value == 37){keysChars.push("←")}
+    else if(value == 38){keysChars.push("↑")}
+    else if(value == 39){keysChars.push("→")}
+    else if(value == 40)keysChars.push("↓")
+    else{
+      keysChars.push(String.fromCharCode(value));
+    }
+  }
+  return keysChars
+}
+
 function Draw() {
   canvas.width = canvas.width; //clean board
   lblScore.value = score;
   lblTime.value = totalGameTime - Math.floor(time_elapsed);
   lblLife.value = livesCounter;
   lblName.value = UserName;
+  lblMonsters.value = numOfMonsters;
+  // String.fromCharCode(e.keyCode)
+  lblKeys.value = getKeysFromCode()
   
   // let gel_25 = 0.1 * totalFood;
   // let gel_15 = 0.3 * totalFood;
