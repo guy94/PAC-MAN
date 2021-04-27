@@ -2,7 +2,7 @@
  Guy Klinger: 205413149
  Ronit Tsysar: 316612803
  Gal Baneim: 312198310
- URL: https://web-development-environments-2021.github.io/assignment2-guy94/
+ URL: https://web-development-environments-2021.github.io/assignment2-205413149_316612803_312198310/
  
  Due to the fact that we are a team of three, we have been requested to add 3 functionalities + 1 bonus if we would like to.
  
