@@ -12,14 +12,18 @@ $(".selector").css({
 
 $(".tabs").on("click", "a", function (e) {
   e.preventDefault();
-  $(".tabs a").removeClass("active");
-  $(this).addClass("active");
-  var activeWidth = $(this).innerWidth();
-  var itemPos = $(this).position();
-  $(".selector").css({
-    left: itemPos.left + "px",
-    width: activeWidth + "px",
-  });
+  if(this.text != "About")
+  {
+    $(".tabs a").removeClass("active");
+    $(this).addClass("active");
+    var activeWidth = $(this).innerWidth();
+    var itemPos = $(this).position();
+    $(".selector").css({
+      left: itemPos.left + "px",
+      width: activeWidth + "px",
+    });
+
+  }
 });
 
 
@@ -60,19 +64,22 @@ $(function() {
   $( "#aboutbuttom" ).click(function() {
      $( "#dialog-2" ).dialog( "open" );
      window.addEventListener("click", function(event) {
-      if(event.target != $("#dialog-2") && aboutClick){
+      if(event.target != $("#dialog-2") && aboutClick && event.target.outerText != "Submitters" && event.target.textContent != "Submitters Close" && event.target.outerText != "Esc"){
         $("#dialog-2").dialog("close");
+
+        
     }
        for(var item of $("#dialog-2").children()){
-          if(event.target != item && aboutClick){
-            console.log(event.target)
+          if(event.target != item && aboutClick && event.target.outerText != "Submitters" && event.target.textContent != "Submitters Close" && event.target.outerText != "Esc"){
               $("#dialog-2").dialog("close");
+              
           }
       }
      })
   });
 
 });
+
 
 showSlides(slideIndex);
 

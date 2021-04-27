@@ -54,7 +54,18 @@ $(document).ready(function () {
     aboutClick = true;
     },
    });
+   $('.slideshow-container').bind({
+    click: function(e) {
+    // Hover event handler
+    aboutClick = false;
+    },
+
+   });
 });
+
+
+
+
 
 function handlePages(page, clean) {
   cleanUp(clean);
@@ -99,8 +110,9 @@ function handleMenuPages() {
 
     var oldPage = page;
     page = this.href.split("#")[1];
-
-    handlePages(page, oldPage);
+    if(page != "about"){handlePages(page, oldPage);}
+    else{aboutClick = false;}
+    
   });
 
   // first page
