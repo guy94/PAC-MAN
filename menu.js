@@ -65,6 +65,7 @@ $(function() {
     }
        for(var item of $("#dialog-2").children()){
           if(event.target != item && aboutClick){
+            console.log(event.target)
               $("#dialog-2").dialog("close");
           }
       }

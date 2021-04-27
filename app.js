@@ -223,6 +223,7 @@ function handleSettingsPage() {
 
 function handleAboutPage() {
   // alert(" about page ");
+  aboutClick = false;
 }
 
 function handleGamePage() {
