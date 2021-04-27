@@ -60,18 +60,22 @@ $(function() {
   $( "#aboutbuttom" ).click(function() {
      $( "#dialog-2" ).dialog( "open" );
      window.addEventListener("click", function(event) {
-      if(event.target != $("#dialog-2") && aboutClick){
+      if(event.target != $("#dialog-2") && aboutClick && event.target.outerText != "Submitters" && event.target.textContent != "Submitters Close" && event.target.outerText != "Esc"){
         $("#dialog-2").dialog("close");
+
+        
     }
        for(var item of $("#dialog-2").children()){
-          if(event.target != item && aboutClick){
+          if(event.target != item && aboutClick && event.target.outerText != "Submitters" && event.target.textContent != "Submitters Close" && event.target.outerText != "Esc"){
               $("#dialog-2").dialog("close");
+              
           }
       }
      })
   });
 
 });
+
 
 showSlides(slideIndex);
 

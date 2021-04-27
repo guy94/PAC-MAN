@@ -54,7 +54,18 @@ $(document).ready(function () {
     aboutClick = true;
     },
    });
+   $('.slideshow-container').bind({
+    click: function(e) {
+    // Hover event handler
+    aboutClick = false;
+    },
+
+   });
 });
+
+
+
+
 
 function handlePages(page, clean) {
   cleanUp(clean);
