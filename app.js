@@ -397,9 +397,22 @@ function generateRandomGame(){
   totalGameTime = Tslider.value
   lblTime.value = totalGameTime - totalGameTime
 
-  document.getElementById("favcolor1").value = randomColorPicker()
-  document.getElementById("favcolor2").value = randomColorPicker()
-  document.getElementById("favcolor3").value = randomColorPicker()
+  let color1 = randomColorPicker();
+  let color2 = randomColorPicker();
+  let color3 = randomColorPicker();
+
+  let favcolor1 = document.getElementById("favcolor1");
+  let favcolor2 =document.getElementById("favcolor2");
+  let favcolor3 =document.getElementById("favcolor3");
+
+  favcolor1.value = color1;
+  favcolor1.style.backgroundColor = color1;
+  favcolor2.value = color2;
+  favcolor2.style.backgroundColor = color2;
+  favcolor3.value = color3;
+  favcolor3.style.backgroundColor = color3;
+
+
 
   keys = {left:37, up:38, right:39, down:40};
   document.getElementById("kbd-up").innerHTML = "↑";

@@ -22,6 +22,28 @@ $(".tabs").on("click", "a", function (e) {
   });
 });
 
+
+const colorpicker1 = document.querySelector('#favcolor1');
+const colorpicker2 = document.querySelector('#favcolor2');
+const colorpicker3 = document.querySelector('#favcolor3');
+
+colorpicker1.addEventListener('change', (event) => {
+  event.preventDefault();
+  colorpicker1.style.backgroundColor = colorpicker1.value;
+});
+
+colorpicker2.addEventListener('change', (event) => {
+  event.preventDefault();
+  colorpicker2.style.backgroundColor = colorpicker2.value;
+});
+
+colorpicker3.addEventListener('change', (event) => {
+  event.preventDefault();
+  colorpicker3.style.backgroundColor = colorpicker3.value;
+});
+
+
+
 $(function() {
   $( "#dialog-2" ).dialog({
      autoOpen: false, 
