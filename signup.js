@@ -26,8 +26,11 @@ function validateSignUp(e) {
   
     const numberInName = names.filter((item) => /\d/.test(item));
     numberInName.length == 0 ? numOfValidations-- : null;
-  
-    if (numOfValidations != 0) {
+
+    if( userName in usersMap){
+      timeOutAlert("The username you chose is already taken.");
+      }
+    else if (numOfValidations != 0) {
       timeOutAlert("form is not defined well.");
     } else {
       usersMap[userName] = password;
