@@ -1,5 +1,5 @@
 # Assignment2
- URL: https://web-development-environments-2021.github.io/assignment2-205413149_316612803_312198310/
+ URL: https://guy94.github.io/PAC-MAN/
  
  
 Functionality:
